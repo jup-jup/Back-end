@@ -12,7 +12,7 @@ public class MainController {
 
     @GetMapping("/")
     public ResponseEntity<String> index() {
-        log.debug("hello world !");
+        log.debug("hello boram world !");
         return ResponseEntity.status(200).body("ok");
     }
 

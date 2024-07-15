@@ -3,7 +3,7 @@
 
 
     <!-- 로그 파일 경로 설정 -->
-    <property name="LOG_FILE" value="/Users/boramkim/Desktop/project files/jup-jup/logs/logfile.log" />
+    <property name="LOG_FILE" value="logs/logfile.log" />
 
     <!-- 콘솔에 로그를 출력하는 ConsoleAppender 설정 -->
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
