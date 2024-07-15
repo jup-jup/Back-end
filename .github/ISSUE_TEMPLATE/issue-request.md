@@ -1,14 +1,9 @@
 ---
 name: Issue request
 about: 이슈사항, 새로운 기능, 개선 사항을 요청하기 위한 템플릿
-title: ''
-labels: ''
-assignees: ''
-
 ---
 
 > description
-<!-- 여기에 이슈 또는 작업의 설명을 작성하세요 -->
 
 ## Progress
 - [ ] todo1
