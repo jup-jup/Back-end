@@ -12,8 +12,7 @@ public class MainController {
 
     @GetMapping("/")
     public ResponseEntity<String> index() {
-        log.debug("hello world !!!!!");
-        System.out.println("boram branch");
+        log.debug("hello world !");
         return ResponseEntity.status(200).body("ok");
     }
 
