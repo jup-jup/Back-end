@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
 
-
     <!-- 로그 파일 경로 설정 -->
-    <property name="LOG_FILE" value="logs/logfile.log" />
+    <property name="LOG_FILE" value="logs/logfile.log"/>
 
     <!-- 콘솔에 로그를 출력하는 ConsoleAppender 설정 -->
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
-            <pattern>%d{yyyy-MM-dd HH:mm:ss} %-5level %logger{36} - %msg%n</pattern>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} %highlight(%-5level) %logger{36} - %msg%n</pattern>
         </encoder>
     </appender>
 
@@ -18,10 +17,10 @@
         <file>${LOG_FILE}</file>
         <!-- 시간 기반 롤링 정책 설정 -->
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <!--하루가 지나면 새로운 로그 파일이 생성되고 이전 로그 파일은 압축되어 저장-->
+            <!-- 하루가 지나면 새로운 로그 파일이 생성되고 이전 로그 파일은 압축되어 저장 -->
             <fileNamePattern>${LOG_FILE}.%d{yyyy-MM-dd}.gz</fileNamePattern>
-            <!-- 최대 30일치 로그 파일 보관 -->
-            <maxHistory>30</maxHistory>
+            <!-- 최대 5일치 로그 파일 보관 -->
+            <maxHistory>5</maxHistory>
         </rollingPolicy>
         <!-- 로그 메시지의 출력 형식 지정 -->
         <encoder>
@@ -30,15 +29,27 @@
     </appender>
 
     <!-- 패키지에 대한 로거 설정 -->
-    <logger name="com.jupjup.www.jupjup" level="DEBUG" additivity="false">
+    <logger name="OAuthJWT" level="DEBUG" additivity="false">
         <!-- 이 로거가 로그 메시지를 기록할 Appender 지정 -->
-        <appender-ref ref="FILE" />
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="FILE"/>
+    </logger>
+
+    <logger name="org.springframework.web.servlet" level="DEBUG" additivity="false">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="FILE"/>
+    </logger>
+
+    <logger name="org.springframework.security" level="DEBUG" additivity="false">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="FILE"/>
     </logger>
 
     <!-- 루트 로거 설정 -->
     <root level="INFO">
         <!-- 루트 로거가 로그 메시지를 기록할 Appender 지정 -->
-        <appender-ref ref="FILE" />
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="FILE"/>
     </root>
 
 </configuration>

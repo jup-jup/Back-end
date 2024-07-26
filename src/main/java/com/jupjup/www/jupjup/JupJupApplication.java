@@ -8,6 +8,7 @@ public class JupJupApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(JupJupApplication.class, args);
+
     }
 
 }

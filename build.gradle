@@ -29,42 +29,40 @@ ext {
 }
 
 dependencies {
-    dependencies {
-        dependencies {
 
-            // JPA
-//            implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 
-            // 소셜 로그인
-//            implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
-//            implementation 'org.springframework.boot:spring-boot-starter-security'
+    // 로그인 및 인증 인가 + 소셜 로그인
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+    testImplementation 'org.springframework.security:spring-security-test'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'io.jsonwebtoken:jjwt-api:0.12.3'
+    implementation 'io.jsonwebtoken:jjwt-impl:0.12.3'
+    implementation 'io.jsonwebtoken:jjwt-jackson:0.12.3'
 
-            implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
-            implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    compileOnly 'org.projectlombok:lombok'
 
-            compileOnly 'org.projectlombok:lombok'
-            developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    // mysql
+    runtimeOnly 'com.mysql:mysql-connector-j'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
-            // 인메모리 데이터베이스
-//            runtimeOnly 'com.h2database:h2'
-            // MySQL 드라이버
-//            runtimeOnly 'com.mysql:mysql-connector-j'
-            // Lombok 애너테이션 프로세서
-            annotationProcessor 'org.projectlombok:lombok'
+    //aop
+    implementation 'org.springframework.boot:spring-boot-starter-aop'
+    //logging
+    implementation 'org.springframework.boot:spring-boot-starter-logging'
 
-            // 테스트
-            testImplementation 'org.springframework.boot:spring-boot-starter-test'
-            testImplementation 'org.springframework.security:spring-security-test'
-            testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    // swagger = http://localhost:8080/swagger-ui/index.html
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.1.0'
 
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
 
-            // swagger = http://localhost:8080/swagger-ui/index.html
-            implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.4'
-
-
-        }
-    }
+    implementation 'org.projectlombok:lombok:1.18.24'
+    annotationProcessor 'org.projectlombok:lombok:1.18.24'
 }
+
 
 dependencyManagement {
     imports {
