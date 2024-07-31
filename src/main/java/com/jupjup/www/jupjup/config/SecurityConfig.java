@@ -91,6 +91,7 @@ public class SecurityConfig {
                         .userService(customOAuth2UserService)))
                 .successHandler(customOAuthSuccessHandler));
 
+
         // JWTFilter 추가 - JWTFilter 는 로그인 필터(LoginFilter) 후에 실행되어야 합니다.
         http.addFilterBefore(new JWTFilter(jwtProperties, jwtUtil), LoginFilter.class);
 
