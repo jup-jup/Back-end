@@ -3,6 +3,7 @@ package com.jupjup.www.jupjup.jwt;
 import com.jupjup.www.jupjup.dto.UserDTO;
 import com.jupjup.www.jupjup.oauth2.CustomUserDetails;
 import io.jsonwebtoken.ExpiredJwtException;
+import jakarta.annotation.PostConstruct;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -10,6 +11,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -17,14 +19,10 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
-
-/**
- * 1. OncePerRequestFilter 를 활용하는 이유
- * Servlet 이 다른 Servlet 을 dispatch 하는 경우 FilterChain 을 여러번 거치게 되는데
- * OnceOErRequestFilter 를 사용하는 경우 무조건 한번만 거치게 된다.
- * https://stackoverflow.com/questions/13152946/what-is-onceperrequestfilter
- */
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /**
  * JWT 검증 클래스
@@ -33,27 +31,76 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
 public class JWTFilter extends OncePerRequestFilter {
-
     private static final String BEARER_PREFIX = "Bearer ";
+    private final JwtProperties jwtProperties;
     private final JWTUtil jwtUtil;
+    private List<AntPathRequestMatcher> excludeMatchers;
 
-    private static final List<AntPathRequestMatcher> excludeUrls = List.of(
-            new AntPathRequestMatcher("/login"),
-            new AntPathRequestMatcher("/join"),
-            new AntPathRequestMatcher("/auth/refresh"),
-            new AntPathRequestMatcher("/auth/test"),
-            new AntPathRequestMatcher("/logout")
-    );
+//    @Override
+//    @PostConstruct
+//    public void afterPropertiesSet() {
+//        excludeMatchers = jwtProperties.getUrls().stream()
+//                .map(AntPathRequestMatcher::new)
+//                .collect(Collectors.toList());
+//        log.info("exclude matchers: {}", excludeMatchers);
+//    }
+
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+//        Pattern pattern = Pattern.compile("/swagger.*|/v3.*");
+//        String path = request.getRequestURI();
+//        log.info("path = {}", path);
+//        boolean b = pattern.matcher(path).matches();
+//        log.info("b {} " , b);
+//        return pattern.matcher(path).matches();
+        return request.getRequestURI().startsWith("/resources/");
+    }
+
+    //    @PostConstruct // 의존성 주입이 완료된 후에 실행되어야 하는 method 에 사용
+//    public void init() {
+//        excludeMatchers = jwtProperties.getUrls().stream()
+//                .map(AntPathRequestMatcher::new)
+//                .collect(Collectors.toList());
+//        log.info("exclude matchers: {}", excludeMatchers);
+//    }
+
+//    private static final List<AntPathRequestMatcher> excludeUrls = List.of(
+//            new AntPathRequestMatcher("/login"),
+//            new AntPathRequestMatcher("/loginForm"),
+//            new AntPathRequestMatcher("/loginError"),
+//            new AntPathRequestMatcher("/loginSuccess"),
+//            new AntPathRequestMatcher("/join"),
+//            new AntPathRequestMatcher("/auth/refresh"),
+//            new AntPathRequestMatcher("/auth/test"),
+//            new AntPathRequestMatcher("/logout"),
+//            new AntPathRequestMatcher("/swagger/**"),
+//            new AntPathRequestMatcher("/swagger-ui/**"),
+//            new AntPathRequestMatcher("/v3/api-docs/**")
+//    );
+
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
 
+        String requestUri = request.getRequestURI();
+        log.info("Request URI: {}", requestUri);
+
         // 토큰 유효성 체크 불필요한 요청일 경우
-        for (AntPathRequestMatcher matcher : excludeUrls) {
-            if (matcher.matches(request)) {
-                filterChain.doFilter(request, response);
-                return;
-            }
-        }
+//        for (AntPathRequestMatcher matcher : excludeUrls) {
+//            if (matcher.matches(request)) {
+//                filterChain.doFilter(request, response);
+//                return;
+//            }
+//        }
+
+        // 토큰 유효성 체크 불필요한 요청일 경우
+//        for (AntPathRequestMatcher matcher : excludeMatchers) {
+//            log.info("Checking exclude matcher: {}", matcher.getPattern());
+//            if (matcher.matches(request)) {
+//                log.info("Request URI '{}' matches exclude pattern '{}'", requestUri, matcher.getPattern());
+//                filterChain.doFilter(request, response);
+//                return;
+//            }
+//        }
 
         String authorization = request.getHeader("Authorization");
 

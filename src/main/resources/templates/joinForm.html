@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>회원가입 페이지</title>
+    <link rel="stylesheet" th:href="@{/css/joinForm.css}">
+</head>
+<body>
+<div class="signup-wrapper">
+    <div class="signup-container">
+        <h1>회원가입 페이지</h1>
+        <hr>
+        <form class="signup-form" action="/join" method="POST" onsubmit="return validateForm()">
+            <div class="form-group">
+                <label>
+                    <input type="text" name="username" placeholder="Username" required>
+                </label>
+            </div>
+            <div class="form-group">
+                <label>
+                    <input type="text" name="userid" placeholder="Userid" required>
+                </label>
+            </div>
+            <div class="form-group">
+                <label for="password">
+                    <input type="password" id="password" name="password" placeholder="Password" required oninput="checkPasswords()">
+                </label>
+            </div>
+            <div class="form-group">
+                <label for="confirmPassword">
+                    <input type="password" id="confirmPassword" name="confirm-password" placeholder="Confirm Password" required oninput="checkPasswords()">
+                </label>
+                <small id="password-error" class="error-message"></small>
+            </div>
+            <div class="form-group">
+                <label>
+                    <input type="email" name="email" placeholder="Email" required>
+                </label>
+            </div>
+            <button type="submit" class="signup-button">회원가입</button>
+        </form>
+        <div class="additional-links">
+            <a href="/loginForm">회원가입을 아직 하지 않으셨나요?</a>
+        </div>
+    </div>
+</div>
+<script>
+    function checkPasswords() {
+        var password = document.getElementById("password").value;
+        var confirmPassword = document.getElementById("confirm-password").value;
+        var errorMessage = document.getElementById("password-error");
+
+        if (password !== confirmPassword) {
+            errorMessage.textContent = "Passwords do not match.";
+        } else {
+            errorMessage.textContent = "";
+        }
+    }
+
+    function validateForm() {
+        var password = document.getElementById("password").value;
+        var confirmPassword = document.getElementById("confirm-password").value;
+        var errorMessage = document.getElementById("password-error");
+
+        if (password !== confirmPassword) {
+            errorMessage.textContent = "Passwords do not match.";
+            return false;
+        }
+
+        return true;
+    }
+</script>
+</body>
+</html>
