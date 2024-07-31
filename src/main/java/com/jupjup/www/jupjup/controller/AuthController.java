@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @RequestMapping("/auth")
 @Slf4j
-public class JwtController {
+public class AuthController {
 
     private final AuthService authService;
 
