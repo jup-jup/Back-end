@@ -9,9 +9,11 @@ import lombok.*;
 public class UserDTO {
     private Long id;
     private String userEmail;
+    private String name;
     private String username;
     private String password;
     private String role;
+    private String picture;
 
     public UserDTO(String userEmail, String username, String password, String role) {
         this.userEmail = userEmail;
@@ -25,6 +27,7 @@ public class UserDTO {
         return "UserDTO{" +
                 "id=" + id +
                 ", userEmail='" + userEmail + '\'' +
+                ", name='" + name + '\'' +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", role='" + role + '\'' +

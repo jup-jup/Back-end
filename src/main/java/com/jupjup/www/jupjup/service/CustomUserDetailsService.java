@@ -1,4 +1,4 @@
-package com.jupjup.www.jupjup.servicr;
+package com.jupjup.www.jupjup.service;
 
 
 import com.jupjup.www.jupjup.dto.UserDTO;

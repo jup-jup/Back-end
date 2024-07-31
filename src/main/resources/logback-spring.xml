@@ -29,7 +29,7 @@
     </appender>
 
     <!-- 패키지에 대한 로거 설정 -->
-    <logger name="OAuthJWT" level="DEBUG" additivity="false">
+    <logger name="com.jupjup.www.jupjup" level="DEBUG" additivity="false">
         <!-- 이 로거가 로그 메시지를 기록할 Appender 지정 -->
         <appender-ref ref="CONSOLE"/>
         <appender-ref ref="FILE"/>
@@ -46,7 +46,7 @@
     </logger>
 
     <!-- 루트 로거 설정 -->
-    <root level="INFO">
+    <root level="ERROR">
         <!-- 루트 로거가 로그 메시지를 기록할 Appender 지정 -->
         <appender-ref ref="CONSOLE"/>
         <appender-ref ref="FILE"/>

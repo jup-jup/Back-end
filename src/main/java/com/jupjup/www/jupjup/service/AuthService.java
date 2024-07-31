@@ -1,4 +1,4 @@
-package com.jupjup.www.jupjup.servicr;
+package com.jupjup.www.jupjup.service;
 
 import com.jupjup.www.jupjup.dto.TokenDTO;
 import com.jupjup.www.jupjup.entity.RefreshEntity;
@@ -20,12 +20,8 @@ public class AuthService {
 
     private final RefreshTokenRepository refreshRepository;
     private final JWTUtil jwtUtil;
-
+//    @ApiOperation(value = "Refresh and rotate tokens", notes = "Refresh access and refresh tokens based on existing refresh token and user email")
     public TokenDTO refreshTokenRotate(String refreshToken, String userEmail) {
-
-        log.info("refreshTokenRotate 실행()");
-        log.info("userEmail = {}", userEmail);
-        log.info("refreshToken = {}", refreshToken);
 
         // DB에 유저정보 + refreshToken 정보 확인
         Optional<RefreshEntity> byUserEmail = refreshRepository.findByUserEmail(userEmail);
