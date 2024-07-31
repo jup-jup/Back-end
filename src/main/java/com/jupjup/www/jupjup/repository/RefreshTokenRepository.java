@@ -13,8 +13,6 @@ public interface RefreshTokenRepository extends JpaRepository<RefreshEntity,Long
     void deleteAllByRefresh(String refresh);
     void deleteByExpirationBefore(Date expiration);
     Optional<RefreshEntity> findByUserEmail(String userEmail);
-
     void deleteByUserEmail(String userEmail);
-
 
 }

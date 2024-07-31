@@ -34,9 +34,9 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-//    private final CustomOAuth2UserService customOAuth2UserService;
-//    private final CustomOAuthSuccessHandler customOAuthSuccessHandler;
-//    private final CustomSuccessHandler customSuccessHandler;
+    private final CustomOAuth2UserService customOAuth2UserService;
+    private final CustomOAuthSuccessHandler customOAuthSuccessHandler;
+    private final CustomSuccessHandler customSuccessHandler;
     private final AuthenticationConfiguration configuration;
     private final CustomAccessDeniedHandler customAccessDeniedHandler;
     private final JWTUtil jwtUtil;
@@ -102,11 +102,11 @@ public class SecurityConfig {
                 cors(cors -> cors.configurationSource(corsConfigurationSource()));
 
         //oauth2
-//        http
-//                .oauth2Login((auth) -> auth
-//                        .userInfoEndpoint((userInfoEndpointConfig -> userInfoEndpointConfig
-//                                .userService(customOAuth2UserService)))
-//                        .successHandler(customOAuthSuccessHandler));
+        http
+                .oauth2Login((auth) -> auth
+                        .userInfoEndpoint((userInfoEndpointConfig -> userInfoEndpointConfig
+                                .userService(customOAuth2UserService)))
+                        .successHandler(customOAuthSuccessHandler));
 
 
         // JWTFilter 추가 - JWTFilter 는 로그인 필터(LoginFilter) 후에 실행되어야 합니다.
