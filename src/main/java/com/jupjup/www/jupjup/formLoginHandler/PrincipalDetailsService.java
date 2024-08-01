@@ -29,7 +29,7 @@ public class PrincipalDetailsService implements UserDetailsService {
                     .userEmail(user.getUserEmail())
                     .username(user.getUsername())
                     .role(user.getRole())
-                    .password(user.getPassword())
+//                    .password(user.getPassword())
                     .build());
         }
         throw new UsernameNotFoundException("user not found with username : " + username);

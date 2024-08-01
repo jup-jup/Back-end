@@ -47,24 +47,24 @@ public class TestController {
     @ResponseBody
     public ResponseEntity<?> user() {
 
-        try {
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            CustomUserDetails UserDetails = (CustomUserDetails) authentication.getPrincipal();
-            Collection<? extends GrantedAuthority> authorities = UserDetails.getAuthorities();
-
-            // 권한 확인
-            boolean hasAdminRole = authorities.stream()
-                    .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_ADMIN"));
-            boolean hasUserRole = authorities.stream()
-                    .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_USER"));
-
-            log.info("Has ROLE_ADMIN: {}" ,hasAdminRole);
-            log.info("Has ROLE_USER: {}" ,hasUserRole);
-
-        } catch (NullPointerException e) {
-            log.info("userName is null");
-            return ResponseEntity.status(401).body("UserName is null");
-        }
+//        try {
+//            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//            CustomUserDetails UserDetails = (CustomUserDetails) authentication.getPrincipal();
+//            Collection<? extends GrantedAuthority> authorities = UserDetails.getAuthorities();
+//
+//            // 권한 확인
+//            boolean hasAdminRole = authorities.stream()
+//                    .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_ADMIN"));
+//            boolean hasUserRole = authorities.stream()
+//                    .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_USER"));
+//
+//            log.info("Has ROLE_ADMIN: {}" ,hasAdminRole);
+//            log.info("Has ROLE_USER: {}" ,hasUserRole);
+//
+//        } catch (NullPointerException e) {
+//            log.info("userName is null");
+//            return ResponseEntity.status(401).body("UserName is null");
+//        }
         return ResponseEntity.status(200).body("success!");
 
     }

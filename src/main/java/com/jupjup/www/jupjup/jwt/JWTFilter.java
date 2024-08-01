@@ -36,15 +36,6 @@ public class JWTFilter extends OncePerRequestFilter {
     private final JWTUtil jwtUtil;
     private List<AntPathRequestMatcher> excludeMatchers;
 
-//    @Override
-//    @PostConstruct
-//    public void afterPropertiesSet() {
-//        excludeMatchers = jwtProperties.getUrls().stream()
-//                .map(AntPathRequestMatcher::new)
-//                .collect(Collectors.toList());
-//        log.info("exclude matchers: {}", excludeMatchers);
-//    }
-
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
 //        Pattern pattern = Pattern.compile("/swagger.*|/v3.*");
@@ -56,27 +47,19 @@ public class JWTFilter extends OncePerRequestFilter {
         return request.getRequestURI().startsWith("/resources/");
     }
 
-    //    @PostConstruct // 의존성 주입이 완료된 후에 실행되어야 하는 method 에 사용
-//    public void init() {
-//        excludeMatchers = jwtProperties.getUrls().stream()
-//                .map(AntPathRequestMatcher::new)
-//                .collect(Collectors.toList());
-//        log.info("exclude matchers: {}", excludeMatchers);
-//    }
-
-//    private static final List<AntPathRequestMatcher> excludeUrls = List.of(
-//            new AntPathRequestMatcher("/login"),
-//            new AntPathRequestMatcher("/loginForm"),
-//            new AntPathRequestMatcher("/loginError"),
-//            new AntPathRequestMatcher("/loginSuccess"),
-//            new AntPathRequestMatcher("/join"),
-//            new AntPathRequestMatcher("/auth/refresh"),
-//            new AntPathRequestMatcher("/auth/test"),
-//            new AntPathRequestMatcher("/logout"),
-//            new AntPathRequestMatcher("/swagger/**"),
-//            new AntPathRequestMatcher("/swagger-ui/**"),
-//            new AntPathRequestMatcher("/v3/api-docs/**")
-//    );
+    private static final List<AntPathRequestMatcher> excludeUrls = List.of(
+            new AntPathRequestMatcher("/templates/**"),
+            new AntPathRequestMatcher("/loginForm"),
+            new AntPathRequestMatcher("/loginError"),
+            new AntPathRequestMatcher("/loginSuccess"),
+            new AntPathRequestMatcher("/join"),
+            new AntPathRequestMatcher("/auth/refresh"),
+            new AntPathRequestMatcher("/auth/test"),
+            new AntPathRequestMatcher("/logout"),
+            new AntPathRequestMatcher("/swagger/**"),
+            new AntPathRequestMatcher("/swagger-ui/**"),
+            new AntPathRequestMatcher("/v3/api-docs/**")
+    );
 
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
@@ -85,22 +68,13 @@ public class JWTFilter extends OncePerRequestFilter {
         log.info("Request URI: {}", requestUri);
 
         // 토큰 유효성 체크 불필요한 요청일 경우
-//        for (AntPathRequestMatcher matcher : excludeUrls) {
-//            if (matcher.matches(request)) {
-//                filterChain.doFilter(request, response);
-//                return;
-//            }
-//        }
+        for (AntPathRequestMatcher matcher : excludeUrls) {
+            if (matcher.matches(request)) {
+                filterChain.doFilter(request, response);
+                return;
+            }
+        }
 
-        // 토큰 유효성 체크 불필요한 요청일 경우
-//        for (AntPathRequestMatcher matcher : excludeMatchers) {
-//            log.info("Checking exclude matcher: {}", matcher.getPattern());
-//            if (matcher.matches(request)) {
-//                log.info("Request URI '{}' matches exclude pattern '{}'", requestUri, matcher.getPattern());
-//                filterChain.doFilter(request, response);
-//                return;
-//            }
-//        }
 
         String authorization = request.getHeader("Authorization");
 
