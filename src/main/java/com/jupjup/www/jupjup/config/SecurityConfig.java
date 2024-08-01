@@ -55,11 +55,10 @@ public class SecurityConfig {
         http.authorizeHttpRequests((auth) -> auth
                 // 정적 리소스에 대한 접근 허용
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
-                .requestMatchers("/join", "/login","/logout","/auth/refresh").permitAll()
+                .requestMatchers("/static/**", "/templates/**").permitAll()
+                .requestMatchers("/join", "/logout","/auth/refresh").permitAll()
                 .requestMatchers("/index","/joinForm", "/loginForm","/loginError","/loginSuccess").permitAll()
-//                .requestMatchers("/swagger", "/swagger-ui/**", "/api-docs", "/api-docs/**", "/v3/api-docs/**").permitAll()
-                .requestMatchers("/admin").hasRole("ADMIN")
-                .requestMatchers("/user").hasRole("USER")
+                .requestMatchers("/swagger", "/swagger-ui/**", "/api-docs", "/api-docs/**", "/v3/api-docs/**").permitAll()
                 .anyRequest().authenticated());
 
         // 예외 핸들러 작성
@@ -133,11 +132,11 @@ public class SecurityConfig {
  * 이 메서드는 정적 자원에 대해 보안을 적용하지 않도록 설정한다.
  * 정적 자원은 보통 HTML, CSS, JavaScript, 이미지 파일 등을 의미하며, 이들에 대해 보안을 적용하지 않음으로써 성능을 향상시킬 수 있다.
  */
-    @Bean
-    public WebSecurityCustomizer webSecurityCustomizer() {
-        return web -> web.ignoring()
-                .requestMatchers(PathRequest.toStaticResources().atCommonLocations());
-
-    }
+//    @Bean
+//    public WebSecurityCustomizer webSecurityCustomizer() {
+//        return web -> web.ignoring()
+//                .requestMatchers(PathRequest.toStaticResources().atCommonLocations());
+//
+//    }
 
 }

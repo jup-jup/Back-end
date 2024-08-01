@@ -15,6 +15,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+
+
+/**
+ * @fileName      : AuthController.java
+ * @author        : boramkim
+ * @since         : 2024. 8. 1.
+ * @description    : jwt 토큰 api
+ */
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/auth")

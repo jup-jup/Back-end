@@ -12,6 +12,12 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 
+/**
+ * @fileName      : UserController.java
+ * @author        : boramkim
+ * @since         : 2024. 8. 1.
+ * @description    : 로그인,로그아웃,회원가입 api
+ */
 @RestController
 @RequiredArgsConstructor
 @Slf4j

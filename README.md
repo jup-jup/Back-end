@@ -9,12 +9,15 @@
 #### 프레임워크
 - **Spring Boot 3.3.1**
 
-#### 라이브러리 및 의존성
-- **Spring Boot Starter Data JPA**: JPA 지원
-- **Spring Boot Starter Security**: 보안 및 OAuth2 클라이언트 지원
-- **Spring Boot Starter Thymeleaf**: Thymeleaf 템플릿 엔진 지원
-- **Spring Boot Starter Web**: 웹 애플리케이션 개발 지원
-
 #### 데이터베이스
 - **H2 Database**: 인메모리 데이터베이스
 - **MySQL Connector**: MySQL 드라이버
+
+---
+
+#### JAVADOC 
+- @param: 메서드 매개변수를 설명합니다.<br>
+- @return: 메서드의 반환 값을 설명합니다.<br>
+- @throws 또는 @exception: 메서드가 던질 수 있는 예외를 설명합니다.<br>
+- @see: 참조할 다른 클래스나 메서드를 설명합니다.<br>
+- @deprecated: 더 이상 사용되지 않는 클래스나 메서드를 설명합니다.
