@@ -13,8 +13,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
+import org.springframework.security.oauth2.core.OAuth2Token;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import static com.jupjup.www.jupjup.enumClass.OauthRegistrationId.*;
 
@@ -44,8 +48,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         try {
             registrationId = valueOf(registrationIdString.toUpperCase());
             OAuth2Response oAuth2Response = getOAuth2Response(oAuth2User, registrationId);
-            String username = oAuth2Response.getProvider() + " " + oAuth2Response.getProviderId();
-            return saveOrUpdateUser(username, oAuth2Response);
+            return saveOrUpdateUser(oAuth2Response);
         } catch (IllegalArgumentException e) {
             throw new RuntimeException("Unsupported registration id: " + registrationId);
         }
@@ -84,32 +87,37 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
      * @since         : 2024. 8. 1.
      * @description   : 가입이 안된 유저이면 회원가입되고 가입되어 있다면 기존계정 내용 업데이트
      */
-    private OAuth2User saveOrUpdateUser(String username, OAuth2Response oAuth2Response) {
+    private OAuth2User saveOrUpdateUser(OAuth2Response oAuth2Response) {
 
-        UserEntity existData = userRepository.findByUsername(username);
+        String providerId = oAuth2Response.getProvider()+oAuth2Response.getProviderId();
+        String userName = oAuth2Response.getName();
+        String userEmail = oAuth2Response.getEmail();
+
+        UserEntity existData = userRepository.findByUserEmail(userEmail);
+
         if (existData == null) {
             log.info("회원가입이 가능한 유저");
             userRepository.save(UserEntity.builder()
-                    .userEmail(oAuth2Response.getEmail())
+                    .providerKey(providerId)
+                    .userEmail(userEmail)
                     .role("ROLE_USER")
-                    .username(username)
+                    .username(userName)
                     .build());
             return new CustomUserDetails(UserDTO.builder()
-                    .username(username)
-                    .userEmail(oAuth2Response.getEmail())
+                    .username(userName)
+                    .userEmail(userEmail)
                     .role("ROLE_USER")
                     .build());
         } else {
             log.info("회원가입이 되어 있는 유저. 정보 업데이트");
-            existData.setUserEmail(oAuth2Response.getEmail());
-            existData.setUsername(oAuth2Response.getName());
+            existData.setUserEmail(userEmail);
+            existData.setName(userName);
             userRepository.save(existData);
             return new CustomUserDetails(UserDTO.builder()
-                    .username(oAuth2Response.getName())
-                    .userEmail(oAuth2Response.getEmail())
+                    .username(userName)
+                    .userEmail(userEmail)
                     .build());
         }
-
     }
 }
 

@@ -20,14 +20,14 @@ public class PrincipalDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        UserEntity user = userRepository.findByUsername(username);
+        UserEntity user = userRepository.findByName(username);
 
         log.info("username: {}", user);
 
         if (user != null) {
             return new CustomUserDetails(UserDTO.builder()
                     .userEmail(user.getUserEmail())
-                    .username(user.getUsername())
+                    .username(user.getName())
                     .role(user.getRole())
 //                    .password(user.getPassword())
                     .build());

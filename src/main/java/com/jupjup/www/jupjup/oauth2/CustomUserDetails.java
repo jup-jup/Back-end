@@ -45,4 +45,8 @@ public record CustomUserDetails(UserDTO userDTO) implements UserDetails, OAuth2U
         return userDTO.getUserEmail();
     }
 
+    public String getId(){
+        return userDTO.getId();
+    }
+
 }
