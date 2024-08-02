@@ -69,17 +69,15 @@ public class JWTUtil {
                 .compact();
     }
 
+
     // 리프레시 토큰 DB 저
-    public void addRefreshToken(String userEmail, String refresh) {
+    public static Date RefreshTokenExTimeCul(String refresh) {
         // 현재 시간에 만료 시간을 더하여 Date 객체 생성
         Date expirationDate = new Date(System.currentTimeMillis() + refreshExpirationTime);
+        log.info("refresh = {} " ,refresh);
         log.info("expirationTime = {}", refreshExpirationTime);
+        return expirationDate;
 
-        refreshRepository.save(RefreshEntity.builder()
-                .refresh(refresh)
-                .userEmail(userEmail)
-                .expiration(expirationDate)
-                .build());
     }
 
     public static void validateAccessToken(String token) {

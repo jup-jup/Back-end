@@ -88,6 +88,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
         UserEntity existData = userRepository.findByUsername(username);
         if (existData == null) {
+            log.info("회원가입이 가능한 유저");
             userRepository.save(UserEntity.builder()
                     .userEmail(oAuth2Response.getEmail())
                     .role("ROLE_USER")
@@ -99,6 +100,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
                     .role("ROLE_USER")
                     .build());
         } else {
+            log.info("회원가입이 되어 있는 유저. 정보 업데이트");
             existData.setUserEmail(oAuth2Response.getEmail());
             existData.setUsername(oAuth2Response.getName());
             userRepository.save(existData);
