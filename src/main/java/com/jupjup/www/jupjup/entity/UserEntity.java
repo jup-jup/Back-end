@@ -23,7 +23,7 @@ public class UserEntity {
     private String role;
     @Column(nullable = false)
     private LocalDateTime createdAt;
-
+    @Column(nullable = false)
     private LocalDateTime updatedAt;
 
     @PrePersist
