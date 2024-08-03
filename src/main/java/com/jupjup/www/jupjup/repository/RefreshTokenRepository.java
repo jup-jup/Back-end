@@ -15,4 +15,5 @@ public interface RefreshTokenRepository extends JpaRepository<RefreshEntity,Long
     Optional<RefreshEntity> findByUserEmail(String userEmail);
     void deleteByUserEmail(String userEmail);
 
+
 }

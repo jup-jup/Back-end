@@ -40,10 +40,9 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
         // OAuth2UserRequest = 리소스 서버에서 보내주는 유저 정보를 가지고 있음
         OAuth2User oAuth2User = super.loadUser(userRequest);
-        System.out.println("Oauth2User: " + oAuth2User);
+//        System.out.println("Oauth2User: " + oAuth2User);
         String registrationIdString = userRequest.getClientRegistration().getRegistrationId();
-        log.info("loadUser registrationId : {}", registrationIdString);
-        log.info("oauth2User : {}", oAuth2User.getAttributes());
+        KakaoResponse kakaoResponse = new KakaoResponse(oAuth2User.getAttributes());
 
         try {
             registrationId = valueOf(registrationIdString.toUpperCase());
@@ -89,11 +88,21 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
      */
     private OAuth2User saveOrUpdateUser(OAuth2Response oAuth2Response) {
 
-        String providerId = oAuth2Response.getProvider()+oAuth2Response.getProviderId();
-        String userName = oAuth2Response.getName();
-        String userEmail = oAuth2Response.getEmail();
+        String providerId = null;
+        String userName = null;
+        String userEmail = null;
 
-        UserEntity existData = userRepository.findByUserEmail(userEmail);
+        if(oAuth2Response instanceof KakaoResponse kakaoResponse){
+            providerId = kakaoResponse.getProvider()+kakaoResponse.getProviderId();
+            userName = kakaoResponse.getName();
+            userEmail = kakaoResponse.getName() +"@"+kakaoResponse.getProviderId();
+        }else{
+            providerId = oAuth2Response.getProvider()+oAuth2Response.getProviderId();
+            userName = oAuth2Response.getName();
+            userEmail = oAuth2Response.getEmail();
+        }
+
+        UserEntity existData = userRepository.findByUserEmailAndProviderKey(userEmail,providerId);;
 
         if (existData == null) {
             log.info("회원가입이 가능한 유저");

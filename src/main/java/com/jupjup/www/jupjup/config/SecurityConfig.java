@@ -59,7 +59,7 @@ public class SecurityConfig {
                 .requestMatchers("/join", "/logout","/auth/refresh").permitAll()
                 .requestMatchers("/index","/joinForm", "/loginForm","/loginError","/loginSuccess").permitAll()
                 .requestMatchers("/swagger", "/swagger-ui/**", "/api-docs", "/api-docs/**", "/v3/api-docs/**").permitAll()
-                .anyRequest().authenticated());
+                .anyRequest().permitAll());
 
         // 예외 핸들러 작성
         http.exceptionHandling(ex -> ex

@@ -54,10 +54,6 @@ public class JWTUtil {
 
     private static String generateToken(String userEmail, String role, Key key, long expirationTime) {
 
-        Date date = new Date(System.currentTimeMillis() + expirationTime);
-        log.debug("userEmail = {} " ,userEmail);
-        log.debug("토큰 만료기간  = {} " ,date);
-
         return Jwts.builder()
                 .claim("userEmail", userEmail)
                 .claim("role", role)
@@ -74,8 +70,6 @@ public class JWTUtil {
     public static Date RefreshTokenExTimeCul(String refresh) {
         // 현재 시간에 만료 시간을 더하여 Date 객체 생성
         Date expirationDate = new Date(System.currentTimeMillis() + refreshExpirationTime);
-        log.info("refresh = {} " ,refresh);
-        log.info("expirationTime = {}", refreshExpirationTime);
         return expirationDate;
 
     }
