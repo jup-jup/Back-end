@@ -19,8 +19,6 @@ import java.util.Optional;
 public class AuthService {
 
     private final RefreshTokenRepository refreshRepository;
-    private final JWTUtil jwtUtil;
-//    @ApiOperation(value = "Refresh and rotate tokens", notes = "Refresh access and refresh tokens based on existing refresh token and user email")
     public TokenDTO refreshTokenRotate(String refreshToken, String userEmail) {
 
         // DB에 유저정보 + refreshToken 정보 확인
@@ -41,7 +39,12 @@ public class AuthService {
 
         // 기존 리프레시 토큰 삭제후 새로운 리프레시 토큰을 저장 (동시성 문제 해결을 위해 원자적으로 처리)
         refreshRepository.deleteAllByRefresh(refreshToken);
-        jwtUtil.addRefreshToken(userEmail,newRefreshToken);
+        // 리프레시 저장
+        refreshRepository.save(RefreshEntity.builder()
+                .refresh(newRefreshToken)
+                .userEmail(userEmail)
+                .expiration(JWTUtil.RefreshTokenExTimeCul(newRefreshToken))
+                .build());
         log.info("New refresh token has been added");
 
         return TokenDTO.builder()

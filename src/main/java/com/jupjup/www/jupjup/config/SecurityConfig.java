@@ -59,7 +59,7 @@ public class SecurityConfig {
                 .requestMatchers("/join", "/logout","/auth/refresh").permitAll()
                 .requestMatchers("/index","/joinForm", "/loginForm","/loginError","/loginSuccess").permitAll()
                 .requestMatchers("/swagger", "/swagger-ui/**", "/api-docs", "/api-docs/**", "/v3/api-docs/**").permitAll()
-                .anyRequest().authenticated());
+                .anyRequest().permitAll());
 
         // 예외 핸들러 작성
         http.exceptionHandling(ex -> ex
@@ -92,7 +92,7 @@ public class SecurityConfig {
 
 
         // JWTFilter 추가 - JWTFilter 는 로그인 필터(LoginFilter) 후에 실행되어야 합니다.
-        http.addFilterBefore(new JWTFilter(jwtProperties, jwtUtil), LoginFilter.class);
+//        http.addFilterBefore(new JWTFilter(jwtProperties, jwtUtil), LoginFilter.class);
 
         // LoginFilter 는 UsernamePasswordAuthenticationFilter 와 동일한 위치에 배치
         http.addFilterAt(new LoginFilter(customAuthenticationManager(configuration), jwtUtil, refreshTokenRepository), UsernamePasswordAuthenticationFilter.class);

@@ -1,6 +1,9 @@
 package com.jupjup.www.jupjup.oauth2;
 
+import com.jupjup.www.jupjup.entity.RefreshEntity;
 import com.jupjup.www.jupjup.jwt.JWTUtil;
+import com.jupjup.www.jupjup.repository.RefreshTokenRepository;
+import com.nimbusds.oauth2.sdk.token.RefreshToken;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -13,7 +16,9 @@ import org.springframework.security.web.authentication.SimpleUrlAuthenticationSu
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.sql.Ref;
 import java.util.Collection;
+import java.util.Date;
 import java.util.Iterator;
 
 /*로그인 성공 시 호출 페이지*/
@@ -21,6 +26,10 @@ import java.util.Iterator;
 @RequiredArgsConstructor
 @Slf4j
 public class CustomOAuthSuccessHandler extends SimpleUrlAuthenticationSuccessHandler  {
+
+    private final RefreshTokenRepository refreshTokenRepository;
+    RefreshTokenRepository tokenRepository;
+
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
@@ -30,29 +39,32 @@ public class CustomOAuthSuccessHandler extends SimpleUrlAuthenticationSuccessHan
         log.info("Custom User : {}", customUserDetails);
 
         String username = customUserDetails.getName();
+        String userEmail = customUserDetails.getUserEmail();
+
+        log.info("Username : {}", username);
+        log.info("UserEmail: {}", customUserDetails.getUserEmail());
 
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         Iterator<? extends GrantedAuthority> iterator = authorities.iterator();
 
         GrantedAuthority auth = iterator.next();
 
-        log.info("유저 ROLE : {}", auth.getAuthority());
         String role = auth.getAuthority();
 
         // jwt 발급
-        String accessToken = JWTUtil.generateAccessToken(username, role);
-        String RefreshToken = JWTUtil.generateRefreshToken(username, role);
+        String accessToken = JWTUtil.generateAccessToken(username, "ROLE_USER");
+        String RefreshToken = JWTUtil.generateRefreshToken(username, "ROLE_USER");
 
-        ResponseCookie responseCookie = ResponseCookie.from("refresh_token", RefreshToken)
-                .httpOnly(true)
-                .secure(true)
-                .path("/")
-                .sameSite("strict")
-                .build();
+        // 리프레시 저장
+        refreshTokenRepository.save(RefreshEntity.builder()
+                .refresh(RefreshToken)
+                .userEmail(userEmail)
+                .expiration(JWTUtil.RefreshTokenExTimeCul(RefreshToken))
+                .build());
 
         response.setHeader("Authorization", "Bearer " +accessToken);
-        response.addHeader("Set-Cookie", responseCookie.toString());
-        response.sendRedirect("http://localhost:8080/user");
+        response.addHeader("Set-Cookie", JWTUtil.createCookie(RefreshToken).toString());
+        response.sendRedirect("http://localhost:8080/");
 
     }
 
