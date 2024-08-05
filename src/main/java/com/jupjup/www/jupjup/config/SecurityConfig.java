@@ -52,14 +52,10 @@ public class SecurityConfig {
         http.csrf(AbstractHttpConfigurer::disable);
 
         //경로별 인가 작업
-        http.authorizeHttpRequests((auth) -> auth
-                // 정적 리소스에 대한 접근 허용
-                .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
-                .requestMatchers("/static/**", "/templates/**").permitAll()
-                .requestMatchers("/join", "/logout","/auth/refresh").permitAll()
-                .requestMatchers("/index","/joinForm", "/loginForm","/loginError","/loginSuccess").permitAll()
-                .requestMatchers("/swagger", "/swagger-ui/**", "/api-docs", "/api-docs/**", "/v3/api-docs/**").permitAll()
-                .anyRequest().permitAll());
+        http.authorizeHttpRequests(auth -> auth
+                .requestMatchers("/oauth2/authorization/**", "/login/oauth2/code/**").permitAll() // OAuth2 인증 경로 허용
+                .anyRequest().authenticated() // 나머지 요청은 인증 필요
+        );
 
         // 예외 핸들러 작성
         http.exceptionHandling(ex -> ex
@@ -67,16 +63,16 @@ public class SecurityConfig {
         );
 
         //From 로그인 방식 disable
-//        http.formLogin(AbstractHttpConfigurer::disable);
-//        http.logout(AbstractHttpConfigurer::disable);
+        http.formLogin(AbstractHttpConfigurer::disable);
+        http.logout(AbstractHttpConfigurer::disable);
 
         //From 로그인 방식
-        http.formLogin((form) -> form
-                .loginPage("/loginForm")
-                .loginProcessingUrl("/login")
-                .successHandler(customSuccessHandler)
-                .permitAll()
-        ).logout(LogoutConfigurer::permitAll);
+//        http.formLogin((form) -> form
+//                .loginPage("/loginForm")
+//                .loginProcessingUrl("/login")
+//                .successHandler(customSuccessHandler)
+//                .permitAll()
+//        ).logout(LogoutConfigurer::permitAll);
 
         //HTTP Basic 인증 방식 disable
         http.httpBasic(AbstractHttpConfigurer::disable);
@@ -117,11 +113,12 @@ public class SecurityConfig {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("*"));
+        configuration.setAllowedOrigins(List.of("*")); // 구체적인 도메인으로 수정
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
+        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "Origin", "Accept"));
         configuration.setAllowCredentials(true);
         configuration.setMaxAge(3600L);
+        configuration.setExposedHeaders(List.of("Content-Length", "X-Custom-Header")); // 필요한 경우 추가
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
@@ -132,11 +129,11 @@ public class SecurityConfig {
  * 이 메서드는 정적 자원에 대해 보안을 적용하지 않도록 설정한다.
  * 정적 자원은 보통 HTML, CSS, JavaScript, 이미지 파일 등을 의미하며, 이들에 대해 보안을 적용하지 않음으로써 성능을 향상시킬 수 있다.
  */
-//    @Bean
-//    public WebSecurityCustomizer webSecurityCustomizer() {
-//        return web -> web.ignoring()
-//                .requestMatchers(PathRequest.toStaticResources().atCommonLocations());
-//
-//    }
+    @Bean
+    public WebSecurityCustomizer webSecurityCustomizer() {
+        return web -> web.ignoring()
+                .requestMatchers(PathRequest.toStaticResources().atCommonLocations());
+
+    }
 
 }

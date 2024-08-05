@@ -1,16 +1,15 @@
 plugins {
     id 'java'
-    id 'org.springframework.boot' version '3.3.1'
-    id 'io.spring.dependency-management' version '1.1.5'
+    id 'org.springframework.boot' version '3.3.1' // Spring Boot 플러그인
+    id 'io.spring.dependency-management' version '1.1.5' // Spring 의존성 관리 플러그인
+    id 'com.epages.restdocs-api-spec' version '0.18.2' // REST Docs API Spec 플러그인
 }
 
 group = 'com.jup-jup.www'
 version = '0.0.1-SNAPSHOT'
 
 java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(17)
-    }
+    sourceCompatibility = JavaVersion.VERSION_17 // Java 17 사용
 }
 
 configurations {
@@ -29,47 +28,85 @@ ext {
 }
 
 dependencies {
-
-    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-
-    // 로그인 및 인증 인가 + 소셜 로그인
-    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
-    testImplementation 'org.springframework.security:spring-security-test'
-    implementation 'org.springframework.boot:spring-boot-starter-security'
-    implementation 'io.jsonwebtoken:jjwt-api:0.12.3'
-    implementation 'io.jsonwebtoken:jjwt-impl:0.12.3'
-    implementation 'io.jsonwebtoken:jjwt-jackson:0.12.3'
-
+    // Spring Boot 스타터: 웹, 데이터 JPA, 시큐리티, OAuth2, 타임리프, AOP, 로깅
     implementation 'org.springframework.boot:spring-boot-starter-web'
-    compileOnly 'org.projectlombok:lombok'
-
-    // mysql
-    runtimeOnly 'com.mysql:mysql-connector-j'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-
-    //aop
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation 'org.springframework.boot:spring-boot-starter-aop'
-    //logging
     implementation 'org.springframework.boot:spring-boot-starter-logging'
 
-    // http://localhost:8080/swagger
+    // QueryDSL 설정: JPA 및 APT
+    implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta' // Jakarta 버전으로 통일
+    annotationProcessor 'com.querydsl:querydsl-apt:5.0.0:jakarta' // APT 도구 사용 지정
+    // QueryDSL 기본 라이브러리
+    implementation "com.querydsl:querydsl-core" // QueryDSL 핵심 기능
+    implementation "com.querydsl:querydsl-collections" // 컬렉션 처리를 위한 QueryDSL 지원
+    // QueryDSL APT 설정
+    annotationProcessor "com.querydsl:querydsl-apt:${dependencyManagement.importedProperties['querydsl.version']}:jpa" // querydsl JPAAnnotationProcessor 사용
+    // Jakarta 어노테이션 API
+    annotationProcessor "jakarta.annotation:jakarta.annotation-api" // 어노테이션 처리
+    annotationProcessor "jakarta.persistence:jakarta.persistence-api" // JPA 어노테이션 처리
+
+    // JJWT (Java JWT): JWT 처리 라이브러리
+    implementation 'io.jsonwebtoken:jjwt-api:0.12.3'
+    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.12.3'
+    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.12.3'
+
+    // OpenAPI 문서화: Springdoc OpenAPI
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.1.0'
 
-//    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    // Lombok: 코드 생성 라이브러리
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
 
-    implementation 'org.projectlombok:lombok:1.18.24'
-    annotationProcessor 'org.projectlombok:lombok:1.18.24'
+    // MySQL 커넥터
+    runtimeOnly 'com.mysql:mysql-connector-j'
+
+    // 문서화
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.security:spring-security-test'
+    testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
+    testImplementation 'com.epages:restdocs-api-spec-mockmvc:0.18.4'
 }
-
 
 dependencyManagement {
     imports {
-        mavenBom "org.springframework.ai:spring-ai-bom:${springAiVersion}"
+        mavenBom "org.springframework.boot:spring-boot-dependencies:3.3.1"
     }
 }
 
 tasks.named('test') {
-    useJUnitPlatform()
+    useJUnitPlatform() // JUnit Platform 사용
 }
+
+// OpenAPI 설정
+openapi3 {
+    servers = [
+            { url = 'http://localhost:8080' },
+            { url = 'http://production-api-server-url.com' }
+    ]
+    title = 'Post Service API'
+    description = 'Post Service API description'
+    version = '1.0.0'
+    format = 'yaml'
+    outputFileNamePrefix = 'api'
+    outputDirectory = "${buildDir}/apiSpec"
+}
+
+// API 문서를 정적 리소스 디렉토리로 복사하는 작업을 정의합니다.
+tasks.register("copyDocs", task -> {
+    task.doLast(t -> {
+        copy(spec -> {
+            spec.from("${buildDir}/apiSpec");
+            spec.into("src/main/resources/static/docs");
+        });
+    });
+    task.dependsOn("openapi3");
+});
+
+// 빌드 작업이 copyDocs에 의존하도록 설정합니다.
+tasks.named("build", task -> {
+    task.dependsOn("copyDocs");
+});

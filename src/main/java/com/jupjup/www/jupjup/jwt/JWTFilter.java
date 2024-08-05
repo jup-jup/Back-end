@@ -36,25 +36,9 @@ public class JWTFilter extends OncePerRequestFilter {
     private final JWTUtil jwtUtil;
     private List<AntPathRequestMatcher> excludeMatchers;
 
-    @Override
-    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
-//        Pattern pattern = Pattern.compile("/swagger.*|/v3.*");
-//        String path = request.getRequestURI();
-//        log.info("path = {}", path);
-//        boolean b = pattern.matcher(path).matches();
-//        log.info("b {} " , b);
-//        return pattern.matcher(path).matches();
-        return request.getRequestURI().startsWith("/resources/");
-    }
-
     private static final List<AntPathRequestMatcher> excludeUrls = List.of(
-            new AntPathRequestMatcher("/templates/**"),
-            new AntPathRequestMatcher("/loginForm"),
-            new AntPathRequestMatcher("/loginError"),
-            new AntPathRequestMatcher("/loginSuccess"),
             new AntPathRequestMatcher("/join"),
             new AntPathRequestMatcher("/auth/refresh"),
-            new AntPathRequestMatcher("/auth/test"),
             new AntPathRequestMatcher("/logout"),
             new AntPathRequestMatcher("/swagger/**"),
             new AntPathRequestMatcher("/swagger-ui/**"),
@@ -63,9 +47,6 @@ public class JWTFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
-
-        String requestUri = request.getRequestURI();
-        log.info("Request URI: {}", requestUri);
 
         // 토큰 유효성 체크 불필요한 요청일 경우
         for (AntPathRequestMatcher matcher : excludeUrls) {
