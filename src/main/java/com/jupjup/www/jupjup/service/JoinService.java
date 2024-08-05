@@ -28,13 +28,14 @@ public class JoinService {
      * @throws IllegalArgumentException 사용자 데이터가 유효하지 않은 경우 예외를 발생시킵니다.
      * @throws Exception 기타 예외가 발생한 경우 예외를 발생시킵니다.
      */
-    public void joinProcess(UserDTO userDTO) {
+    public String joinProcess(UserDTO userDTO) {
 
         try {
             validateUser(userDTO);
             UserEntity user = createUserEntity(userDTO);
             userRepository.save(user);
             log.info("회원가입 완료: {}", userDTO.getUserEmail());
+            return "회원가입 완료";
         } catch (IllegalArgumentException e) {
             log.error("회원가입 실패 - IllegalArgumentException: {}", e.getMessage());
             throw e;

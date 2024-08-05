@@ -28,16 +28,12 @@ public class UserController {
     private final RefreshTokenRepository refreshTokenRepository;
 
     @PostMapping("/join")
-    @Operation(summary = "회원가입", description = "새로운 사용자를 등록합니다.")
-    @ApiResponse(responseCode = "200", description = "회원가입 완료", content = @Content(schema = @Schema(implementation = String.class)))
     public ResponseEntity<?> join(@RequestBody UserDTO userDTO) {
-        joinService.joinProcess(userDTO);
-        return ResponseEntity.ok("회원가입완료");
+        String result = joinService.joinProcess(userDTO);
+        return ResponseEntity.ok(result);
     }
 
     @PostMapping("/logout")
-    @Operation(summary = "로그아웃", description = "사용자를 로그아웃 처리하고, 리프레시 토큰을 삭제합니다.")
-    @ApiResponse(responseCode = "200", description = "로그아웃 완료", content = @Content(schema = @Schema(implementation = String.class)))
     public ResponseEntity<?> logout(@RequestParam String userEmail) {
         refreshTokenRepository.deleteByUserEmail(userEmail);
         return ResponseEntity.ok("로그아웃 완료");

@@ -31,12 +31,6 @@ public class AuthController {
 
     private final AuthService authService;
 
-    @PostMapping("/refresh")
-    @Operation(summary = "액세스 토큰 재발급",description = "만료 된 액세스 토큰을 재발급합니다.")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "액세스 토큰 재발급 완료", content = @Content(mediaType = "application/json", schema = @Schema(implementation = TokenDTO.class))),
-            @ApiResponse(responseCode = "401", description = "토큰 만료 재로그인 요망")
-    })
     public ResponseEntity<?> reissue(@CookieValue("refreshToken") String refreshToken , @RequestBody RefreshEntity refreshEntity
             ,HttpServletResponse resp) {
 
