@@ -4,9 +4,10 @@ spring:
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/security?serverTimezone=Asia/Seoul
+    url: jdbc:mysql://localhost:3306/jup-jup?serverTimezone=Asia/Seoul
     username: root
     password: 1234
+
 
   jpa:
     hibernate:
@@ -16,6 +17,7 @@ spring:
     properties:
       hibernate:
         format_sql: true
+#        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
 
   security:
     oauth2:

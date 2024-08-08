@@ -52,19 +52,19 @@ public class SecurityConfig {
         http.csrf(AbstractHttpConfigurer::disable);
 
         //경로별 인가 작업
-        http.authorizeHttpRequests(auth -> auth
-                .requestMatchers("/oauth2/authorization/**", "/login/oauth2/code/**").permitAll() // OAuth2 인증 경로 허용
-                .anyRequest().authenticated() // 나머지 요청은 인증 필요
-        );
+//        http.authorizeHttpRequests(auth -> auth
+////                .requestMatchers("/oauth2/authorization/**", "/login/oauth2/code/**").permitAll() // OAuth2 인증 경로 허용
+//                .anyRequest().permitAll() // 나머지 요청은 인증 필요
+//        );
 
         // 예외 핸들러 작성
-        http.exceptionHandling(ex -> ex
-                .accessDeniedHandler(customAccessDeniedHandler)
-        );
+//        http.exceptionHandling(ex -> ex
+//                .accessDeniedHandler(customAccessDeniedHandler)
+//        );
 
         //From 로그인 방식 disable
-        http.formLogin(AbstractHttpConfigurer::disable);
-        http.logout(AbstractHttpConfigurer::disable);
+//        http.formLogin(AbstractHttpConfigurer::disable);
+//        http.logout(AbstractHttpConfigurer::disable);
 
         //From 로그인 방식
 //        http.formLogin((form) -> form
@@ -75,7 +75,7 @@ public class SecurityConfig {
 //        ).logout(LogoutConfigurer::permitAll);
 
         //HTTP Basic 인증 방식 disable
-        http.httpBasic(AbstractHttpConfigurer::disable);
+//        http.httpBasic(AbstractHttpConfigurer::disable);
 
         //cors 보안 강화
         http.cors(cors -> cors.configurationSource(corsConfigurationSource()));
@@ -91,11 +91,11 @@ public class SecurityConfig {
 //        http.addFilterBefore(new JWTFilter(jwtProperties, jwtUtil), LoginFilter.class);
 
         // LoginFilter 는 UsernamePasswordAuthenticationFilter 와 동일한 위치에 배치
-        http.addFilterAt(new LoginFilter(customAuthenticationManager(configuration), jwtUtil, refreshTokenRepository), UsernamePasswordAuthenticationFilter.class);
+//        http.addFilterAt(new LoginFilter(customAuthenticationManager(configuration), jwtUtil, refreshTokenRepository), UsernamePasswordAuthenticationFilter.class);
 
         // 세션 설정 : STATELESS
-        http.sessionManagement((session) -> session
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+//        http.sessionManagement((session) -> session
+//                .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         return http.build();
     }

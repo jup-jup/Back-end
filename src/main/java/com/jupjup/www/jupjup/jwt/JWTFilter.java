@@ -38,11 +38,21 @@ public class JWTFilter extends OncePerRequestFilter {
 
     private static final List<AntPathRequestMatcher> excludeUrls = List.of(
             new AntPathRequestMatcher("/join"),
+            new AntPathRequestMatcher("/loginSuccess"),
+            new AntPathRequestMatcher("/loginError"),
+            new AntPathRequestMatcher("/loginForm"),
+            new AntPathRequestMatcher("/"),
+            new AntPathRequestMatcher("/user"),
+            new AntPathRequestMatcher("/index"),
+            new AntPathRequestMatcher("/join"),
+            new AntPathRequestMatcher("/login"),
             new AntPathRequestMatcher("/auth/refresh"),
             new AntPathRequestMatcher("/logout"),
             new AntPathRequestMatcher("/swagger/**"),
             new AntPathRequestMatcher("/swagger-ui/**"),
-            new AntPathRequestMatcher("/v3/api-docs/**")
+            new AntPathRequestMatcher("/v3/api-docs/**"),
+            new AntPathRequestMatcher("/oauth2/authorization/**"),
+            new AntPathRequestMatcher("/login/oauth2/code/**")
     );
 
     @Override
@@ -50,6 +60,8 @@ public class JWTFilter extends OncePerRequestFilter {
 
         // 토큰 유효성 체크 불필요한 요청일 경우
         for (AntPathRequestMatcher matcher : excludeUrls) {
+            log.info("Excluding url: {}", matcher.getPattern());
+            log.info("request: {}", request.getRequestURI());
             if (matcher.matches(request)) {
                 filterChain.doFilter(request, response);
                 return;

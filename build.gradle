@@ -81,6 +81,13 @@ tasks.named('test') {
     useJUnitPlatform() // JUnit Platform 사용
 }
 
+task print(){
+    doLast{
+        println "github push complete"
+    }
+}
+
+
 // OpenAPI 설정
 openapi3 {
     servers = [
