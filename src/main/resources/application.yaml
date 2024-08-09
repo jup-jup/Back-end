@@ -4,14 +4,14 @@ spring:
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/jup-jup?serverTimezone=Asia/Seoul
+    url: jdbc:mysql://localhost:3306/jupjup?serverTimezone=Asia/Seoul
     username: root
     password: 1234
 
 
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     properties:
