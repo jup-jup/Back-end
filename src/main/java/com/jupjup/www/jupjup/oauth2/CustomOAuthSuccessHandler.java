@@ -1,5 +1,6 @@
 package com.jupjup.www.jupjup.oauth2;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jupjup.www.jupjup.entity.RefreshEntity;
 import com.jupjup.www.jupjup.jwt.JWTUtil;
 import com.jupjup.www.jupjup.repository.RefreshTokenRepository;
@@ -9,6 +10,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseCookie;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -29,7 +31,7 @@ public class CustomOAuthSuccessHandler extends SimpleUrlAuthenticationSuccessHan
 
     private final RefreshTokenRepository refreshTokenRepository;
     RefreshTokenRepository tokenRepository;
-
+    private ObjectMapper objectMapper;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
