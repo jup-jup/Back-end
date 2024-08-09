@@ -64,7 +64,7 @@ public class CustomOAuthSuccessHandler extends SimpleUrlAuthenticationSuccessHan
 
         response.setHeader("Authorization", "Bearer " +accessToken);
         response.addHeader("Set-Cookie", JWTUtil.createCookie(RefreshToken).toString());
-        response.sendRedirect("http://localhost:8080/");
+
 
     }
 
