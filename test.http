@@ -1,0 +1,2 @@
+GET https://accounts.google.com/o/oauth2/v2/auth?response_type=code&client_id=541126883288-3qnon1d9hnllfaho31opp2kbaleaifg1.apps.googleusercontent.com&scope=profile%20email&state=l6U-lg11Sb241SY_6mo3B8LqE_ztojDfzWTPGAaWlsg%3D&redirect_uri=http://localhost:8080/login/oauth2/code/google
+
