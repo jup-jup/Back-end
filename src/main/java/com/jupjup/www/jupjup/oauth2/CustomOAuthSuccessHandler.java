@@ -31,7 +31,7 @@ public class CustomOAuthSuccessHandler extends SimpleUrlAuthenticationSuccessHan
 
     private final RefreshTokenRepository refreshTokenRepository;
     RefreshTokenRepository tokenRepository;
-
+    private ObjectMapper objectMapper;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
