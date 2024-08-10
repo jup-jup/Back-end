@@ -27,7 +27,7 @@ spring:
             client-name: google
             client-id: 541126883288-3qnon1d9hnllfaho31opp2kbaleaifg1.apps.googleusercontent.com
             client-secret: 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
-            redirect-uri: https://www.jupjup.store/login/oauth2/code/google
+            redirect-uri: http://www.jupjup.store/login/oauth2/code/google
             authorization-grant-type: authorization_code
             scope: profile,email
 
