@@ -17,6 +17,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -35,54 +36,36 @@ public class CustomOAuthSuccessHandler extends SimpleUrlAuthenticationSuccessHan
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
-        //OAuth2User
-        CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
 
-        log.info("Custom User : {}", customUserDetails);
+        // OAuth2User
+        CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
 
         String username = customUserDetails.getName();
         String userEmail = customUserDetails.getUserEmail();
 
-        log.info("Username : {}", username);
-        log.info("UserEmail: {}", customUserDetails.getUserEmail());
-
-        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-        Iterator<? extends GrantedAuthority> iterator = authorities.iterator();
-
-        GrantedAuthority auth = iterator.next();
-
-        String role = auth.getAuthority();
-        log.info("Role : {}", role);
-
-        // jwt 발급
+        // JWT 발급
         String accessToken = JWTUtil.generateAccessToken(username, "ROLE_USER");
         String refreshToken = JWTUtil.generateRefreshToken(username, "ROLE_USER");
 
-        // 리프레시 저장
+        // Refresh Token 저장
         refreshTokenRepository.save(RefreshEntity.builder()
                 .refresh(refreshToken)
                 .userEmail(userEmail)
                 .expiration(JWTUtil.RefreshTokenExTimeCul(refreshToken))
                 .build());
 
+        // Refresh 쿠키 생성
+        JWTUtil.createCookie(refreshToken);
 
-        // HttpHeaders 객체 생성
-        HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken);
-        headers.add(HttpHeaders.SET_COOKIE, JWTUtil.createCookie(refreshToken).toString());
+        // 클라이언트로 리다이렉트할 URL 생성
+        String targetUrl = UriComponentsBuilder.fromUriString("http://localhost:3000/")
+                .queryParam("accessToken", accessToken)
+                .queryParam("username", username)
+                .queryParam("userEmail", userEmail)
+                .build().toUriString();
 
-        // JSON 응답 생성
-        ObjectMapper objectMapper = new ObjectMapper();
-        Map<String, String> responseBody = new HashMap<>();
-        responseBody.put("username", username);
-        responseBody.put("userEmail", userEmail);
-        String jsonResponse = objectMapper.writeValueAsString(responseBody);
-
-        // 응답 작성
-        response.setContentType("application/json;charset=UTF-8"); // 한글 인코딩 꼭 작성해줘야 함
-        response.getWriter().write(jsonResponse);
-
-
+        // 클라이언트로 리다이렉트
+        getRedirectStrategy().sendRedirect(request, response, targetUrl);
     }
 
 }
