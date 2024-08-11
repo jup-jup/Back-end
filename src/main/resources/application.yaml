@@ -6,7 +6,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/jupjup?serverTimezone=Asia/Seoul
     username: 
-    password: 123
+    password:
 
 
 
