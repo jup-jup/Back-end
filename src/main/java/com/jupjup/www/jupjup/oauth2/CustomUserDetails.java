@@ -1,6 +1,7 @@
 package com.jupjup.www.jupjup.oauth2;
 
 import com.jupjup.www.jupjup.dto.UserDTO;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

@@ -1,6 +1,7 @@
 package com.jupjup.www.jupjup.dto;
 
 import lombok.*;
+import org.apache.catalina.User;
 
 @Getter @Setter
 @Builder

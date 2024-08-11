@@ -9,15 +9,15 @@ spring:
     password: 1234
 
 
+
   jpa:
     hibernate:
-      ddl-auto: create
-      naming:
-        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+      ddl-auto: update  # 필요에 따라 create, create-drop, validate 등으로 변경 가능
     properties:
       hibernate:
-        format_sql: true
-  #        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+#        dialect: org.hibernate.dialect.MySQL5Dialect // 이거 왜 사용이 안되냐
+    show-sql: true  # 콘솔에 SQL 쿼리 출력 (개발 중에만 사용 권장)
+    generate-ddl: true
 
   security:
     oauth2:
@@ -27,7 +27,7 @@ spring:
             client-name: google
             client-id: 541126883288-3qnon1d9hnllfaho31opp2kbaleaifg1.apps.googleusercontent.com
             client-secret: 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
-            redirect-uri: http://localhost:8080/login/oauth2/code/google
+            redirect-uri: https://jupjup.store/login/oauth2/code/google
             authorization-grant-type: authorization_code
             scope: profile,email
 
@@ -35,16 +35,17 @@ spring:
             client-name: naver
             client-id: P5rU2N4nihmGgZW9cU08
             client-secret: EP1mnn2SSo
-            redirect-uri: http://localhost:8080/login/oauth2/code/naver
+            redirect-uri: https://jupjup.store/login/oauth2/code/naver
             authorization-grant-type: authorization_code
             scope: name,email
           kakao:
             client-id: 86cf25712d4c66f5fbd8dc40b7eae343
-#            client-secret: xYbgONC3rGbArKh5nM20YIPXI0pv4eyj
+#            client-secret: xYbgONC3rGbArKh5nM20YIPXI0pv4eyj // 오류로 인한 주석 ( 이거 켜놓으니깐 로긴이 안됨 ;; 왜지 )
             scope: profile_nickname
             client-name: Kakao
             authorization-grant-type: authorization_code
-            redirect-uri: http://localhost:8080/login/oauth2/code/kakao
+            redirect-uri: https://jupjup.store/login/oauth2/code/kakao
+
 
         provider:
           naver:
@@ -72,3 +73,8 @@ server:
       charset: UTF-8
       force: true
       force-response: true
+
+#logging:
+#  level:
+#    root: DEBUG
+#    org.springframework.security: DEBUG

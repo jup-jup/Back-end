@@ -13,13 +13,15 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @fileName      : UserController.java
  * @author        : boramkim
  * @since         : 2024. 8. 1.
- * @description    : 로그인,로그아웃,회원가입 api
+ * @description    : 유저 로그인 api
  */
 @RestController
 @RequiredArgsConstructor
@@ -39,13 +41,19 @@ public class UserController {
     }
 
     @GetMapping("/login")
-    public RedirectView redirectToAuthorization(@RequestParam(required = false, defaultValue = "null") String provider) {
+    public ResponseEntity<?> getAuthorizationUrl(@RequestParam(required = false, defaultValue = "null") String provider) {
+
         if (!SUPPORTED_PROVIDERS.contains(provider.toLowerCase())) {
             throw new IllegalArgumentException("Unsupported OAuth2 provider: " + provider);
         }
+
         log.info("provider : {}", provider);
         String authorizationUri = "/oauth2/authorize/" + provider.toLowerCase();
-        return new RedirectView(authorizationUri);
+
+        Map<String, String> response = new HashMap<>();
+        response.put("authorizationUrl", authorizationUri);
+
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping("/logout")
