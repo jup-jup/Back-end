@@ -29,24 +29,24 @@
     </appender>
 
     <!-- 패키지에 대한 로거 설정 -->
-    <logger name="com.jupjup.www.jupjup" level="DEBUG" additivity="false">
+    <logger name="com.jupjup.www.jupjup" level="INFO" additivity="false">
         <!-- 이 로거가 로그 메시지를 기록할 Appender 지정 -->
         <appender-ref ref="CONSOLE"/>
         <appender-ref ref="FILE"/>
     </logger>
 
-    <logger name="org.springframework.web.servlet" level="DEBUG" additivity="false">
+    <logger name="org.springframework.web.servlet" level="INFO" additivity="false">
         <appender-ref ref="CONSOLE"/>
         <appender-ref ref="FILE"/>
     </logger>
 
-    <logger name="org.springframework.security" level="DEBUG" additivity="false">
+    <logger name="org.springframework.security" level="INFO" additivity="false">
         <appender-ref ref="CONSOLE"/>
         <appender-ref ref="FILE"/>
     </logger>
 
     <!-- 루트 로거 설정 -->
-    <root level="ERROR">
+    <root level="INFO">
         <!-- 루트 로거가 로그 메시지를 기록할 Appender 지정 -->
         <appender-ref ref="CONSOLE"/>
         <appender-ref ref="FILE"/>
