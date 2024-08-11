@@ -1,6 +1,7 @@
 package com.jupjup.www.jupjup.oauth2;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jupjup.www.jupjup.controller.UserController;
 import com.jupjup.www.jupjup.entity.RefreshEntity;
 import com.jupjup.www.jupjup.jwt.JWTUtil;
 import com.jupjup.www.jupjup.repository.RefreshTokenRepository;
@@ -20,6 +21,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.sql.Ref;
 import java.util.*;
@@ -32,40 +34,64 @@ public class CustomOAuthSuccessHandler extends SimpleUrlAuthenticationSuccessHan
 
     private final RefreshTokenRepository refreshTokenRepository;
     RefreshTokenRepository tokenRepository;
-    private ObjectMapper objectMapper;
+
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
-
-        // OAuth2User
+        //OAuth2User
         CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
 
-        String username = customUserDetails.getName();
+        String userName = customUserDetails.getName();
         String userEmail = customUserDetails.getUserEmail();
 
-        // JWT 발급
-        String accessToken = JWTUtil.generateAccessToken(username, "ROLE_USER");
-        String refreshToken = JWTUtil.generateRefreshToken(username, "ROLE_USER");
+        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+        Iterator<? extends GrantedAuthority> iterator = authorities.iterator();
 
-        // Refresh Token 저장
+        GrantedAuthority auth = iterator.next();
+
+        String role = auth.getAuthority();
+
+        // jwt 발급
+        String accessToken = JWTUtil.generateAccessToken(userName, role);
+        String refreshToken = JWTUtil.generateRefreshToken(userName, role);
+
+        // 리프레시 저장
         refreshTokenRepository.save(RefreshEntity.builder()
                 .refresh(refreshToken)
                 .userEmail(userEmail)
                 .expiration(JWTUtil.RefreshTokenExTimeCul(refreshToken))
                 .build());
 
-        // Refresh 쿠키 생성
-        JWTUtil.createCookie(refreshToken);
 
-        // 클라이언트로 리다이렉트할 URL 생성
-        String targetUrl = UriComponentsBuilder.fromUriString("http://localhost:3000/")
-                .queryParam("accessToken", accessToken)
-                .queryParam("username", username)
-                .queryParam("userEmail", userEmail)
+        // HttpHeaders 객체 생성
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken);
+        headers.add(HttpHeaders.SET_COOKIE, JWTUtil.createCookie(refreshToken).toString());
+
+        // JSON 응답 생성
+        ObjectMapper objectMapper = new ObjectMapper();
+        Map<String, String> responseBody = new HashMap<>();
+        responseBody.put("username", userName);
+        responseBody.put("userEmail", userEmail);
+        String jsonResponse = objectMapper.writeValueAsString(responseBody);
+
+        // 응답 작성
+        response.setContentType("application/json;charset=UTF-8"); // 한글 인코딩 꼭 작성해줘야 함
+        response.getWriter().write(jsonResponse);
+
+        // 쿼리 스트링에 포함할 값을 URL 인코딩합니다.
+        String encodedUsername = URLEncoder.encode(userName, StandardCharsets.UTF_8);
+        String encodedUserEmail = URLEncoder.encode(userEmail, StandardCharsets.UTF_8);
+        String encodedAccessToken = URLEncoder.encode(accessToken, StandardCharsets.UTF_8);
+
+        String redirectURL = UriComponentsBuilder.fromUriString(UserController.BASE_URL)
+                .queryParam("access_token", encodedAccessToken)
+                .queryParam("userEmail", encodedUserEmail)
+                .queryParam("userName", encodedUsername)
                 .build().toUriString();
 
-        // 클라이언트로 리다이렉트
-        getRedirectStrategy().sendRedirect(request, response, targetUrl);
+        response.sendRedirect(redirectURL);
+
     }
 
 }
