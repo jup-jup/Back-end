@@ -48,7 +48,7 @@ class UserControllerTest {
         // 모든 UserDTO 입력에 대해 "회원가입완료"를 반환하도록 설정
         given(joinService.joinProcess(any(UserDTO.class))).willReturn("회원가입 완료");
 
-        mockMvc.perform(post("/user/join")
+        mockMvc.perform(post("/api/v1/user/join")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(userDTO))) // ObjectMapper 사용
                 .andExpect(status().isOk())
@@ -60,7 +60,7 @@ class UserControllerTest {
         String userEmail = "test@example.com";
         doNothing().when(refreshTokenRepository).deleteByUserEmail(userEmail);
 
-        mockMvc.perform(post("/user/logout")
+        mockMvc.perform(post("/api/v1/user/logout")
                         .param("userEmail", userEmail))
                 .andExpect(status().isOk())
                 .andExpect(content().string("로그아웃 완료"));

@@ -69,6 +69,7 @@ dependencies {
     testImplementation 'org.springframework.security:spring-security-test'
     testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
     testImplementation 'com.epages:restdocs-api-spec-mockmvc:0.18.4'
+
 }
 
 dependencyManagement {
@@ -80,13 +81,6 @@ dependencyManagement {
 tasks.named('test') {
     useJUnitPlatform() // JUnit Platform 사용
 }
-
-task print(){
-    doLast{
-        println "github push complete"
-    }
-}
-
 
 // OpenAPI 설정
 openapi3 {

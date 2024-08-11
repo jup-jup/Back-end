@@ -12,13 +12,12 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: create
-      naming:
-        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+      ddl-auto: update  # 필요에 따라 create, create-drop, validate 등으로 변경 가능
     properties:
       hibernate:
-        format_sql: true
-        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+#        dialect: org.hibernate.dialect.MySQL5Dialect // 이거 왜 사용이 안되냐
+    show-sql: true  # 콘솔에 SQL 쿼리 출력 (개발 중에만 사용 권장)
+    generate-ddl: true
 
   security:
     oauth2:
@@ -75,7 +74,7 @@ server:
       force: true
       force-response: true
 
-logging:
-  level:
-    root: DEBUG
-    org.springframework.security: DEBUG
+#logging:
+#  level:
+#    root: DEBUG
+#    org.springframework.security: DEBUG
