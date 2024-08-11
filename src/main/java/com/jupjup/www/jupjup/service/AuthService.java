@@ -1,9 +1,9 @@
 package com.jupjup.www.jupjup.service;
 
-import com.jupjup.www.jupjup.dto.TokenDTO;
-import com.jupjup.www.jupjup.entity.RefreshEntity;
-import com.jupjup.www.jupjup.jwt.JWTUtil;
-import com.jupjup.www.jupjup.repository.RefreshTokenRepository;
+import com.jupjup.www.jupjup.model.dto.TokenDTO;
+import com.jupjup.www.jupjup.domain.entity.RefreshEntity;
+import com.jupjup.www.jupjup.config.JWTUtil;
+import com.jupjup.www.jupjup.domain.repository.RefreshTokenRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -11,14 +11,28 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+
+/**
+ * @fileName      : AuthService.java
+ * @author        : boramkim
+ * @since         : 2024. 8. 12.
+ * @description    :단일 리프레시 토큰 전략과 유효 기간 설정 및 정리
+ */
 @Service
 @RequiredArgsConstructor
 @Slf4j
 @Transactional
-// 단일 리프레시 토큰 전략과 유효 기간 설정 및 정리
 public class AuthService {
 
     private final RefreshTokenRepository refreshRepository;
+
+
+
+    /**
+     * @author        : boramkim
+     * @since         : 2024. 8. 12.
+     * @description   : 리프레시 토큰 업데이트 및 액세스 토큰 재발급
+     */
     public TokenDTO refreshTokenRotate(String refreshToken, String userEmail) {
 
         // DB에 유저정보 + refreshToken 정보 확인

@@ -2,8 +2,10 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '3.3.1' // Spring Boot 플러그인
     id 'io.spring.dependency-management' version '1.1.5' // Spring 의존성 관리 플러그인
-    id 'com.epages.restdocs-api-spec' version '0.18.2' // REST Docs API Spec 플러그인
+    id 'com.epages.restdocs-api-spec' version '0.18.2' apply false // REST Docs API Spec 플러그인
 }
+
+apply plugin: 'com.epages.restdocs-api-spec'
 
 group = 'com.jup-jup.www'
 version = '0.0.1-SNAPSHOT'
@@ -27,48 +29,46 @@ ext {
     set('springAiVersion', "1.0.0-M1")
 }
 
+
 dependencies {
-    // Spring Boot 스타터: 웹, 데이터 JPA, 시큐리티, OAuth2, 타임리프, AOP, 로깅
-    implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    implementation 'org.springframework.boot:spring-boot-starter-security'
-    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
-    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
-    implementation 'org.springframework.boot:spring-boot-starter-aop'
-    implementation 'org.springframework.boot:spring-boot-starter-logging'
+    // Spring Boot 스타터: 웹, 데이터 JPA, 시큐리티, OAuth2 클라이언트, 타임리프, AOP, 로깅
+    implementation 'org.springframework.boot:spring-boot-starter-web'          // 웹 애플리케이션 개발
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'     // JPA 및 하이버네이트
+    implementation 'org.springframework.boot:spring-boot-starter-security'     // 보안 설정
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'// OAuth2 클라이언트
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'    // 서버 사이드 템플릿 엔진
+    implementation 'org.springframework.boot:spring-boot-starter-aop'          // AOP 기능
+    implementation 'org.springframework.boot:spring-boot-starter-logging'      // 로깅 설정
 
     // QueryDSL 설정: JPA 및 APT
-    implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta' // Jakarta 버전으로 통일
-    annotationProcessor 'com.querydsl:querydsl-apt:5.0.0:jakarta' // APT 도구 사용 지정
-    // QueryDSL 기본 라이브러리
-    implementation "com.querydsl:querydsl-core" // QueryDSL 핵심 기능
-    implementation "com.querydsl:querydsl-collections" // 컬렉션 처리를 위한 QueryDSL 지원
-    // QueryDSL APT 설정
-    annotationProcessor "com.querydsl:querydsl-apt:${dependencyManagement.importedProperties['querydsl.version']}:jpa" // querydsl JPAAnnotationProcessor 사용
-    // Jakarta 어노테이션 API
-    annotationProcessor "jakarta.annotation:jakarta.annotation-api" // 어노테이션 처리
-    annotationProcessor "jakarta.persistence:jakarta.persistence-api" // JPA 어노테이션 처리
+    implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'                  // QueryDSL JPA 지원 (Jakarta 버전)
+    implementation 'com.querydsl:querydsl-core'                               // QueryDSL 핵심 기능
+    implementation 'com.querydsl:querydsl-collections'                        // 컬렉션 처리를 위한 QueryDSL 지원
+    annotationProcessor 'com.querydsl:querydsl-apt:5.0.0:jakarta'             // QueryDSL APT 처리기
+    annotationProcessor "com.querydsl:querydsl-apt:${dependencyManagement.importedProperties['querydsl.version']}:jpa" // QueryDSL JPAAnnotationProcessor 사용
+    annotationProcessor 'jakarta.annotation:jakarta.annotation-api'           // Jakarta 어노테이션 API
+    annotationProcessor 'jakarta.persistence:jakarta.persistence-api'         // JPA 어노테이션 API
 
     // JJWT (Java JWT): JWT 처리 라이브러리
-    implementation 'io.jsonwebtoken:jjwt-api:0.12.3'
-    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.12.3'
-    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.12.3'
-
-    // OpenAPI 문서화: Springdoc OpenAPI
-    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.1.0'
+    implementation 'io.jsonwebtoken:jjwt-api:0.12.3'                          // JWT API
+    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.12.3'                            // JWT 구현체
+    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.12.3'                         // JWT 파싱을 위한 Jackson 지원
 
     // Lombok: 코드 생성 라이브러리
-    compileOnly 'org.projectlombok:lombok'
-    annotationProcessor 'org.projectlombok:lombok'
+    compileOnly 'org.projectlombok:lombok'                                    // Lombok 컴파일 시에만 사용
+    annotationProcessor 'org.projectlombok:lombok'                            // Lombok 어노테이션 처리기
 
     // MySQL 커넥터
-    runtimeOnly 'com.mysql:mysql-connector-j'
+    runtimeOnly 'com.mysql:mysql-connector-j'                                 // MySQL 데이터베이스 커넥터
 
-    // 문서화
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testImplementation 'org.springframework.security:spring-security-test'
-    testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
-    testImplementation 'com.epages:restdocs-api-spec-mockmvc:0.18.4'
+    // OpenAPI 문서화: Springdoc OpenAPI
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.1.0'  // OpenAPI 3.0 문서화를 위한 Springdoc
+
+    // 테스트 의존성
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'    // Spring Boot 테스트 지원
+    testImplementation 'org.springframework.security:spring-security-test'    // Spring Security 테스트 지원
+    testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc' // Spring REST Docs 테스트 지원
+    testImplementation 'com.epages:restdocs-api-spec-mockmvc:0.18.4'          // REST Docs API 스펙 테스트 지원
 }
 
 dependencyManagement {
@@ -79,12 +79,6 @@ dependencyManagement {
 
 tasks.named('test') {
     useJUnitPlatform() // JUnit Platform 사용
-}
-
-task print(){
-    doLast{
-        println "github push complete"
-    }
 }
 
 
@@ -113,7 +107,7 @@ tasks.register("copyDocs", task -> {
     task.dependsOn("openapi3");
 });
 
-// 빌드 작업이 copyDocs에 의존하도록 설정합니다.
+// 빌드 작업이 copyDocs 에 의존하도록 설정합니다.
 tasks.named("build", task -> {
     task.dependsOn("copyDocs");
 });

@@ -1,8 +1,8 @@
 //package com.jupjup.www.jupjup.controller;
 //
-//import com.jupjup.www.jupjup.dto.TokenDTO;
-//import com.jupjup.www.jupjup.entity.RefreshEntity;
-//import com.jupjup.www.jupjup.jwt.JWTUtil;
+//import com.jupjup.www.jupjup.domain.entity.RefreshEntity;
+//import com.jupjup.www.jupjup.config.JWTUtil;
+//import com.jupjup.www.jupjup.model.dto.TokenDTO;
 //import com.jupjup.www.jupjup.service.AuthService;
 //import org.junit.jupiter.api.BeforeEach;
 //import org.junit.jupiter.api.Test;
@@ -44,7 +44,7 @@
 //
 //        TokenDTO tokenDTO = new TokenDTO("new_access_token", "new_refresh_token");
 //
-//        when(jwtUtil.validateRefreshToken(refreshToken)).thenReturn(false);
+//        when(JWTUtil.validateRefreshToken(refreshToken)).thenReturn(false);
 //        when(authService.refreshTokenRotate(refreshToken, refreshEntity.getUserEmail())).thenReturn(tokenDTO);
 //
 //        // When

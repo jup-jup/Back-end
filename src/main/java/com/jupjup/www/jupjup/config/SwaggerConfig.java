@@ -25,7 +25,7 @@ public class SwaggerConfig {
     public GroupedOpenApi userApi() {
         return GroupedOpenApi.builder()
                 .group("users")  // 그룹 이름을 "user"로 설정합니다. Swagger UI 에서 이 이름으로 그룹이 표시됩니다.
-                .pathsToMatch("/user/**")  // "/user/**" 경로에 해당하는 모든 API 경로를 이 그룹에 포함시킵니다.
+                .pathsToMatch("/api/v1/user/**")  // "/user/**" 경로에 해당하는 모든 API 경로를 이 그룹에 포함시킵니다.
                 .build();  // GroupedOpenApi 객체를 빌드하여 반환합니다.
     }
 

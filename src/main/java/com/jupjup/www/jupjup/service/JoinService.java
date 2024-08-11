@@ -1,15 +1,23 @@
 package com.jupjup.www.jupjup.service;
 
-import com.jupjup.www.jupjup.dto.UserDTO;
-import com.jupjup.www.jupjup.entity.UserEntity;
-import com.jupjup.www.jupjup.repository.RefreshTokenRepository;
-import com.jupjup.www.jupjup.repository.UserRepository;
+import com.jupjup.www.jupjup.model.dto.UserDTO;
+import com.jupjup.www.jupjup.domain.entity.UserEntity;
+import com.jupjup.www.jupjup.domain.repository.RefreshTokenRepository;
+import com.jupjup.www.jupjup.domain.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+
+
+/**
+ * @fileName      : JoinService.java
+ * @author        : boramkim
+ * @since         : 2024. 8. 12.
+ * @description   : 회원가입 시 데이터 검증
+ */
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -40,7 +48,7 @@ public class JoinService {
             log.error("회원가입 실패 - IllegalArgumentException: {}", e.getMessage());
             throw e;
         } catch (Exception e) {
-            log.error("회원가입 실패 - 예외 발생: {}", e.getMessage());
+            log.error("회원가입 실패 : {}", e.getMessage());
             throw e;
         }
     }
@@ -60,7 +68,7 @@ public class JoinService {
 
         boolean isExist = userRepository.existsByUserEmail(userDTO.getUserEmail());
         if (isExist) {
-            throw new IllegalArgumentException("이미 가입되어 있는 아이디입니다: " + userDTO.getUserEmail());
+            throw new IllegalArgumentException("이미 가입되어 있는 아이디 입니다: " + userDTO.getUserEmail());
         }
     }
 
