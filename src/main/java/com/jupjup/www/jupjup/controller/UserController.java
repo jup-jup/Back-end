@@ -3,16 +3,15 @@ package com.jupjup.www.jupjup.controller;
 import com.jupjup.www.jupjup.dto.UserDTO;
 import com.jupjup.www.jupjup.repository.RefreshTokenRepository;
 import com.jupjup.www.jupjup.service.JoinService;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.web.servlet.view.RedirectView;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -25,12 +24,13 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @Slf4j
-@RequestMapping("/user")
+@RequestMapping("/api/v1/user")
 public class UserController {
 
     private final JoinService joinService;
     private final RefreshTokenRepository refreshTokenRepository;
     private static final List<String> SUPPORTED_PROVIDERS = Arrays.asList("google", "kakao", "naver");
+    public static final String BASE_URL = "http://localhost:3000";
 
     @PostMapping("/join")
     public ResponseEntity<?> join(@RequestBody UserDTO userDTO) {
