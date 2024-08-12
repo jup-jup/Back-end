@@ -54,6 +54,7 @@ public class GiveawayController {
                 .build();
     }
 
+    // TODO: 채팅 탭이 따로 있다면 이동 필요
     // 나눔 아이템 채팅방 리스트 (판매자만 확인 가능)
     @GetMapping("/giveaways/{giveawayId}/chat-rooms")
     public ResponseEntity<?> getGiveawayChatRooms(@PathVariable Long giveawayId) {
@@ -64,6 +65,7 @@ public class GiveawayController {
                 .build();
     }
 
+    // TODO: 채팅 탭이 따로 있다면 이동 필요
     // 나눔 아이템 채팅방 입장. 채팅 리스트 불러오기
     @GetMapping("/giveaways/{giveawayId}/chat-rooms/{chatRoomId}")
     public ResponseEntity<?> getChats(@PathVariable Long giveawayId, @PathVariable Long chatRoomId) {

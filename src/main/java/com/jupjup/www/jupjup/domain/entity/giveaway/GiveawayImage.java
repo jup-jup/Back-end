@@ -1,4 +1,4 @@
-package com.jupjup.www.jupjup.domain.entity;
+package com.jupjup.www.jupjup.domain.entity.giveaway;
 
 import jakarta.persistence.*;
 import lombok.Getter;

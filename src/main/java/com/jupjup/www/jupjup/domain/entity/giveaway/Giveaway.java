@@ -1,5 +1,6 @@
-package com.jupjup.www.jupjup.domain.entity;
+package com.jupjup.www.jupjup.domain.entity.giveaway;
 
+import com.jupjup.www.jupjup.domain.entity.User;
 import com.jupjup.www.jupjup.enumClass.GiveawayStatus;
 import jakarta.persistence.*;
 import lombok.Getter;
