@@ -1,15 +1,22 @@
 package com.jupjup.www.jupjup.service;
 
-import com.jupjup.www.jupjup.dto.UserDTO;
-import com.jupjup.www.jupjup.entity.UserEntity;
-import com.jupjup.www.jupjup.repository.RefreshTokenRepository;
-import com.jupjup.www.jupjup.repository.UserRepository;
+import com.jupjup.www.jupjup.model.dto.UserResponse;
+import com.jupjup.www.jupjup.domain.repository.RefreshTokenRepository;
+import com.jupjup.www.jupjup.domain.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+
+
+/**
+ * @fileName      : JoinService.java
+ * @author        : boramkim
+ * @since         : 2024. 8. 12.
+ * @description   : 회원가입 시 데이터 검증
+ */
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -28,11 +35,11 @@ public class JoinService {
      * @throws IllegalArgumentException 사용자 데이터가 유효하지 않은 경우 예외를 발생시킵니다.
      * @throws Exception 기타 예외가 발생한 경우 예외를 발생시킵니다.
      */
-    public String joinProcess(UserDTO userDTO) {
+    public String joinProcess(UserResponse userDTO) {
 
         try {
             validateUser(userDTO);
-            UserEntity user = createUserEntity(userDTO);
+            com.jupjup.www.jupjup.domain.entity.User user = createUserEntity(userDTO);
             userRepository.save(user);
             log.info("회원가입 완료: {}", userDTO.getUserEmail());
             return "회원가입 완료";
@@ -40,7 +47,7 @@ public class JoinService {
             log.error("회원가입 실패 - IllegalArgumentException: {}", e.getMessage());
             throw e;
         } catch (Exception e) {
-            log.error("회원가입 실패 - 예외 발생: {}", e.getMessage());
+            log.error("회원가입 실패 : {}", e.getMessage());
             throw e;
         }
     }
@@ -53,14 +60,14 @@ public class JoinService {
      * @throws IllegalArgumentException userEmail 또는 password가 null이거나 해당 이메일이 이미 등록된 경우 예외를 발생시킵니다.
      *
      */
-    private void validateUser(UserDTO userDTO) {
+    private void validateUser(UserResponse userDTO) {
         if (userDTO.getUserEmail() == null || userDTO.getPassword() == null) {
             throw new IllegalArgumentException("userEmail과 password는 null일 수 없습니다.");
         }
 
         boolean isExist = userRepository.existsByUserEmail(userDTO.getUserEmail());
         if (isExist) {
-            throw new IllegalArgumentException("이미 가입되어 있는 아이디입니다: " + userDTO.getUserEmail());
+            throw new IllegalArgumentException("이미 가입되어 있는 아이디 입니다: " + userDTO.getUserEmail());
         }
     }
 
@@ -70,8 +77,8 @@ public class JoinService {
      * @param userDTO 사용자 세부 정보를 포함하는 데이터 전송 객체.
      * @return userDTO 로부터 생성된 UserEntity.
      */
-    private UserEntity createUserEntity(UserDTO userDTO) {
-        return UserEntity.builder()
+    private com.jupjup.www.jupjup.domain.entity.User createUserEntity(UserResponse userDTO) {
+        return com.jupjup.www.jupjup.domain.entity.User.builder()
                 .username(userDTO.getUsername())
                 .role(userDTO.getRole())
 //                .password(bCryptPasswordEncoder.encode(userDTO.getPassword()))

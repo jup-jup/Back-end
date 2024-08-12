@@ -1,12 +1,10 @@
 package com.jupjup.www.jupjup.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.jupjup.www.jupjup.dto.UserDTO;
 import com.jupjup.www.jupjup.service.JoinService;
-import com.jupjup.www.jupjup.repository.RefreshTokenRepository;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
+import com.jupjup.www.jupjup.domain.repository.RefreshTokenRepository;
+import com.jupjup.www.jupjup.model.dto.UserResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -41,14 +39,14 @@ class UserControllerTest {
     @Test
     @WithMockUser(username="admin", roles={"USER","ADMIN"}) // 해당 사용자에게 USER 및 ADMIN 권한 부여
     void testJoin() throws Exception {
-        UserDTO userDTO = new UserDTO();
+        UserResponse userDTO = new UserResponse();
         userDTO.setUserEmail("test@example.com");
         userDTO.setPassword("password");
 
         // 모든 UserDTO 입력에 대해 "회원가입완료"를 반환하도록 설정
-        given(joinService.joinProcess(any(UserDTO.class))).willReturn("회원가입 완료");
+        given(joinService.joinProcess(any(UserResponse.class))).willReturn("회원가입 완료");
 
-        mockMvc.perform(post("/user/join")
+        mockMvc.perform(post("/api/v1/user/join")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(userDTO))) // ObjectMapper 사용
                 .andExpect(status().isOk())
@@ -60,7 +58,7 @@ class UserControllerTest {
         String userEmail = "test@example.com";
         doNothing().when(refreshTokenRepository).deleteByUserEmail(userEmail);
 
-        mockMvc.perform(post("/user/logout")
+        mockMvc.perform(post("/api/v1/user/logout")
                         .param("userEmail", userEmail))
                 .andExpect(status().isOk())
                 .andExpect(content().string("로그아웃 완료"));

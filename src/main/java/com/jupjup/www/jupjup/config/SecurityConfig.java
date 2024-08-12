@@ -1,14 +1,9 @@
 package com.jupjup.www.jupjup.config;
 
-import com.jupjup.www.jupjup.formLoginHandler.CustomAccessDeniedHandler;
-import com.jupjup.www.jupjup.formLoginHandler.CustomSuccessHandler;
-import com.jupjup.www.jupjup.jwt.JWTFilter;
-import com.jupjup.www.jupjup.jwt.JWTUtil;
-import com.jupjup.www.jupjup.jwt.JwtProperties;
-import com.jupjup.www.jupjup.jwt.LoginFilter;
-import com.jupjup.www.jupjup.oauth2.CustomOAuth2UserService;
-import com.jupjup.www.jupjup.oauth2.CustomOAuthSuccessHandler;
-import com.jupjup.www.jupjup.repository.RefreshTokenRepository;
+import com.jupjup.www.jupjup.service.oauth.CustomOAuth2UserService;
+import com.jupjup.www.jupjup.service.oauth.CustomOAuthSuccessHandler;
+import com.jupjup.www.jupjup.domain.repository.RefreshTokenRepository;
+import com.jupjup.www.jupjup.service.basicLogin.CustomSuccessHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
@@ -19,7 +14,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.config.annotation.web.configurers.LogoutConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -40,9 +34,7 @@ public class SecurityConfig {
     private final CustomOAuthSuccessHandler customOAuthSuccessHandler;
     private final CustomSuccessHandler customSuccessHandler;
     private final AuthenticationConfiguration configuration;
-    private final CustomAccessDeniedHandler customAccessDeniedHandler;
     private final JWTUtil jwtUtil;
-    private final JwtProperties jwtProperties;
     private final RefreshTokenRepository refreshTokenRepository;
 
     @Bean
@@ -50,12 +42,6 @@ public class SecurityConfig {
 
         //csrf disable
         http.csrf(AbstractHttpConfigurer::disable);
-
-        //경로별 인가 작업
-//        http.authorizeHttpRequests(auth -> auth
-//                .requestMatchers("/oauth2/authorization/**", "/login/oauth2/code/**").permitAll() // OAuth2 인증 경로 허용
-//                .anyRequest().authenticated() // 나머지 요청은 인증 필요
-//        );
 
         // From 로그인 방식 disable
         http.formLogin(AbstractHttpConfigurer::disable);
@@ -66,12 +52,6 @@ public class SecurityConfig {
 
         //cors 보안 강화
         http.cors(cors -> cors.configurationSource(corsConfigurationSource()));
-
-        //oauth2
-//        http.oauth2Login((auth) -> auth
-//                .userInfoEndpoint((userInfoEndpointConfig -> userInfoEndpointConfig
-//                        .userService(customOAuth2UserService)))
-//                .successHandler(customOAuthSuccessHandler));
 
         // OAuth2 설정 추가
         http.oauth2Login(oauth2 -> oauth2
@@ -86,7 +66,7 @@ public class SecurityConfig {
 
 
         // JWTFilter 추가 - JWTFilter 는 로그인 필터(LoginFilter) 후에 실행되어야 합니다.
-//        http.addFilterBefore(new JWTFilter(jwtProperties, jwtUtil), LoginFilter.class);
+        http.addFilterBefore(new JWTFilter(jwtUtil), LoginFilter.class);
 
         // LoginFilter 는 UsernamePasswordAuthenticationFilter 와 동일한 위치에 배치
         http.addFilterAt(new LoginFilter(customAuthenticationManager(configuration), jwtUtil, refreshTokenRepository), UsernamePasswordAuthenticationFilter.class);

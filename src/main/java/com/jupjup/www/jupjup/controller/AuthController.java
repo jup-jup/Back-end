@@ -1,14 +1,9 @@
 package com.jupjup.www.jupjup.controller;
 
-import com.jupjup.www.jupjup.dto.TokenDTO;
-import com.jupjup.www.jupjup.entity.RefreshEntity;
-import com.jupjup.www.jupjup.jwt.JWTUtil;
+import com.jupjup.www.jupjup.domain.entity.RefreshToken;
+import com.jupjup.www.jupjup.config.JWTUtil;
+import com.jupjup.www.jupjup.model.dto.RefreshTokenResponse;
 import com.jupjup.www.jupjup.service.AuthService;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,7 +26,7 @@ public class AuthController {
 
     private final AuthService authService;
 
-    public ResponseEntity<?> reissue(@CookieValue("refreshToken") String refreshToken , @RequestBody RefreshEntity refreshEntity
+    public ResponseEntity<?> reissue(@CookieValue("refreshToken") String refreshToken , @RequestBody RefreshToken refreshEntity
             ,HttpServletResponse resp) {
 
         System.out.println("email " + refreshEntity.getUserEmail());
@@ -43,7 +38,7 @@ public class AuthController {
         }
 
         // 토큰 재발급
-        TokenDTO tokenDTO = authService.refreshTokenRotate(refreshToken, refreshEntity.getUserEmail());
+        RefreshTokenResponse tokenDTO = authService.refreshTokenRotate(refreshToken, refreshEntity.getUserEmail());
         resp.addHeader("Authorization" ,"Bearer "+ tokenDTO.getAccessToken());
         resp.addCookie(JWTUtil.createCookie(tokenDTO.getRefreshToken()));
 
