@@ -2,7 +2,7 @@ package com.jupjup.www.jupjup.service.oauth;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jupjup.www.jupjup.controller.UserController;
-import com.jupjup.www.jupjup.domain.entity.RefreshEntity;
+import com.jupjup.www.jupjup.domain.entity.RefreshToken;
 import com.jupjup.www.jupjup.config.JWTUtil;
 import com.jupjup.www.jupjup.domain.repository.RefreshTokenRepository;
 import jakarta.servlet.http.HttpServletRequest;
@@ -51,7 +51,7 @@ public class CustomOAuthSuccessHandler extends SimpleUrlAuthenticationSuccessHan
         String refreshToken = JWTUtil.generateRefreshToken(userName, role);
 
         // 리프레시 저장
-        refreshTokenRepository.save(RefreshEntity.builder()
+        refreshTokenRepository.save(RefreshToken.builder()
                 .refresh(refreshToken)
                 .userEmail(userEmail)
                 .expiration(JWTUtil.RefreshTokenExTimeCul(refreshToken))

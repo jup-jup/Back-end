@@ -1,6 +1,6 @@
 package com.jupjup.www.jupjup.config;
 
-import com.jupjup.www.jupjup.model.dto.UserDTO;
+import com.jupjup.www.jupjup.model.dto.UserResponse;
 import com.jupjup.www.jupjup.service.oauth.CustomUserDetails;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
@@ -64,7 +64,7 @@ public class JWTFilter extends OncePerRequestFilter {
         String role = JWTUtil.getRoleFromAccessToken(accessToken);
 
         // UserDTO 생성 및 값 설정
-        UserDTO userDTO = UserDTO.builder()
+        UserResponse userDTO = UserResponse.builder()
                 .username(username)
                 .role(role)
                 .build();

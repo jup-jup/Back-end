@@ -7,7 +7,7 @@ import org.apache.catalina.User;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserDTO {
+public class UserResponse {
     private Long sequence;
     private String id;
     private String userEmail;
@@ -17,7 +17,7 @@ public class UserDTO {
     private String role;
     private String picture;
 
-    public UserDTO(String userEmail, String username, String password, String role) {
+    public UserResponse(String userEmail, String username, String password, String role) {
         this.userEmail = userEmail;
         this.username = username;
         this.password = password;

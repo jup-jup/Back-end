@@ -1,7 +1,6 @@
 package com.jupjup.www.jupjup.service.oauth;
 
-import com.jupjup.www.jupjup.model.dto.UserDTO;
-import com.jupjup.www.jupjup.domain.entity.UserEntity;
+import com.jupjup.www.jupjup.model.dto.UserResponse;
 import com.jupjup.www.jupjup.domain.enums.OauthRegistrationId;
 import com.jupjup.www.jupjup.domain.repository.UserRepository;
 import com.jupjup.www.jupjup.common.response.GoogleResponse;
@@ -98,17 +97,17 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             userEmail = oAuth2Response.getEmail();
         }
 
-        UserEntity existData = userRepository.findByUserEmailAndProviderKey(userEmail,providerId);;
+        com.jupjup.www.jupjup.domain.entity.User existData = userRepository.findByUserEmailAndProviderKey(userEmail,providerId);;
 
         if (existData == null) {
             log.info("회원가입이 가능한 유저");
-            userRepository.save(UserEntity.builder()
+            userRepository.save(com.jupjup.www.jupjup.domain.entity.User.builder()
                     .providerKey(providerId)
                     .userEmail(userEmail)
                     .role("ROLE_USER")
                     .username(userName)
                     .build());
-            return new CustomUserDetails(UserDTO.builder()
+            return new CustomUserDetails(UserResponse.builder()
                     .username(userName)
                     .userEmail(userEmail)
                     .role("ROLE_USER")
@@ -118,7 +117,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             existData.setUserEmail(userEmail);
             existData.setName(userName);
             userRepository.save(existData);
-            return new CustomUserDetails(UserDTO.builder()
+            return new CustomUserDetails(UserResponse.builder()
                     .username(userName)
                     .userEmail(userEmail)
                     .build());

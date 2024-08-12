@@ -1,7 +1,6 @@
 package com.jupjup.www.jupjup.service.basicLogin;
 
-import com.jupjup.www.jupjup.model.dto.UserDTO;
-import com.jupjup.www.jupjup.domain.entity.UserEntity;
+import com.jupjup.www.jupjup.model.dto.UserResponse;
 import com.jupjup.www.jupjup.domain.repository.UserRepository;
 import com.jupjup.www.jupjup.service.oauth.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
@@ -25,12 +24,12 @@ public class PrincipalDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        UserEntity user = userRepository.findByName(username);
+        com.jupjup.www.jupjup.domain.entity.User user = userRepository.findByName(username);
 
         log.info("username: {}", user);
 
         if (user != null) {
-            return new CustomUserDetails(UserDTO.builder()
+            return new CustomUserDetails(UserResponse.builder()
                     .userEmail(user.getUserEmail())
                     .username(user.getName())
                     .role(user.getRole())

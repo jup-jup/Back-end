@@ -1,11 +1,6 @@
 package com.jupjup.www.jupjup.service.oauth;
 
-<<<<<<< HEAD:src/main/java/com/jupjup/www/jupjup/oauth2/CustomUserDetails.java
-import com.jupjup.www.jupjup.dto.UserDTO;
-import lombok.Getter;
-=======
 import com.jupjup.www.jupjup.model.dto.UserDTO;
->>>>>>> 64a38bb472643331d3dc8c2a629bb3d116f29949:src/main/java/com/jupjup/www/jupjup/service/oauth/CustomUserDetails.java
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

@@ -1,7 +1,7 @@
 package com.jupjup.www.jupjup.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.jupjup.www.jupjup.domain.entity.RefreshEntity;
+import com.jupjup.www.jupjup.domain.entity.RefreshToken;
 import com.jupjup.www.jupjup.service.oauth.CustomUserDetails;
 import com.jupjup.www.jupjup.domain.repository.RefreshTokenRepository;
 import jakarta.servlet.FilterChain;
@@ -100,7 +100,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         log.info("refreshToken = {}", refreshToken);
 
         // 리프레시 토큰을 데이터베이스에 저장
-        RefreshEntity refreshEntity = RefreshEntity.builder()
+        RefreshToken refreshEntity = RefreshToken.builder()
                 .userEmail(userEmail)
                 .refresh(refreshToken)
                 .expiration(new Date(System.currentTimeMillis() + JWTUtil.refreshExpirationTime))

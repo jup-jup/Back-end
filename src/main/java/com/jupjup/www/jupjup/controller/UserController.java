@@ -1,6 +1,6 @@
 package com.jupjup.www.jupjup.controller;
 
-import com.jupjup.www.jupjup.model.dto.UserDTO;
+import com.jupjup.www.jupjup.model.dto.UserResponse;
 import com.jupjup.www.jupjup.domain.repository.RefreshTokenRepository;
 import com.jupjup.www.jupjup.service.JoinService;
 import lombok.RequiredArgsConstructor;
@@ -31,7 +31,7 @@ public class UserController {
     public static final String BASE_URL = "http://localhost:3000";
 
     @PostMapping("/join")
-    public ResponseEntity<?> join(@RequestBody UserDTO userDTO) {
+    public ResponseEntity<?> join(@RequestBody UserResponse userDTO) {
         String result = joinService.joinProcess(userDTO);
         return ResponseEntity.ok(result);
     }

@@ -1,30 +1,34 @@
 package com.jupjup.www.jupjup.domain.entity;
 
+
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
+@Getter @Setter
+@RequiredArgsConstructor
 @Entity
-@Setter @Getter
-@NoArgsConstructor
-public class UserEntity {
+@Table(name="refreshToken")
+public class RefreshToken {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(nullable = false)
-    private String providerKey;
-    @Column(nullable = false)
-    private String name;
-    @Column(nullable = false)
     private String userEmail;
     @Column(nullable = false)
-    private String role;
+    private String refresh;
     @Column(nullable = false)
-    private LocalDateTime createdAt;
+    private Date expiration;
     @Column(nullable = false)
     private LocalDateTime updatedAt;
+    @Column(nullable = false)
+    private LocalDateTime createdAt;
 
     @PrePersist
     protected void onCreate() {
@@ -37,11 +41,11 @@ public class UserEntity {
     }
 
     @Builder
-    public UserEntity( String providerKey,String username, String userEmail, String role) {
-        this.providerKey = providerKey;
-        this.name = username;
+    public RefreshToken(String userEmail, String refresh, Date expiration) {
         this.userEmail = userEmail;
-        this.role = role;
+        this.refresh = refresh;
+        this.expiration = expiration;
     }
-
 }
+
+

@@ -4,9 +4,9 @@ spring:
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://jupjup.store:3306/jupjup?serverTimezone=Asia/Seoul
+    url: jdbc:mysql://localhost:3306/jupjup?serverTimezone=Asia/Seoul
     username: root
-    password: jupjup1234
+    password: 1234
 
 
   jpa:
@@ -17,6 +17,7 @@ spring:
     properties:
       hibernate:
         format_sql: true
+  #        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
 
   security:
     oauth2:
@@ -26,7 +27,7 @@ spring:
             client-name: google
             client-id: 541126883288-3qnon1d9hnllfaho31opp2kbaleaifg1.apps.googleusercontent.com
             client-secret: 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
-            redirect-uri: https://jupjup.store/login/oauth2/code/google
+            redirect-uri: http://localhost:8080/login/oauth2/code/google
             authorization-grant-type: authorization_code
             scope: profile,email
 
@@ -34,17 +35,16 @@ spring:
             client-name: naver
             client-id: P5rU2N4nihmGgZW9cU08
             client-secret: EP1mnn2SSo
-            redirect-uri: https://jupjup.store/login/oauth2/code/naver
+            redirect-uri: http://localhost:8080/login/oauth2/code/naver
             authorization-grant-type: authorization_code
             scope: name,email
           kakao:
             client-id: 86cf25712d4c66f5fbd8dc40b7eae343
-            #            client-secret: xYbgONC3rGbArKh5nM20YIPXI0pv4eyj // 오류로 인한 주석 ( 이거 켜놓으니깐 로긴이 안됨 ;; 왜지 )
+#            client-secret: xYbgONC3rGbArKh5nM20YIPXI0pv4eyj
             scope: profile_nickname
             client-name: Kakao
             authorization-grant-type: authorization_code
-            redirect-uri: https://jupjup.store/login/oauth2/code/kakao
-
+            redirect-uri: http://localhost:8080/login/oauth2/code/kakao
 
         provider:
           naver:

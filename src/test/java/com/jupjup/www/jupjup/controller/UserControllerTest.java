@@ -10,7 +10,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 =======
 import com.jupjup.www.jupjup.domain.repository.RefreshTokenRepository;
-import com.jupjup.www.jupjup.model.dto.UserDTO;
+import com.jupjup.www.jupjup.model.dto.UserResponse;
 import com.jupjup.www.jupjup.service.JoinService;
 import org.junit.jupiter.api.Test;
 >>>>>>> 64a38bb472643331d3dc8c2a629bb3d116f29949
@@ -48,12 +48,12 @@ class UserControllerTest {
     @Test
     @WithMockUser(username="admin", roles={"USER","ADMIN"}) // 해당 사용자에게 USER 및 ADMIN 권한 부여
     void testJoin() throws Exception {
-        UserDTO userDTO = new UserDTO();
+        UserResponse userDTO = new UserResponse();
         userDTO.setUserEmail("test@example.com");
         userDTO.setPassword("password");
 
         // 모든 UserDTO 입력에 대해 "회원가입완료"를 반환하도록 설정
-        given(joinService.joinProcess(any(UserDTO.class))).willReturn("회원가입 완료");
+        given(joinService.joinProcess(any(UserResponse.class))).willReturn("회원가입 완료");
 
         mockMvc.perform(post("/api/v1/user/join")
                         .contentType(MediaType.APPLICATION_JSON)

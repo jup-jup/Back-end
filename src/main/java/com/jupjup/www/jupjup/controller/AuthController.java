@@ -10,6 +10,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+
+
 /**
  * @fileName      : AuthController.java
  * @author        : boramkim
@@ -18,13 +20,12 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("api/v1/auth")
+@RequestMapping("/auth")
 @Slf4j
 public class AuthController {
 
     private final AuthService authService;
 
-    @GetMapping("/reissue")
     public ResponseEntity<?> reissue(@CookieValue("refreshToken") String refreshToken , @RequestBody RefreshEntity refreshEntity
             ,HttpServletResponse resp) {
 
