@@ -1,6 +1,6 @@
 package com.jupjup.www.jupjup.domain.entity;
 
-
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -10,33 +10,39 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
- * @fileName      : MyPageList.java
- * @author        : boramkim
- * @since         : 2024. 8. 12.
- * @description    : 16번 mysql 나눔 리스트 entity
+ * 나눔 리스트 정보를 저장하는 엔티티.
+ * @author : boramkim
+ * @since : 2024. 8. 12.
  */
-
 @Entity
+@Getter
+@Setter
 @NoArgsConstructor
-@Getter @Setter
 public class MyPageList {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(unique = true, nullable = false)
     private Long id;
-
     private String title;
     private String content;
-    private String imageUrl;
+    private String description;
 
-    private String writingForumPick;  // 글쓰기_포럼픽
-    private String writingBeautiful;  // 글쓰기_아름
-    private String description;       // 설명
-    private String representativeImage; // 대표이미지
+    @Column(nullable = false)
+    private String imageUrl;  // 대표 이미지 URL
 
-    private String registrationDate;  // 등록날짜
-    private String desiredTradeLocation; // 희망거래장소 위치(00동)
-    private String reservationStatus; // 예약여부 (예약중, 나눔완료, 나눔중)
-    private int commentCount;         // 댓글수
-    private int viewCount;            // 조회수
+    @Column(nullable = false)
+    private String registrationDate;  // 등록 날짜
+
+    @Column(nullable = false)
+    private String desiredTradeLocation; // 희망 거래 장소 위치 (00동)
+
+    @Column(nullable = false)
+    private String reservationStatus;   // 예약 여부 (예약중, 나눔완료, 나눔중)
+
+    @Column(nullable = false)
+    private int chatCount;  // 채팅 수
+
+    @Column(nullable = false)
+    private int viewCount;  // 조회 수
 }

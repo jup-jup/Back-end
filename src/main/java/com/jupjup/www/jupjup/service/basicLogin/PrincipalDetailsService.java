@@ -29,12 +29,12 @@ public class PrincipalDetailsService implements UserDetailsService {
         log.info("username: {}", user);
 
         if (user != null) {
-            return new CustomUserDetails(UserResponse.builder()
-                    .userEmail(user.getUserEmail())
-                    .username(user.getName())
-                    .role(user.getRole())
-//                    .password(user.getPassword())
-                    .build());
+//            return new CustomUserDetails(UserResponse.builder()
+//                    .userEmail(user.getUserEmail())
+//                    .username(user.getName())
+//                    .role(user.getRole())
+////                    .password(user.getPassword())
+//                    .build());
         }
         throw new UsernameNotFoundException("user not found with username : " + username);
     }

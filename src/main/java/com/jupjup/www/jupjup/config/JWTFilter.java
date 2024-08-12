@@ -16,6 +16,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * JWT 검증 클래스
@@ -27,15 +28,18 @@ public class JWTFilter extends OncePerRequestFilter {
     private static final String BEARER_PREFIX = "Bearer ";
     private final JWTUtil jwtUtil;
 
+    public List<String> list = List.of("api/v1/user", "swagger", "api-docs","/");
+
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
 
         // 토큰 유효성 체크 불필요한 요청일 경우
-        String tmp = "api/v1/user";
-        if (request.getRequestURI().contains(tmp) || request.getRequestURI().contains("swagger") || request.getRequestURI().contains("api-docs")) {
-            filterChain.doFilter(request, response);
-            return;
-        }
+        for(String i : list){
+            if(request.getRequestURI().contains(i)){
+                filterChain.doFilter(request, response);
+                return;
+            }
+         }
 
         String authorization = request.getHeader("Authorization");
 

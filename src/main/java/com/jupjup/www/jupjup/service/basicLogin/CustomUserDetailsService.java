@@ -28,11 +28,11 @@ public class CustomUserDetailsService implements UserDetailsService {
         log.info("userEmail: {}", user.getUserEmail());
         log.info("role: {}", user.getRole());
 
-            return new CustomUserDetails(UserResponse.builder()
-                    .userEmail(user.getUserEmail())
-                    .username(user.getName())
-                    .role(user.getRole())
-                    .build());
+//            return new CustomUserDetails(UserResponse.builder()
+//                    .userEmail(user.getUserEmail())
+//                    .username(user.getName())
+//                    .role(user.getRole())
+//                    .build());
         }
         throw new UsernameNotFoundException("user not found with username : " + userEmail);
     }

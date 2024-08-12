@@ -31,8 +31,6 @@ public class CustomSuccessHandler implements AuthenticationSuccessHandler {
 
         if (principal instanceof CustomUserDetails customOAuth2User) {
             log.info("name = {}", customOAuth2User.getName());
-            log.info("username = {}", customOAuth2User.getUsername());
-            log.info("getPassword = {}", customOAuth2User.getPassword());
             log.info("getAuthorities = {}", customOAuth2User.getAuthorities());
         }
 

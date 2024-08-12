@@ -1,12 +1,11 @@
 package com.jupjup.www.jupjup.controller;
 
 import com.jupjup.www.jupjup.domain.entity.RefreshToken;
-import com.jupjup.www.jupjup.config.JWTUtil;
-import com.jupjup.www.jupjup.model.dto.RefreshTokenResponse;
-import com.jupjup.www.jupjup.service.AuthService;
+import com.jupjup.www.jupjup.service.RefreshReissueService;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,30 +19,27 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/auth")
+@RequestMapping("/api/v1/auth")
 @Slf4j
 public class AuthController {
 
-    private final AuthService authService;
+    private final RefreshReissueService refreshReissueService;
 
-    public ResponseEntity<?> reissue(@CookieValue("refreshToken") String refreshToken , @RequestBody RefreshToken refreshEntity
-            ,HttpServletResponse resp) {
+    @PostMapping("/reissue")
+    public ResponseEntity<String> reissue(@CookieValue("refreshToken") String refreshToken, @RequestBody RefreshToken refreshEntity ,HttpServletResponse resp) {
 
-        System.out.println("email " + refreshEntity.getUserEmail());
+        log.info("Reissuing token for email: {}", refreshEntity.getUserEmail());
 
-        // 토큰 유효성 체크
-        if(refreshToken == null || refreshToken.isEmpty() || JWTUtil.validateRefreshToken(refreshToken)) {
-            log.error("refreshToken is null or empty");
-            return ResponseEntity.status(HttpServletResponse.SC_UNAUTHORIZED).body("토큰 만료 재로그인 요망");
+        try {
+            if (refreshReissueService.refreshTokenReissue(refreshToken, refreshEntity.getUserEmail(),resp)) {
+                return ResponseEntity.ok("액세스 토큰 재발급 완료");
+            } else {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("토큰 재발급 실패");
+            }
+        } catch (Exception e) {
+            log.error("토큰 재발급 중 오류", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("일시적인 서버 장애");
         }
-
-        // 토큰 재발급
-        RefreshTokenResponse tokenDTO = authService.refreshTokenRotate(refreshToken, refreshEntity.getUserEmail());
-        resp.addHeader("Authorization" ,"Bearer "+ tokenDTO.getAccessToken());
-        resp.addCookie(JWTUtil.createCookie(tokenDTO.getRefreshToken()));
-
-        return ResponseEntity.ok("액세스 토큰 재발급 완료");
-
     }
 
 }

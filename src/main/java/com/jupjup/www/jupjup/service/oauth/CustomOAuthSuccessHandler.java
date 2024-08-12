@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -25,23 +26,26 @@ import java.util.*;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class CustomOAuthSuccessHandler extends SimpleUrlAuthenticationSuccessHandler  {
+public class CustomOAuthSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
     private final RefreshTokenRepository refreshTokenRepository;
-    RefreshTokenRepository tokenRepository;
 
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
         //OAuth2User
         CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
-
+        if (authentication instanceof OAuth2AuthenticationToken oauthToken) {
+            log.info("oauthToken: {}", oauthToken.getPrincipal());
+            log.info("oauthToken.getAuthorizedClientRegistrationId() = {}", oauthToken.getAuthorizedClientRegistrationId());
+        }
         String userName = customUserDetails.getName();
         String userEmail = customUserDetails.getUserEmail();
+        String providerId = customUserDetails.getProviderId();
+        log.info("providerId: {}", providerId);
 
-        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-        Iterator<? extends GrantedAuthority> iterator = authorities.iterator();
-
+        // 권한 (USER,ADMIN)
+        Iterator<? extends GrantedAuthority> iterator =  authentication.getAuthorities().iterator();
         GrantedAuthority auth = iterator.next();
 
         String role = auth.getAuthority();
@@ -52,7 +56,8 @@ public class CustomOAuthSuccessHandler extends SimpleUrlAuthenticationSuccessHan
 
         // 리프레시 저장
         refreshTokenRepository.save(RefreshToken.builder()
-                .refresh(refreshToken)
+                .providerId(providerId)
+                .refreshToken(refreshToken)
                 .userEmail(userEmail)
                 .expiration(JWTUtil.RefreshTokenExTimeCul(refreshToken))
                 .build());
@@ -60,19 +65,7 @@ public class CustomOAuthSuccessHandler extends SimpleUrlAuthenticationSuccessHan
 
         // HttpHeaders 객체 생성
         HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken);
         headers.add(HttpHeaders.SET_COOKIE, JWTUtil.createCookie(refreshToken).toString());
-
-        // JSON 응답 생성
-        ObjectMapper objectMapper = new ObjectMapper();
-        Map<String, String> responseBody = new HashMap<>();
-        responseBody.put("username", userName);
-        responseBody.put("userEmail", userEmail);
-        String jsonResponse = objectMapper.writeValueAsString(responseBody);
-
-        // 응답 작성
-        response.setContentType("application/json;charset=UTF-8"); // 한글 인코딩 꼭 작성해줘야 함
-        response.getWriter().write(jsonResponse);
 
         // 쿼리 스트링에 포함할 값을 URL 인코딩합니다.
         String encodedUsername = URLEncoder.encode(userName, StandardCharsets.UTF_8);
@@ -85,7 +78,9 @@ public class CustomOAuthSuccessHandler extends SimpleUrlAuthenticationSuccessHan
                 .queryParam("userName", encodedUsername)
                 .build().toUriString();
 
-        response.sendRedirect(redirectURL);
+        log.info("redirect url is {}", redirectURL);
+//        response.sendRedirect(redirectURL);
+        response.sendRedirect("http://localhost:8080/");
 
     }
 

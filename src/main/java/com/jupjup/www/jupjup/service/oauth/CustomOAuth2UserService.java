@@ -1,5 +1,6 @@
 package com.jupjup.www.jupjup.service.oauth;
 
+import com.jupjup.www.jupjup.domain.entity.User;
 import com.jupjup.www.jupjup.model.dto.UserResponse;
 import com.jupjup.www.jupjup.domain.enums.OauthRegistrationId;
 import com.jupjup.www.jupjup.domain.repository.UserRepository;
@@ -31,13 +32,13 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     private final UserRepository userRepository;
     private OauthRegistrationId registrationId;
 
+
+    // OAuth2UserRequest = 리소스 서버에서 보내주는 유저 정보를 가지고 있음
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
-        // OAuth2UserRequest = 리소스 서버에서 보내주는 유저 정보를 가지고 있음
+
         OAuth2User oAuth2User = super.loadUser(userRequest);
-//        System.out.println("Oauth2User: " + oAuth2User);
         String registrationIdString = userRequest.getClientRegistration().getRegistrationId();
-        KakaoResponse kakaoResponse = new KakaoResponse(oAuth2User.getAttributes());
 
         try {
             registrationId = valueOf(registrationIdString.toUpperCase());
@@ -80,48 +81,55 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
      * @author        : boramkim
      * @since         : 2024. 8. 1.
      * @description   : 가입이 안된 유저이면 회원가입되고 가입되어 있다면 기존계정 내용 업데이트
+     *                   카카오의 경우 이메일을 내려보내주지 않아, 닉네임+key 로 email insert
      */
     private OAuth2User saveOrUpdateUser(OAuth2Response oAuth2Response) {
+        String providerId = oAuth2Response.getProvider() + oAuth2Response.getProviderId();
+        String userName = oAuth2Response.getName();
+        String userEmail = deriveEmail(oAuth2Response);
 
-        String providerId = null;
-        String userName = null;
-        String userEmail = null;
+        User existingUser = userRepository.findByUserEmailAndProviderKey(userEmail, providerId);
 
-        if(oAuth2Response instanceof KakaoResponse kakaoResponse){
-            providerId = kakaoResponse.getProvider()+kakaoResponse.getProviderId();
-            userName = kakaoResponse.getName();
-            userEmail = kakaoResponse.getName() +"@"+kakaoResponse.getProviderId();
-        }else{
-            providerId = oAuth2Response.getProvider()+oAuth2Response.getProviderId();
-            userName = oAuth2Response.getName();
-            userEmail = oAuth2Response.getEmail();
-        }
-
-        com.jupjup.www.jupjup.domain.entity.User existData = userRepository.findByUserEmailAndProviderKey(userEmail,providerId);;
-
-        if (existData == null) {
-            log.info("회원가입이 가능한 유저");
-            userRepository.save(com.jupjup.www.jupjup.domain.entity.User.builder()
-                    .providerKey(providerId)
-                    .userEmail(userEmail)
-                    .role("ROLE_USER")
-                    .username(userName)
-                    .build());
-            return new CustomUserDetails(UserResponse.builder()
-                    .username(userName)
-                    .userEmail(userEmail)
-                    .role("ROLE_USER")
-                    .build());
+        if (existingUser == null) {
+            log.info("회원가입이 완료");
+            return registerNewUser(providerId, userName, userEmail);
         } else {
-            log.info("회원가입이 되어 있는 유저. 정보 업데이트");
-            existData.setUserEmail(userEmail);
-            existData.setName(userName);
-            userRepository.save(existData);
-            return new CustomUserDetails(UserResponse.builder()
-                    .username(userName)
-                    .userEmail(userEmail)
-                    .build());
+            log.info("기가입 유저 => 정보 업데이트");
+            return updateExistingUser(existingUser, userName, userEmail);
         }
+    }
+
+    private String deriveEmail(OAuth2Response oAuth2Response) {
+        if (oAuth2Response instanceof KakaoResponse kakaoResponse) {
+            return kakaoResponse.getName() + "@" + kakaoResponse.getProviderId();
+        }
+        return oAuth2Response.getEmail();
+    }
+
+    private OAuth2User registerNewUser(String providerId, String userName, String userEmail) {
+        User user = User.builder()
+                .providerKey(providerId)
+                .userEmail(userEmail)
+                .role("ROLE_USER")
+                .username(userName)
+                .build();
+        userRepository.save(user);
+        return new CustomUserDetails(UserResponse.builder()
+                .providerId(providerId)
+                .username(userName)
+                .userEmail(userEmail)
+                .role("ROLE_USER")
+                .build());
+    }
+
+    private OAuth2User updateExistingUser(User user, String userName, String userEmail) {
+        user.setUserEmail(userEmail);
+        user.setName(userName);
+        userRepository.save(user);
+        return new CustomUserDetails(UserResponse.builder()
+                .username(userName)
+                .userEmail(userEmail)
+                .build());
     }
 }
 
