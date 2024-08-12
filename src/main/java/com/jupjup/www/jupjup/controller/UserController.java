@@ -41,19 +41,13 @@ public class UserController {
     }
 
     @GetMapping("/login")
-    public ResponseEntity<?> getAuthorizationUrl(@RequestParam(required = false, defaultValue = "null") String provider) {
-
+    public RedirectView redirectToAuthorization(@RequestParam(required = false, defaultValue = "null") String provider) {
         if (!SUPPORTED_PROVIDERS.contains(provider.toLowerCase())) {
             throw new IllegalArgumentException("Unsupported OAuth2 provider: " + provider);
         }
-
         log.info("provider : {}", provider);
         String authorizationUri = "/oauth2/authorize/" + provider.toLowerCase();
-
-        Map<String, String> response = new HashMap<>();
-        response.put("authorizationUrl", authorizationUri);
-
-        return ResponseEntity.ok(response);
+        return new RedirectView(authorizationUri);
     }
 
     @PostMapping("/logout")
