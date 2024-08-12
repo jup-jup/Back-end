@@ -1,19 +1,10 @@
 package com.jupjup.www.jupjup.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-<<<<<<< HEAD
-import com.jupjup.www.jupjup.dto.UserDTO;
 import com.jupjup.www.jupjup.service.JoinService;
-import com.jupjup.www.jupjup.repository.RefreshTokenRepository;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
-=======
 import com.jupjup.www.jupjup.domain.repository.RefreshTokenRepository;
 import com.jupjup.www.jupjup.model.dto.UserResponse;
-import com.jupjup.www.jupjup.service.JoinService;
-import org.junit.jupiter.api.Test;
->>>>>>> 64a38bb472643331d3dc8c2a629bb3d116f29949
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;

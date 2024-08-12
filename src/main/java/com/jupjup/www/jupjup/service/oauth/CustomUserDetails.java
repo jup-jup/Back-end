@@ -1,6 +1,6 @@
 package com.jupjup.www.jupjup.service.oauth;
 
-import com.jupjup.www.jupjup.model.dto.UserDTO;
+import com.jupjup.www.jupjup.model.dto.UserResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,7 +11,7 @@ import java.util.Collections;
 import java.util.Map;
 
 @Slf4j
-public record CustomUserDetails(UserDTO userDTO) implements UserDetails, OAuth2User {
+public record CustomUserDetails(UserResponse userDTO) implements UserDetails, OAuth2User {
 
     @Override
     // 각 소셜 로그인 인증 서버가 응답하는 속성값이 달라 획일화가 어려워 사용하지 않음

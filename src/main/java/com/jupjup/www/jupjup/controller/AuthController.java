@@ -1,8 +1,8 @@
 package com.jupjup.www.jupjup.controller;
 
-import com.jupjup.www.jupjup.model.dto.TokenDTO;
-import com.jupjup.www.jupjup.domain.entity.RefreshEntity;
+import com.jupjup.www.jupjup.domain.entity.RefreshToken;
 import com.jupjup.www.jupjup.config.JWTUtil;
+import com.jupjup.www.jupjup.model.dto.RefreshTokenResponse;
 import com.jupjup.www.jupjup.service.AuthService;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +26,7 @@ public class AuthController {
 
     private final AuthService authService;
 
-    public ResponseEntity<?> reissue(@CookieValue("refreshToken") String refreshToken , @RequestBody RefreshEntity refreshEntity
+    public ResponseEntity<?> reissue(@CookieValue("refreshToken") String refreshToken , @RequestBody RefreshToken refreshEntity
             ,HttpServletResponse resp) {
 
         System.out.println("email " + refreshEntity.getUserEmail());
@@ -38,7 +38,7 @@ public class AuthController {
         }
 
         // 토큰 재발급
-        TokenDTO tokenDTO = authService.refreshTokenRotate(refreshToken, refreshEntity.getUserEmail());
+        RefreshTokenResponse tokenDTO = authService.refreshTokenRotate(refreshToken, refreshEntity.getUserEmail());
         resp.addHeader("Authorization" ,"Bearer "+ tokenDTO.getAccessToken());
         resp.addCookie(JWTUtil.createCookie(tokenDTO.getRefreshToken()));
 
