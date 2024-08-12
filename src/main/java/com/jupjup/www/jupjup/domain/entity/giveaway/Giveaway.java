@@ -40,8 +40,8 @@ public class Giveaway {
 
     // TODO: 이미지의 저장 구현 방법은 고민해볼 것
     // TODO: cascade & orphanRemoval 에 대한 이해 필요
-    @OneToMany(mappedBy = "giveaway", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-    private List<GiveawayImage> imagePaths;
+//    @OneToMany(mappedBy = "giveaway", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+//    private List<GiveawayImage> imagePaths;
 
     // TODO: 거래 장소
 
