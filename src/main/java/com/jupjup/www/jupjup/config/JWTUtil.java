@@ -105,6 +105,9 @@ public class JWTUtil {
         } catch (ExpiredJwtException e) {
             log.error("만료되었거나 유효하지 않은 토큰", e);
             return true; // 만료되었거나 유효하지 않은 토큰으로 간주
+        } catch (NullPointerException e){
+            log.error("토큰이 비어 있습니다.", e);
+            return true;
         }
     }
 
@@ -116,6 +119,7 @@ public class JWTUtil {
     public static String getRoleFromAccessToken(String token) {
         return extractClaim(token, accessEncKey, "role");
     }
+
     public static String getRoleFromRefreshToken(String token) {
         return extractClaim(token, refreshEncKey, "role");
     }

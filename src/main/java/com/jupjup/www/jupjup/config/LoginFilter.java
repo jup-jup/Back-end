@@ -102,7 +102,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         // 리프레시 토큰을 데이터베이스에 저장
         RefreshToken refreshEntity = RefreshToken.builder()
                 .userEmail(userEmail)
-                .refresh(refreshToken)
+                .refreshToken(refreshToken)
                 .expiration(new Date(System.currentTimeMillis() + JWTUtil.refreshExpirationTime))
                 .build();
 

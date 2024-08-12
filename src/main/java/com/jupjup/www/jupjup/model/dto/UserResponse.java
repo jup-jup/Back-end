@@ -9,9 +9,8 @@ import org.apache.catalina.User;
 @NoArgsConstructor
 public class UserResponse {
     private Long sequence;
-    private String id;
+    private String providerId;
     private String userEmail;
-    private String name;
     private String username;
     private String password;
     private String role;
@@ -26,13 +25,14 @@ public class UserResponse {
 
     @Override
     public String toString() {
-        return "UserDTO{" +
-                "id=" + id +
+        return "UserResponse{" +
+                "sequence=" + sequence +
+                ", providerId='" + providerId + '\'' +
                 ", userEmail='" + userEmail + '\'' +
-                ", name='" + name + '\'' +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", role='" + role + '\'' +
+                ", picture='" + picture + '\'' +
                 '}';
     }
 
