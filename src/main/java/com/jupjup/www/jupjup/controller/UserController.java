@@ -1,17 +1,13 @@
 package com.jupjup.www.jupjup.controller;
 
-import com.jupjup.www.jupjup.dto.UserDTO;
-import com.jupjup.www.jupjup.repository.RefreshTokenRepository;
+import com.jupjup.www.jupjup.model.dto.UserDTO;
+import com.jupjup.www.jupjup.domain.repository.RefreshTokenRepository;
 import com.jupjup.www.jupjup.service.JoinService;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
-import org.springframework.web.util.UriComponentsBuilder;
-
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -41,7 +37,7 @@ public class UserController {
     }
 
     @GetMapping("/login")
-    public RedirectView redirectToAuthorization(@RequestParam(required = false, defaultValue = "null") String provider) {
+    public RedirectView redirectToAuthorization(@RequestParam String provider) {
         if (!SUPPORTED_PROVIDERS.contains(provider.toLowerCase())) {
             throw new IllegalArgumentException("Unsupported OAuth2 provider: " + provider);
         }

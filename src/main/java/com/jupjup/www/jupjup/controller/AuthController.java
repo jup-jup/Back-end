@@ -1,14 +1,9 @@
 package com.jupjup.www.jupjup.controller;
 
-import com.jupjup.www.jupjup.dto.TokenDTO;
-import com.jupjup.www.jupjup.entity.RefreshEntity;
-import com.jupjup.www.jupjup.jwt.JWTUtil;
+import com.jupjup.www.jupjup.model.dto.TokenDTO;
+import com.jupjup.www.jupjup.domain.entity.RefreshEntity;
+import com.jupjup.www.jupjup.config.JWTUtil;
 import com.jupjup.www.jupjup.service.AuthService;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
