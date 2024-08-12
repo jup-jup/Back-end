@@ -22,11 +22,11 @@ public class Chat {
     private String message;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @Column(name = "creator_id")
+    @JoinColumn(name = "user_id")
     private User creator;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @Column(name = "room_id")
+    @JoinColumn(name = "room_id")
     private Room room;
 
     @CreatedDate

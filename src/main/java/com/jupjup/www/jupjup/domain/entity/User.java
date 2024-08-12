@@ -33,7 +33,7 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<UserChatRoom> chatRooms = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "creator")
     private List<Chat> chats = new ArrayList<>();
 
     @PrePersist
