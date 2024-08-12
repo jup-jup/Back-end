@@ -1,5 +1,6 @@
 package com.jupjup.www.jupjup.domain.entity.chat;
 
+import com.jupjup.www.jupjup.domain.entity.giveaway.Giveaway;
 import jakarta.persistence.*;
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
@@ -23,6 +24,10 @@ public class Room {
 
     @OneToMany(mappedBy = "room")
     private List<Chat> chats = new ArrayList<>();
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "giveaway_id")
+    private Giveaway giveaway;
 
     @CreatedDate
     private LocalDateTime created_at;

@@ -1,6 +1,7 @@
 package com.jupjup.www.jupjup.domain.entity.giveaway;
 
 import com.jupjup.www.jupjup.domain.entity.User;
+import com.jupjup.www.jupjup.domain.entity.chat.Room;
 import com.jupjup.www.jupjup.enumClass.GiveawayStatus;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -8,6 +9,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Table(name = "giveaway")
@@ -25,6 +27,9 @@ public class Giveaway {
 
     @Column(name = "status")
     private GiveawayStatus status;
+
+    @OneToMany(mappedBy = "giveaway")
+    private List<Room> chatRooms = new ArrayList<>();
 
     @CreatedDate
     @Column(name = "created_at")
