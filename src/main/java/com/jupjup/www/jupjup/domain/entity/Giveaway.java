@@ -1,4 +1,4 @@
-package com.jupjup.www.jupjup.entity;
+package com.jupjup.www.jupjup.domain.entity;
 
 import com.jupjup.www.jupjup.enumClass.GiveawayStatus;
 import jakarta.persistence.*;
@@ -12,7 +12,7 @@ import java.util.List;
 @Table(name = "giveaway")
 @Getter
 @Entity
-public class GiveawayEntity {
+public class Giveaway {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,12 +35,12 @@ public class GiveawayEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "giver_id")
-    private UserEntity giver;
+    private User giver;
 
     // TODO: 이미지의 저장 구현 방법은 고민해볼 것
     // TODO: cascade & orphanRemoval 에 대한 이해 필요
     @OneToMany(mappedBy = "giveaway", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-    private List<GiveawayImageEntity> imagePaths;
+    private List<GiveawayImage> imagePaths;
 
     // TODO: 거래 장소
 
