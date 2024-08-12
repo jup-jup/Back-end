@@ -1,5 +1,6 @@
 package com.jupjup.www.jupjup.domain.entity.chat;
 
+
 import com.jupjup.www.jupjup.domain.entity.User;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -7,22 +8,25 @@ import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDateTime;
 
-@Table(name = "user_chat_room")
+@Table(name = "chat")
 @Getter
 @Entity
-public class UserChatRoom {
+public class Chat {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", updatable = false)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
+    @Column(name = "message")
+    private String message;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "room_id")
+    @Column(name = "creator_id")
+    private User creator;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @Column(name = "room_id")
     private Room room;
 
     @CreatedDate
