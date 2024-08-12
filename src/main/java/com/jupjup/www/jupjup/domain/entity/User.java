@@ -1,9 +1,13 @@
 package com.jupjup.www.jupjup.domain.entity;
 
+import com.jupjup.www.jupjup.domain.entity.chat.Chat;
+import com.jupjup.www.jupjup.domain.entity.chat.UserChatRoom;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Setter @Getter
@@ -25,6 +29,12 @@ public class User {
     private LocalDateTime createdAt;
     @Column(nullable = false)
     private LocalDateTime updatedAt;
+
+    @OneToMany(mappedBy = "user")
+    private List<UserChatRoom> chatRooms = new ArrayList<>();
+
+    @OneToMany(mappedBy = "creator")
+    private List<Chat> chats = new ArrayList<>();
 
     @PrePersist
     protected void onCreate() {
