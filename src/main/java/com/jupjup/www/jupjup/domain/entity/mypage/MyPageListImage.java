@@ -18,7 +18,6 @@ public class MyPageListImage {
 
     @ManyToOne
     @JoinColumn(name="mypagalist_id")
-    @Column(nullable = false)
     private MyPageList myPageListCreateId;
 
 

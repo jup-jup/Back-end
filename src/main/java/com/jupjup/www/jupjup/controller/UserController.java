@@ -28,7 +28,6 @@ public class UserController {
     private final JoinService joinService;
     private final RefreshTokenRepository refreshTokenRepository;
     private static final List<String> SUPPORTED_PROVIDERS = Arrays.asList("google", "kakao", "naver");
-    public static final String BASE_URL = "http://localhost:3000";
 
     @PostMapping("/join")
     public ResponseEntity<?> join(@RequestBody UserResponse userDTO) {

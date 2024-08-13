@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 import java.time.LocalDateTime;
 
@@ -18,6 +20,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @NoArgsConstructor
+@EnableJpaAuditing
 public class MyPageList {
 
     @Id
@@ -25,7 +28,6 @@ public class MyPageList {
     @Column(name="id" ,nullable = false)
     private Long id;
     @Column(nullable = false)
-    @JoinColumn
     private String userName;
     @Column(nullable = false)
     private String title;
@@ -33,9 +35,13 @@ public class MyPageList {
     private String content;
     @Column(nullable = false)
     private String imageUrl;  // 대표 이미지 URL
+
     @CreatedDate
     @Column(nullable = false)
-    private LocalDateTime registrationDate;  // 등록 날짜
+    private LocalDateTime createdDate;  // 등록 날짜
+    @LastModifiedDate
+    @Column(nullable = false)
+    private LocalDateTime updatedDate;  // 업데이트 날짜
     @Column(nullable = false)
     private String tradeLocation; // 희망 거래 장소 위치 (00동)
     @Column(nullable = false)

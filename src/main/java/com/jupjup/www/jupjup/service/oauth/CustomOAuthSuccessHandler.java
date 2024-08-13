@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jupjup.www.jupjup.controller.UserController;
 import com.jupjup.www.jupjup.domain.entity.RefreshToken;
 import com.jupjup.www.jupjup.config.JWTUtil;
+import com.jupjup.www.jupjup.domain.enums.BaseUrl;
 import com.jupjup.www.jupjup.domain.repository.RefreshTokenRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -72,7 +73,7 @@ public class CustomOAuthSuccessHandler extends SimpleUrlAuthenticationSuccessHan
         String encodedUserEmail = URLEncoder.encode(userEmail, StandardCharsets.UTF_8);
         String encodedAccessToken = URLEncoder.encode(accessToken, StandardCharsets.UTF_8);
 
-        String redirectURL = UriComponentsBuilder.fromUriString(UserController.BASE_URL)
+        String redirectURL = UriComponentsBuilder.fromUriString(BaseUrl.REACT.getUrl())
                 .queryParam("access_token", encodedAccessToken)
                 .queryParam("userEmail", encodedUserEmail)
                 .queryParam("userName", encodedUsername)
