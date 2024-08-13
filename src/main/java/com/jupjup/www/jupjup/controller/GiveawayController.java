@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.List;
 
 
 @RequiredArgsConstructor
@@ -19,7 +20,7 @@ public class GiveawayController {
 
     // 나눔 리스트
     @GetMapping("/")
-    public ResponseEntity<GiveawayListResponse> getList() {
+    public ResponseEntity<List<GiveawayListResponse>> getList() {
 
         return ResponseEntity
                 .ok()
