@@ -4,9 +4,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+
+
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/gi")
 public class GiveawayController {
     // TODO: API 별 DTO 정의
 
