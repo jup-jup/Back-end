@@ -1,4 +1,4 @@
-package com.jupjup.www.jupjup.enumClass;
+package com.jupjup.www.jupjup.domain.enums;
 
 import lombok.Getter;
 

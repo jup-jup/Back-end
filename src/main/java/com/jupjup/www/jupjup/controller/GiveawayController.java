@@ -1,8 +1,14 @@
 package com.jupjup.www.jupjup.controller;
 
+import com.jupjup.www.jupjup.model.dto.giveaway.CreateGiveawayRequest;
+import com.jupjup.www.jupjup.model.dto.giveaway.GiveawayDetailResponse;
+import com.jupjup.www.jupjup.model.dto.giveaway.GiveawayListResponse;
+import com.jupjup.www.jupjup.model.dto.giveaway.UpdateGiveawayRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.net.URI;
 
 
 @RequiredArgsConstructor
@@ -13,7 +19,7 @@ public class GiveawayController {
 
     // 나눔 리스트
     @GetMapping("/")
-    public ResponseEntity<?> getList() {
+    public ResponseEntity<GiveawayListResponse> getList() {
 
         return ResponseEntity
                 .ok()
@@ -22,7 +28,7 @@ public class GiveawayController {
 
     // 나눔 상세 페이지
     @GetMapping("/{id}")
-    public ResponseEntity<?> getGiveaway(@PathVariable Long id) {
+    public ResponseEntity<GiveawayDetailResponse> getGiveaway(@PathVariable Long id) {
 
         return ResponseEntity
                 .ok()
@@ -31,16 +37,17 @@ public class GiveawayController {
 
     // 나눔 올리기
     @PostMapping("/")
-    public ResponseEntity<?> addGiveaway() {
+    public ResponseEntity<?> addGiveaway(@RequestBody CreateGiveawayRequest request) {
 
         return ResponseEntity
-                .ok()
+                .created(URI.create("/giveaways/" + "id")) // TODO: 저장한 객체 id 받아와서 response
                 .build();
     }
 
     // 나눔 업데이트
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateGiveaway(@PathVariable Long id) {
+    public ResponseEntity<?> updateGiveaway(@PathVariable Long id,
+                                            @RequestBody UpdateGiveawayRequest request) {
 
         return ResponseEntity
                 .ok()
@@ -52,7 +59,7 @@ public class GiveawayController {
     public ResponseEntity<?> deleteGiveaway(@PathVariable Long id) {
 
         return ResponseEntity
-                .ok()
+                .noContent()
                 .build();
     }
 
