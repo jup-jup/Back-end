@@ -106,7 +106,8 @@ tasks.register("copyDocs", task -> {
     task.doLast(t -> {
         copy(spec -> {
             spec.from("${buildDir}/apiSpec");
-            spec.into("src/main/resources/static/docs");
+            spec.into("build/docs");
+//            spec.into("src/main/resources/static/docs");
         });
     });
     task.dependsOn("openapi3");
