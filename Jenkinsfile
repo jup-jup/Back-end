@@ -13,7 +13,7 @@ pipeline {
         }
         stage('Deploy') {
             steps {
-                sh 'java -jar build/libs/your-application.jar'  // JAR 파일 실행 예시
+                sh 'java -jar build/libs/jup-jup-0.0.1-SNAPSHOT.jar'  // JAR 파일 실행 예시
             }
         }
     }
