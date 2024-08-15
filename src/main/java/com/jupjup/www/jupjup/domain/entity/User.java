@@ -4,6 +4,9 @@ import com.jupjup.www.jupjup.domain.entity.chat.Chat;
 import com.jupjup.www.jupjup.domain.entity.chat.UserChatRoom;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -12,6 +15,7 @@ import java.util.List;
 @Entity
 @Setter @Getter
 @NoArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
 public class User {
 
     @Id
@@ -25,9 +29,12 @@ public class User {
     private String userEmail;
     @Column(nullable = false)
     private String role;
+
     @Column(nullable = false)
+    @CreatedDate
     private LocalDateTime createdAt;
     @Column(nullable = false)
+    @LastModifiedDate
     private LocalDateTime updatedAt;
 
     @OneToMany(mappedBy = "user")
@@ -35,16 +42,6 @@ public class User {
 
     @OneToMany(mappedBy = "creator")
     private List<Chat> chats = new ArrayList<>();
-
-    @PrePersist
-    protected void onCreate() {
-        updatedAt = createdAt = LocalDateTime.now();
-    }
-
-    @PreUpdate
-    protected void onUpdate() {
-        updatedAt = LocalDateTime.now();
-    }
 
     @Builder
     public User(String providerKey, String username, String userEmail, String role) {
