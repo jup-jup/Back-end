@@ -6,9 +6,14 @@ import org.junit.jupiter.api.Test;
 import com.jupjup.www.jupjup.domain.repository.RefreshTokenRepository;
 import com.jupjup.www.jupjup.model.dto.UserResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
+import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
@@ -21,7 +26,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 
 @WebMvcTest(UserController.class)
-@AutoConfigureMockMvc(addFilters = false)
+@MockBean(JpaMetamodelMappingContext.class) // Jpa 연관 Bean 등록하기
+@AutoConfigureMockMvc(addFilters = false)  // Security 필터 비활성화
 class UserControllerTest {
 
     @Autowired
