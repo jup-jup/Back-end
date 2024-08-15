@@ -2,7 +2,7 @@ package com.jupjup.www.jupjup.domain.entity.giveaway;
 
 import com.jupjup.www.jupjup.domain.entity.User;
 import com.jupjup.www.jupjup.domain.entity.chat.Room;
-import com.jupjup.www.jupjup.enumClass.GiveawayStatus;
+import com.jupjup.www.jupjup.domain.enums.GiveawayStatus;
 import jakarta.persistence.*;
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;

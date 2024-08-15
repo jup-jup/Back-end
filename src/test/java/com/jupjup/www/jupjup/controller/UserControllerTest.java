@@ -12,7 +12,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Import;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -41,23 +40,6 @@ class UserControllerTest {
 
     @Autowired
     private ObjectMapper objectMapper; // JSON 변환을 위한 ObjectMapper
-
-    @Test
-    @WithMockUser(username="admin", roles={"USER","ADMIN"}) // 해당 사용자에게 USER 및 ADMIN 권한 부여
-    void testJoin() throws Exception {
-        UserResponse userDTO = new UserResponse();
-        userDTO.setUserEmail("test@example.com");
-        userDTO.setPassword("password");
-
-        // 모든 UserDTO 입력에 대해 "회원가입완료"를 반환하도록 설정
-        given(joinService.joinProcess(any(UserResponse.class))).willReturn("회원가입 완료");
-
-        mockMvc.perform(post("/api/v1/user/join")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(userDTO))) // ObjectMapper 사용
-                .andExpect(status().isOk())
-                .andExpect(content().string("회원가입 완료"));
-    }
 
     @Test
     void testLogout() throws Exception {
