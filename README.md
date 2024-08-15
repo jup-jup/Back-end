@@ -23,4 +23,4 @@
 - @deprecated: 더 이상 사용되지 않는 클래스나 메서드를 설명합니다.
 
 
-testjen
+test
