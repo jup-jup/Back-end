@@ -3,19 +3,18 @@ package com.jupjup.www.jupjup.domain.entity;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 import java.time.LocalDateTime;
 import java.util.Date;
 
 @Getter
 @Setter
-@RequiredArgsConstructor
+@NoArgsConstructor
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 public class RefreshToken {
@@ -34,20 +33,18 @@ public class RefreshToken {
     private String refreshToken;
 
     @Column(nullable = false)
-    private Date expiration;  // Updated to use LocalDateTime
+    private Date expiration;
 
     @LastModifiedDate
     @Column(nullable = false)
     private LocalDateTime updatedAt;
 
     @CreatedDate
-    @Column(nullable = false)
+    @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
-
-
     @Builder
-    public RefreshToken(String providerId ,String userEmail, String refreshToken, Date expiration) {
+    public RefreshToken(String providerId, String userEmail, String refreshToken, Date expiration) {
         this.providerId = providerId;
         this.userEmail = userEmail;
         this.refreshToken = refreshToken;
