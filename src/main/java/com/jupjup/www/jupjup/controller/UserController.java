@@ -40,14 +40,13 @@ public class UserController {
 //    }
 
     @GetMapping("/login")
-    public ResponseEntity<?> redirectToAuthorization(@RequestParam String provider) {
-        if (SUPPORTED_PROVIDERS.contains(provider.toLowerCase())) {
-            String authorizationUri = "/oauth2/authorize/" + provider.toLowerCase();
-            HttpHeaders headers = new HttpHeaders();
-            headers.setLocation(URI.create(authorizationUri));
-            return new ResponseEntity<>(headers, HttpStatus.SEE_OTHER); // 303 See Other for redirection
+    public RedirectView redirectToAuthorization(@RequestParam String provider) {
+        if (!SUPPORTED_PROVIDERS.contains(provider.toLowerCase())) {
+            throw new IllegalArgumentException("Unsupported OAuth2 provider: " + provider);
         }
-        return ResponseEntity.badRequest().build();
+        log.info("provider : {}", provider);
+        String authorizationUri = "/oauth2/authorize/" + provider.toLowerCase();
+        return new RedirectView(authorizationUri);
     }
 
     @PostMapping("/logout")
