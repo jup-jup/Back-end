@@ -1,8 +1,6 @@
 package com.jupjup.www.jupjup.service.basicLogin;
 
-import com.jupjup.www.jupjup.model.dto.UserResponse;
 import com.jupjup.www.jupjup.domain.repository.UserRepository;
-import com.jupjup.www.jupjup.service.oauth.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;

@@ -1,6 +1,6 @@
 package com.jupjup.www.jupjup.service;
 
-import com.jupjup.www.jupjup.model.dto.UserResponse;
+import com.jupjup.www.jupjup.model.dto.user.UserResponse;
 import com.jupjup.www.jupjup.domain.repository.RefreshTokenRepository;
 import com.jupjup.www.jupjup.domain.repository.UserRepository;
 import lombok.RequiredArgsConstructor;

@@ -4,15 +4,12 @@ package com.jupjup.www.jupjup.service;
 import com.jupjup.www.jupjup.config.JWTUtil;
 import com.jupjup.www.jupjup.domain.entity.RefreshToken;
 import com.jupjup.www.jupjup.domain.repository.RefreshTokenRepository;
-import com.jupjup.www.jupjup.model.dto.RefreshTokenResponse;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Slf4j

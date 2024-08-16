@@ -1,4 +1,4 @@
-package com.jupjup.www.jupjup.model.dto;
+package com.jupjup.www.jupjup.model.dto.mypage;
 
 
 import lombok.AllArgsConstructor;
@@ -11,4 +11,11 @@ import lombok.Setter;
 @Builder
 @AllArgsConstructor
 public class MyPageListResponse {
+
+
+    MyPageListImageResponse myPageListImageResponse;
+
+
+
+
 }

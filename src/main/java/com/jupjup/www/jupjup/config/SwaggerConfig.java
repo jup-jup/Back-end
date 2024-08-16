@@ -35,7 +35,7 @@ public class SwaggerConfig {
     public GroupedOpenApi orderApi() {
         return GroupedOpenApi.builder()
                 .group("auths")
-                .pathsToMatch("/auth/**")
+                .pathsToMatch("/api/v1/auth/**")
                 .build();
     }
 
@@ -46,4 +46,30 @@ public class SwaggerConfig {
                 .pathsToMatch("/api/v1/myPage/**")
                 .build();
     }
+
+    @Bean
+    public GroupedOpenApi chatApi() {
+        return GroupedOpenApi.builder()
+                .group("chat")
+                .pathsToMatch("/chat-rooms/**")
+                .build();
+    }
+
+    @Bean
+    public GroupedOpenApi profileApi() {
+        return GroupedOpenApi.builder()
+                .group("profile")
+                .pathsToMatch("/api/v1/profile/**")
+                .build();
+    }
+    @Bean
+    public GroupedOpenApi giveawaysApi() {
+        return GroupedOpenApi.builder()
+                .group("giveaways")
+                .pathsToMatch("/giveaways/**")
+                .build();
+    }
+
+
+
 }

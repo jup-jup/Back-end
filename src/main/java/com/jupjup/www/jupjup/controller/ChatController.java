@@ -21,9 +21,15 @@ public class ChatController {
     @PostMapping("/")
     public ResponseEntity<?> createChat(@PathVariable Long roomId,
                                         @RequestBody CreateChatRequest request) {
+//        return ResponseEntity
+//                // TODO : 보람=> 이 부분 수정해야할 것 같아요 URL 만드는게 아마도 {} 내부 변수 값 인식 못할 것 같아용
+//                .created(URI.create("/rooms/{roomId}/chats/{chatId}"))
+//                .build();
+        Long chatId = null;
+        URI location = URI.create(String.format("/chat-rooms/%d/chats/%d", roomId, chatId));
 
         return ResponseEntity
-                .created(URI.create("/rooms/{roomId}/chats/{chatId}"))
+                .created(location)
                 .build();
     }
 

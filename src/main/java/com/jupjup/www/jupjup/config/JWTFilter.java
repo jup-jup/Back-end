@@ -1,6 +1,6 @@
 package com.jupjup.www.jupjup.config;
 
-import com.jupjup.www.jupjup.model.dto.UserResponse;
+import com.jupjup.www.jupjup.model.dto.user.UserResponse;
 import com.jupjup.www.jupjup.service.oauth.CustomUserDetails;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;

@@ -75,6 +75,7 @@ dependencies {
     testImplementation 'org.springframework.security:spring-security-test'    // Spring Security 테스트 지원
     testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc' // Spring REST Docs 테스트 지원
     testImplementation 'com.epages:restdocs-api-spec-mockmvc:0.18.4'          // REST Docs API 스펙 테스트 지원
+
 }
 
 dependencyManagement {

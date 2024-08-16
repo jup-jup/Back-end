@@ -1,6 +1,5 @@
 package com.jupjup.www.jupjup.controller;
 
-import com.jupjup.www.jupjup.model.dto.UserResponse;
 import com.jupjup.www.jupjup.domain.repository.RefreshTokenRepository;
 import com.jupjup.www.jupjup.service.JoinService;
 import lombok.RequiredArgsConstructor;
@@ -9,13 +8,10 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.view.RedirectView;
 
 import java.net.URI;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @fileName      : UserController.java

@@ -1,8 +1,10 @@
 package com.jupjup.www.jupjup.controller;
 
 
+import com.jupjup.www.jupjup.model.dto.mypage.MyPageListResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -32,9 +34,18 @@ public class MyPageController {
                 .ok()
                 .build();
     }
-    // 나눔 수정
-    @GetMapping("/modify/{id}")
+    // 나눔 수정 페이지
+    @GetMapping("/modify")
     public ResponseEntity<?> modify() {
+
+        return ResponseEntity
+                .ok()
+                .build();
+    }
+
+    // 나눔 수정
+    @PostMapping("/modify/{id}")
+    public ResponseEntity<?> modify(MyPageListResponse myPageListResponse) {
 
         return ResponseEntity
                 .ok()

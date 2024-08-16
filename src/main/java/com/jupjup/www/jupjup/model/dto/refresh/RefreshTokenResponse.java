@@ -1,4 +1,4 @@
-package com.jupjup.www.jupjup.model.dto;
+package com.jupjup.www.jupjup.model.dto.refresh;
 
 
 import lombok.AllArgsConstructor;
