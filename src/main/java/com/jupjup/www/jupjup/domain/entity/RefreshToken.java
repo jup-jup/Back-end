@@ -21,26 +21,27 @@ public class RefreshToken {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", unique = true, nullable = false)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(name = "user_email", nullable = false)
     private String userEmail;
 
-    @Column(nullable = false)
+    @Column(name = "provider_id", nullable = false)
     private String providerId;
 
-    @Column(nullable = false)
+    @Column(name = "refresh_token", nullable = false)
     private String refreshToken;
 
-    @Column(nullable = false)
+    @Column(name = "expiration", nullable = false)
     private Date expiration;
 
     @LastModifiedDate
-    @Column(nullable = false)
+    @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
 
     @CreatedDate
-    @Column(nullable = false, updatable = false)
+    @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
     @Builder

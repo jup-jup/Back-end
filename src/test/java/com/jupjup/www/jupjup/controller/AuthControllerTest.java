@@ -1,6 +1,6 @@
 package com.jupjup.www.jupjup.controller;
 
-import com.jupjup.www.jupjup.service.RefreshReissueService;
+import com.jupjup.www.jupjup.service.refreshService.RefreshReissueService;
 import jakarta.servlet.http.Cookie;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;

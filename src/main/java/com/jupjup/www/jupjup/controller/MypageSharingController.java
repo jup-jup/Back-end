@@ -1,10 +1,17 @@
 package com.jupjup.www.jupjup.controller;
 
 
+import com.jupjup.www.jupjup.domain.entity.mypage.MyPageSharingList;
 import com.jupjup.www.jupjup.model.dto.mypage.MyPageListResponse;
+import com.jupjup.www.jupjup.service.mypageSharingService.MypageSharingService;
 import io.swagger.v3.oas.annotations.Operation;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * @author : boramkim
@@ -13,25 +20,42 @@ import org.springframework.web.bind.annotation.*;
  */
 
 @RestController
-@RequestMapping("/api/v1/myPage/")
+@RequestMapping("/api/v1/myPage")
+@RequiredArgsConstructor
+@Slf4j
 public class MypageSharingController {
 
+     private final MypageSharingService mypageSharingService;
+
+
     @Operation(summary = "나눔 리스트")
-    @GetMapping("/sharingHistory/{id}")
-    public ResponseEntity<?> sharingHistory(@PathVariable long id) {
-        return ResponseEntity.ok().build();
+    @GetMapping("/sharingHistory/{userNickName}")
+    public ResponseEntity<?> sharingHistory(@PathVariable String userNickName) {
+        try {
+            return ResponseEntity.ok(mypageSharingService.mypageSharingList(userNickName));
+        } catch (NullPointerException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
     }
 
     @Operation(summary = "나눔 상세페이지 리스트")
     @GetMapping("/sharingHistoryDetail/{id}")
     public ResponseEntity<?> getListDetail(@PathVariable long id) {
-        return ResponseEntity.ok().build();
+        try {
+            return ResponseEntity.ok(mypageSharingService.mypageSharingDetailList(id));
+        } catch (NullPointerException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
     }
 
     @Operation(summary = "나눔 수정 페이지 리스트")
     @GetMapping("/modify/{id}")
     public ResponseEntity<?> modify( @PathVariable long id) {
-        return ResponseEntity.ok().build();
+        try {
+            return ResponseEntity.ok(mypageSharingService.modifyMyPageSharing(id));
+        } catch (NullPointerException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
     }
 
     @Operation(summary = "나눔하기 업데이트")
