@@ -46,9 +46,10 @@ public class UserController {
         return ResponseEntity.badRequest().build();
     }
 
-    @PostMapping("/logout")
-    public ResponseEntity<?> logout(@RequestParam String userEmail) {
-        refreshTokenRepository.deleteByUserEmail(userEmail);
+    @GetMapping("/logout")
+    public ResponseEntity<?> logout(@CookieValue("refreshToken") String refreshToken) {
+        log.info("refreshToken: {}", refreshToken);
+        refreshTokenRepository.deleteAllByRefreshToken(refreshToken);
         return ResponseEntity.ok("로그아웃 완료");
     }
 

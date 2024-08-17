@@ -95,7 +95,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             return registerNewUser(providerId, userName, userEmail);
         } else {
             log.info("기가입 유저 => 정보 업데이트");
-            return updateExistingUser(existingUser, userName, userEmail);
+            return updateExistingUser(existingUser, userName, userEmail,providerId);
         }
     }
 
@@ -122,11 +122,12 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
                 .build());
     }
 
-    private OAuth2User updateExistingUser(User user, String userName, String userEmail) {
+    private OAuth2User updateExistingUser(User user, String userName, String userEmail,String providerId) {
         user.setUserEmail(userEmail);
         user.setName(userName);
         userRepository.save(user);
         return new CustomUserDetails(UserResponse.builder()
+                .providerId(providerId)
                 .username(userName)
                 .userEmail(userEmail)
                 .build());
