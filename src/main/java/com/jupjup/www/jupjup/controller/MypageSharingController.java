@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
  */
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/v1/myPage/")
 public class MypageSharingController {
 
     @Operation(summary = "나눔 리스트")

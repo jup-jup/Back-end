@@ -28,16 +28,14 @@ public class AuthController {
     private final RefreshReissueService refreshReissueService;
 
     @Operation(summary = "리프레시 토큰 재발급 시 요청 api")
-    @PostMapping("/reissue")
-    public ResponseEntity<String> reissue(@CookieValue("refreshToken") String refreshToken, @RequestBody RefreshToken refreshEntity ,HttpServletResponse resp) {
-
-        log.info("Reissuing token for email: {}", refreshEntity.getUserEmail());
+    @PostMapping("/reissue/{userEmail}")
+    public ResponseEntity<String> reissue(@CookieValue("refreshToken") String refreshToken, @PathVariable String userEmail ,HttpServletResponse resp) {
 
         try {
-            if (refreshReissueService.refreshTokenReissue(refreshToken, refreshEntity.getUserEmail(),resp)) {
+            if (refreshReissueService.refreshTokenReissue(refreshToken, userEmail,resp)) {
                 return ResponseEntity.ok("액세스 토큰 재발급 완료");
             } else {
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("토큰 재발급 실패");
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("토큰 유효기간 만료 재 로그인 하세요.");
             }
         } catch (Exception e) {
             log.error("토큰 재발급 중 오류", e);

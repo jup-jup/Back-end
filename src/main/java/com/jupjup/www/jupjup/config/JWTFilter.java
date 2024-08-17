@@ -10,6 +10,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -55,11 +56,9 @@ public class JWTFilter extends OncePerRequestFilter {
         // 토큰 유효성 검증
         try {
             JWTUtil.validateAccessToken(accessToken);
-        } catch (NullPointerException e) {
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Internal server error");
-            return;
+        // 액세스 토큰 만료시 리프레시토큰으로 재발급
         } catch (ExpiredJwtException | IllegalArgumentException e) {
-            response.sendRedirect("expire");
+            response.sendError(HttpServletResponse.SC_FORBIDDEN,"액세스 토큰 만료");
             return;
         }
 
