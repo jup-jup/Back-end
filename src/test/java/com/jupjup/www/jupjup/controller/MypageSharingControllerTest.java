@@ -1,24 +1,21 @@
 package com.jupjup.www.jupjup.controller;
 
-import com.jupjup.www.jupjup.config.SecurityConfig;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
 
-@WebMvcTest(MyPageController.class)
+@WebMvcTest(MypageSharingController.class)
 @MockBean(JpaMetamodelMappingContext.class) // Jpa 연관 Bean 등록하기
 @AutoConfigureMockMvc(addFilters = false)  // Security 필터 비활성화
-public class MyPageControllerTest {
+class MypageSharingControllerTest {
+
 
     @Autowired
     private MockMvc mockMvc;
@@ -52,4 +49,6 @@ public class MyPageControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/myPage/receivedHistoryDetail/1"))
                 .andExpect(MockMvcResultMatchers.status().isOk());
     }
+
+
 }

@@ -2,6 +2,8 @@ package com.jupjup.www.jupjup.controller;
 
 import com.jupjup.www.jupjup.domain.repository.RefreshTokenRepository;
 import com.jupjup.www.jupjup.service.JoinService;
+import io.swagger.v3.oas.annotations.Operation;
+import jakarta.websocket.OnError;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
@@ -35,6 +37,7 @@ public class UserController {
 //        return ResponseEntity.ok(result);
 //    }
 
+    @Operation(summary = "소셜 로그인 접근 = https://jupjup.store/api/v1/user/login?provider={naver} ")
     @GetMapping("/login")
     public ResponseEntity<?> redirectToAuthorization(@RequestParam String provider) {
         if (SUPPORTED_PROVIDERS.contains(provider.toLowerCase())) {
@@ -46,8 +49,8 @@ public class UserController {
         return ResponseEntity.badRequest().build();
     }
 
-    @PostMapping("/logout")
-    public ResponseEntity<?> logout(@RequestParam String userEmail) {
+    @GetMapping("/logout/{userEmail}")
+    public ResponseEntity<?> logout(@PathVariable String userEmail) {
         refreshTokenRepository.deleteByUserEmail(userEmail);
         return ResponseEntity.ok("로그아웃 완료");
     }
