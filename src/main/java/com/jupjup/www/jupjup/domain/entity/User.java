@@ -13,27 +13,34 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Setter @Getter
+@Setter
+@Getter
 @NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", unique = true, nullable = false)
     private Long id;
-    @Column(nullable = false)
+
+    @Column(name = "provider_key", nullable = false)
     private String providerKey;
-    @Column(nullable = false)
+
+    @Column(name = "name", nullable = false)
     private String name;
-    @Column(nullable = false)
+
+    @Column(name = "user_email", nullable = false)
     private String userEmail;
-    @Column(nullable = false)
+
+    @Column(name = "role", nullable = false)
     private String role;
 
-    @Column(nullable = false)
+    @Column(name = "created_at", nullable = false)
     @CreatedDate
     private LocalDateTime createdAt;
-    @Column(nullable = false)
+
+    @Column(name = "updated_at", nullable = false)
     @LastModifiedDate
     private LocalDateTime updatedAt;
 
@@ -50,5 +57,4 @@ public class User {
         this.userEmail = userEmail;
         this.role = role;
     }
-
 }

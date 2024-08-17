@@ -1,9 +1,8 @@
 package com.jupjup.www.jupjup.controller;
 
 import com.jupjup.www.jupjup.domain.repository.RefreshTokenRepository;
-import com.jupjup.www.jupjup.service.JoinService;
+import com.jupjup.www.jupjup.service.basicLogin.JoinService;
 import io.swagger.v3.oas.annotations.Operation;
-import jakarta.websocket.OnError;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
@@ -49,10 +48,11 @@ public class UserController {
         return ResponseEntity.badRequest().build();
     }
 
-    @GetMapping("/logout")
-    public ResponseEntity<?> logout(@CookieValue("refreshToken") String refreshToken) {
-        log.info("refreshToken: {}", refreshToken);
-        refreshTokenRepository.deleteAllByRefreshToken(refreshToken);
+
+    @GetMapping("/logout/{userEmail}")
+    public ResponseEntity<?> logout(@PathVariable String userEmail) {
+        log.info("userEmail={}", userEmail);
+        refreshTokenRepository.deleteByUserEmail(userEmail);
         return ResponseEntity.ok("로그아웃 완료");
     }
 

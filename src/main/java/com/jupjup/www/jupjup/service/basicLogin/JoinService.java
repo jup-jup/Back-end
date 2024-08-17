@@ -1,4 +1,4 @@
-package com.jupjup.www.jupjup.service;
+package com.jupjup.www.jupjup.service.basicLogin;
 
 import com.jupjup.www.jupjup.model.dto.user.UserResponse;
 import com.jupjup.www.jupjup.domain.repository.RefreshTokenRepository;

@@ -1,12 +1,10 @@
 package com.jupjup.www.jupjup.controller;
 
-import com.jupjup.www.jupjup.domain.entity.RefreshToken;
-import com.jupjup.www.jupjup.service.RefreshReissueService;
+import com.jupjup.www.jupjup.service.refreshService.RefreshReissueService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.annotation.Description;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

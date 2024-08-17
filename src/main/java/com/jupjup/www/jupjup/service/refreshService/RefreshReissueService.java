@@ -1,4 +1,4 @@
-package com.jupjup.www.jupjup.service;
+package com.jupjup.www.jupjup.service.refreshService;
 
 
 import com.jupjup.www.jupjup.config.JWTUtil;
