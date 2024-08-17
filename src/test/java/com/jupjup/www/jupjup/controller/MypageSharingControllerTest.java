@@ -18,10 +18,10 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 
-@WebMvcTest(MyPageController.class)
+@WebMvcTest(MypageSharingController.class)
 @MockBean(JpaMetamodelMappingContext.class) // Jpa 연관 Bean 등록하기
-@AutoConfigureMockMvc(addFilters = false)  // Security 필터 비활성화@
-public class MyPageControllerTest {
+@AutoConfigureMockMvc(addFilters = false)  // Security 필터 비활성화
+public class MypageSharingControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -36,46 +36,49 @@ public class MyPageControllerTest {
 
     @Test
     public void testSharingHistory() throws Exception {
-        mockMvc.perform(get("/api/v1/myPage/sharingHistory"))
+        mockMvc.perform(get("/api/sharingHistory/1"))
                 .andExpect(status().isOk())
-                .andExpect(content().string(""));  // 예상되는 응답 내용이 있다면 여기에 추가
+                .andExpect(content().string(""));  // 예상되는 응답이 있다면 여기에 추가
     }
 
     @Test
     public void testGetListDetail() throws Exception {
-        mockMvc.perform(get("/api/v1/myPage/sharingHistoryDetail/1"))
+        mockMvc.perform(get("/api/sharingHistoryDetail/1"))
                 .andExpect(status().isOk())
-                .andExpect(content().string(""));  // 예상되는 응답 내용이 있다면 여기에 추가
+                .andExpect(content().string(""));  // 예상되는 응답이 있다면 여기에 추가
     }
 
     @Test
     public void testModifyPage() throws Exception {
-        mockMvc.perform(get("/api/v1/myPage/modify"))
+        mockMvc.perform(get("/api/modify/1"))
                 .andExpect(status().isOk())
-                .andExpect(content().string(""));  // 예상되는 응답 내용이 있다면 여기에 추가
+                .andExpect(content().string(""));  // 예상되는 응답이 있다면 여기에 추가
     }
 
     @Test
     public void testModify() throws Exception {
+        MyPageListResponse myPageListResponse = new MyPageListResponse();
+        // 필요한 필드 설정
+        String requestBody = "{}";  // 실제 JSON 데이터로 변환된 myPageListResponse를 사용
 
-        mockMvc.perform(post("/api/v1/myPage/modify/1")
+        mockMvc.perform(post("/api/modify/save")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{}"))  // 실제로는 myPageListResponse 객체를 JSON으로 변환하여 넣어야 합니다.
+                        .content(requestBody))
                 .andExpect(status().isOk())
-                .andExpect(content().string(""));  // 예상되는 응답 내용이 있다면 여기에 추가
+                .andExpect(content().string(""));  // 예상되는 응답이 있다면 여기에 추가
     }
 
     @Test
     public void testReceivedHistory() throws Exception {
-        mockMvc.perform(get("/api/v1/myPage/receivedHistory"))
+        mockMvc.perform(get("/api/receivedHistory/1"))
                 .andExpect(status().isOk())
-                .andExpect(content().string(""));  // 예상되는 응답 내용이 있다면 여기에 추가
+                .andExpect(content().string(""));  // 예상되는 응답이 있다면 여기에 추가
     }
 
     @Test
     public void testReceivedHistoryDetail() throws Exception {
-        mockMvc.perform(get("/api/v1/myPage/receivedHistoryDetail/1"))
+        mockMvc.perform(get("/api/receivedHistoryDetail/1"))
                 .andExpect(status().isOk())
-                .andExpect(content().string(""));  // 예상되는 응답 내용이 있다면 여기에 추가
+                .andExpect(content().string(""));  // 예상되는 응답이 있다면 여기에 추가
     }
 }

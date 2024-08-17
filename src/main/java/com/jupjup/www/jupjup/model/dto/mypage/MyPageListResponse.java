@@ -7,7 +7,9 @@ import lombok.*;
 @Setter
 @Builder
 @AllArgsConstructor
+@NoArgsConstructor
 public class MyPageListResponse {
 
     MyPageListImageResponse myPageListImageResponse;
+
 }
