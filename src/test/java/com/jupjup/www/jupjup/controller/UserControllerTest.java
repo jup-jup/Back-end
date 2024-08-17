@@ -36,10 +36,12 @@ class UserControllerTest {
 
     @Test
     void testLogout() throws Exception {
+
         String userEmail = "test@example.com";
+
         doNothing().when(refreshTokenRepository).deleteByUserEmail(userEmail);
 
-        mockMvc.perform(post("/api/v1/user/logout")
+        mockMvc.perform(post("/api/v1/user/logout/{boram}", userEmail)
                         .param("userEmail", userEmail))
                 .andExpect(status().isOk())
                 .andExpect(content().string("로그아웃 완료"));

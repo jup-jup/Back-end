@@ -2,9 +2,11 @@ package com.jupjup.www.jupjup.controller;
 
 import com.jupjup.www.jupjup.domain.entity.RefreshToken;
 import com.jupjup.www.jupjup.service.RefreshReissueService;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Description;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,6 +27,7 @@ public class AuthController {
 
     private final RefreshReissueService refreshReissueService;
 
+    @Operation(summary = "리프레시 토큰 재발급 시 요청 api")
     @PostMapping("/reissue")
     public ResponseEntity<String> reissue(@CookieValue("refreshToken") String refreshToken, @RequestBody RefreshToken refreshEntity ,HttpServletResponse resp) {
 
