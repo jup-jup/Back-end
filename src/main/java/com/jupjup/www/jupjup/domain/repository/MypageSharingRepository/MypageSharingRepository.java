@@ -1,4 +1,4 @@
-package com.jupjup.www.jupjup.domain.repository;
+package com.jupjup.www.jupjup.domain.repository.MypageSharingRepository;
 
 
 import com.jupjup.www.jupjup.domain.entity.mypage.MyPageSharingList;
@@ -8,7 +8,4 @@ import java.util.List;
 
 public interface MypageSharingRepository extends JpaRepository<MyPageSharingList, Long> {
 
-    List<MyPageSharingList> findAllByUserName(String username);
-
-    MyPageSharingList findById(long id);
 }

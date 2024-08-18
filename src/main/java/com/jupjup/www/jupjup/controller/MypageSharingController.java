@@ -1,7 +1,6 @@
 package com.jupjup.www.jupjup.controller;
 
 
-import com.jupjup.www.jupjup.domain.entity.mypage.MyPageSharingList;
 import com.jupjup.www.jupjup.model.dto.mypage.MyPageListResponse;
 import com.jupjup.www.jupjup.service.mypageSharingService.MypageSharingService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -10,8 +9,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 /**
  * @author : boramkim
@@ -31,6 +28,7 @@ public class MypageSharingController {
     @Operation(summary = "나눔 리스트")
     @GetMapping("/sharingHistory/{userNickName}")
     public ResponseEntity<?> sharingHistory(@PathVariable String userNickName) {
+        log.info("userNickName={}", userNickName);
         try {
             return ResponseEntity.ok(mypageSharingService.mypageSharingList(userNickName));
         } catch (NullPointerException e) {
@@ -50,7 +48,7 @@ public class MypageSharingController {
 
     @Operation(summary = "나눔 수정 페이지 리스트")
     @GetMapping("/modify/{id}")
-    public ResponseEntity<?> modify( @PathVariable long id) {
+    public ResponseEntity<?> modify(@PathVariable long id) {
         try {
             return ResponseEntity.ok(mypageSharingService.modifyMyPageSharing(id));
         } catch (NullPointerException e) {
@@ -61,6 +59,7 @@ public class MypageSharingController {
     @Operation(summary = "나눔하기 업데이트")
     @PostMapping("/modify/save")
     public ResponseEntity<?> modify(@RequestBody MyPageListResponse myPageListResponse) {
+
         return ResponseEntity.ok().build();
     }
 
