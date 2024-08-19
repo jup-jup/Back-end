@@ -38,5 +38,4 @@ out/
 *.log
 
 /logs
-application.yml
 .env
