@@ -36,11 +36,11 @@ public class User {
     @Column(name = "role", nullable = false)
     private String role;
 
-    @Column(name = "created_at", nullable = false)
+    @Column(name = "created_at", columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     @CreatedDate
     private LocalDateTime createdAt;
 
-    @Column(name = "updated_at", nullable = false)
+    @Column(name = "updated_at")
     @LastModifiedDate
     private LocalDateTime updatedAt;
 
