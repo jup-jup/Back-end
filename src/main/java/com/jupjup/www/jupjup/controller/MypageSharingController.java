@@ -46,6 +46,7 @@ public class MypageSharingController {
         }
     }
 
+    // TODO : 이미지 받아 저장하는 방법 확인
     @Operation(summary = "나눔 수정 페이지 리스트")
     @GetMapping("/modify/{id}")
     public ResponseEntity<?> modify(@PathVariable long id) {
