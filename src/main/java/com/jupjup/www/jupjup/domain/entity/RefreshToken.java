@@ -17,6 +17,7 @@ import java.util.Date;
 @NoArgsConstructor
 @Entity
 @EntityListeners(AuditingEntityListener.class)
+@Table(name = "refresh_Token")
 public class RefreshToken {
 
     @Id

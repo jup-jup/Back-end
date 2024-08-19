@@ -20,6 +20,7 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @EnableJpaAuditing
+@Table(name = "my_page_sharing_list")
 public class MyPageSharingList {
 
     @Id

@@ -40,7 +40,7 @@ spring:
             scope: name,email
           kakao:
             client-id: ${KAKAO_CLIENT_ID}
-#            client-secret: ${KAKAO_CLIENT_SECRET} # 오류로 인한 주석 ( 이거 켜놓으니깐 로긴이 안됨 ;; 왜지 )
+            #            client-secret: ${KAKAO_CLIENT_SECRET} # 오류로 인한 주석 ( 이거 켜놓으니깐 로긴이 안됨 ;; 왜지 )
             scope: profile_nickname
             client-name: Kakao
             authorization-grant-type: authorization_code
