@@ -14,12 +14,12 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/giveaways")
+// TODO: 전체 서버 관점에서 /api/v1 prefix 를 사용한다면 application.yml 에서 설정하는 것이 좋아보임
+@RequestMapping("/api/v1/giveaways")
 public class GiveawayController {
-    // TODO: API 별 DTO 정의
 
     // 나눔 리스트
-    @GetMapping("/")
+    @GetMapping("")
     public ResponseEntity<List<GiveawayListResponse>> getList() {
 
         return ResponseEntity
@@ -37,7 +37,7 @@ public class GiveawayController {
     }
 
     // 나눔 올리기
-    @PostMapping("/")
+    @PostMapping("")
     public ResponseEntity<?> addGiveaway(@RequestBody CreateGiveawayRequest request) {
 
         return ResponseEntity

@@ -9,10 +9,11 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/chat-rooms")
+// TODO: 전체 서버 관점에서 /api/v1 prefix 를 사용한다면 application.yml 에서 설정하는 것이 좋아보임
+@RequestMapping("/api/v1/chat-rooms")
 public class ChatRoomController {
 
-    @GetMapping("/")
+    @GetMapping("")
     public ResponseEntity<List<RoomListResponse>> getRooms() {
 
         return ResponseEntity
@@ -28,7 +29,7 @@ public class ChatRoomController {
                 .build();
     }
 
-    @PostMapping("/")
+    @PostMapping("")
     public ResponseEntity<?> createRoom(@RequestBody CreateRoomRequest request) {
 
         return ResponseEntity
