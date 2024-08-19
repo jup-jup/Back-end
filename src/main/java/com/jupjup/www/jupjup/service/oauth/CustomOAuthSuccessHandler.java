@@ -80,9 +80,7 @@ public class CustomOAuthSuccessHandler extends SimpleUrlAuthenticationSuccessHan
                 .build().toUriString();
 
         log.info("redirect url is {}", redirectURL);
-//        response.sendRedirect(redirectURL);
-        response.sendRedirect("http://localhost:8080");
-
+        response.sendRedirect(redirectURL);
     }
 
 }
