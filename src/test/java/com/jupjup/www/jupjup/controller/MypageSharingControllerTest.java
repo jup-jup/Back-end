@@ -73,8 +73,8 @@ public class MypageSharingControllerTest {
 
     @Test
     public void testModifySuccess() throws Exception {
-        Mockito.when(mypageSharingService.modifyMyPageSharing(anyLong()))
-                .thenReturn(new MyPageSharingList());
+//        Mockito.when(mypageSharingService.modifyMyPageSharing(anyLong()))
+//                .thenReturn(new MyPageSharingList());
 
         mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/myPage/modify/1"))
                 .andExpect(status().isOk())

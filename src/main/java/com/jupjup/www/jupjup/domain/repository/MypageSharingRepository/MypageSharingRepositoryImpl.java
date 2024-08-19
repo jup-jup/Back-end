@@ -31,6 +31,7 @@ public class MypageSharingRepositoryImpl implements MypageSharingRepositoryCusto
         return null;
     }
 
+    // TODO : 이미지 받아 저장하는 방법 확인
     @Override
     public List<MyPageSharingList> findSharingListWithImages(long id) {
         return queryFactory
