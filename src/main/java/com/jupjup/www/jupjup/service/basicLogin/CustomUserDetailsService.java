@@ -15,11 +15,12 @@ import org.springframework.stereotype.Service;
 public class CustomUserDetailsService implements UserDetailsService {
 
     private final UserRepository userRepository;
-    
+
     @Override
     public UserDetails loadUserByUsername(String userEmail) throws UsernameNotFoundException {
 
-        com.jupjup.www.jupjup.domain.entity.User user = userRepository.findByUserEmail(userEmail);
+        com.jupjup.www.jupjup.domain.entity.User user = userRepository.findByUserEmail(userEmail)
+                .orElseThrow(() -> new UsernameNotFoundException("user not found with username : " + userEmail));
 
         if (user != null) {
 

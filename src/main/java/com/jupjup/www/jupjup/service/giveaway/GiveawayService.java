@@ -24,10 +24,9 @@ public class GiveawayService {
     private final UserRepository userRepository;
 
     public Giveaway save(CreateGiveawayRequest request, String userEmail) {
-        Long userId = userRepository.findByUserEmail(userEmail).getId();
-        if (userId == null) {
-            throw new IllegalArgumentException("등록되지 않은 유저입니다.");
-        }
+        Long userId = userRepository.findByUserEmail(userEmail)
+                .orElseThrow(() -> new IllegalArgumentException("등록되지 않은 유저입니다."))
+                .getId();
 
         Giveaway giveaway = Giveaway.builder()
                 .title(request.getTitle())
@@ -72,10 +71,22 @@ public class GiveawayService {
 
     @Transactional
     public Giveaway update(Long id, UpdateGiveawayRequest request, String userEmail) {
-        Long userId = userRepository.findByUserEmail(userEmail).getId();
-        if (userId == null) {
-            throw new IllegalArgumentException("등록되지 않은 유저입니다.");
-        }
+        Giveaway giveaway = authorizeGiveawayUser(id, userEmail);
+
+        giveaway.update(request.getTitle(), request.getDescription(), request.getStatus());
+
+        return giveaway;
+    }
+
+    public void delete(Long id, String userEmail) {
+        Giveaway giveaway = authorizeGiveawayUser(id, userEmail);
+        giveawayRepository.delete(giveaway);
+    }
+
+    public Giveaway authorizeGiveawayUser(Long id, String userEmail) {
+        Long userId = userRepository.findByUserEmail(userEmail)
+                .orElseThrow(() -> new IllegalArgumentException("등록되지 않은 유저입니다."))
+                .getId();
 
         Giveaway giveaway = giveawayRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("잘못된 나눔 id"));
@@ -83,8 +94,6 @@ public class GiveawayService {
         if (!userId.equals(giveaway.getGiverId())) {
             throw new IllegalArgumentException("잘못된 유저 요청입니다.");
         }
-
-        giveaway.update(request.getTitle(), request.getDescription(), request.getStatus());
 
         return giveaway;
     }

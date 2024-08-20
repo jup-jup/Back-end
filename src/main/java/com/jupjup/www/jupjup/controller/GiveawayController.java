@@ -88,11 +88,19 @@ public class GiveawayController {
 
     // 나눔 업데이트
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteGiveaway(@PathVariable Long id) {
+    public ResponseEntity<?> deleteGiveaway(@PathVariable Long id, Authentication authentication) {
+        try {
+            CustomUserDetails customOAuth2User = (CustomUserDetails) authentication.getPrincipal();
+            giveawayService.delete(id, customOAuth2User.getUserEmail());
 
-        return ResponseEntity
-                .noContent()
-                .build();
+            return ResponseEntity
+                    .noContent()
+                    .build();
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(e.getMessage());
+        }
     }
 
 }
