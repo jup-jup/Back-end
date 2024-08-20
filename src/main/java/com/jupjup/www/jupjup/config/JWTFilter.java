@@ -29,18 +29,16 @@ public class JWTFilter extends OncePerRequestFilter {
     private static final String BEARER_PREFIX = "Bearer ";
     private final JWTUtil jwtUtil;
 
-    public List<String> list = List.of("api/v1/user", "swagger", "api-docs","/" , "api");
+    public List<String> list = List.of("/", "/login", "api/v1/user", "swagger", "api-docs", "api");
 
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
 
         // 토큰 유효성 체크 불필요한 요청일 경우
-        for(String i : list){
-            if(request.getRequestURI().contains(i)){
-                filterChain.doFilter(request, response);
-                return;
-            }
-         }
+        if (list.contains(request.getRequestURI())) {
+            filterChain.doFilter(request, response);
+            return;
+        }
 
         String authorization = request.getHeader("Authorization");
 
@@ -56,9 +54,9 @@ public class JWTFilter extends OncePerRequestFilter {
         // 토큰 유효성 검증
         try {
             JWTUtil.validateAccessToken(accessToken);
-        // 액세스 토큰 만료시 리프레시토큰으로 재발급
+            // 액세스 토큰 만료시 리프레시토큰으로 재발급
         } catch (ExpiredJwtException | IllegalArgumentException e) {
-            response.sendError(HttpServletResponse.SC_FORBIDDEN,"액세스 토큰 만료");
+            response.sendError(HttpServletResponse.SC_FORBIDDEN, "액세스 토큰 만료");
             return;
         }
 
@@ -67,10 +65,7 @@ public class JWTFilter extends OncePerRequestFilter {
         String role = JWTUtil.getRoleFromAccessToken(accessToken);
 
         // UserDTO 생성 및 값 설정
-        UserResponse userDTO = UserResponse.builder()
-                .username(username)
-                .role(role)
-                .build();
+        UserResponse userDTO = UserResponse.builder().username(username).role(role).build();
 
         // CustomUserDetails 에 회원 정보 객체 담기
         CustomUserDetails customOAuth2User = new CustomUserDetails(userDTO);

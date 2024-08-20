@@ -52,8 +52,8 @@ public class CustomOAuthSuccessHandler extends SimpleUrlAuthenticationSuccessHan
         String role = auth.getAuthority();
 
         // jwt 발급
-        String accessToken = JWTUtil.generateAccessToken(userName, role);
-        String refreshToken = JWTUtil.generateRefreshToken(userName, role);
+        String accessToken = JWTUtil.generateAccessToken(userEmail, role);
+        String refreshToken = JWTUtil.generateRefreshToken(userEmail, role);
 
         // 리프레시 저장
         refreshTokenRepository.save(RefreshToken.builder()
@@ -80,6 +80,7 @@ public class CustomOAuthSuccessHandler extends SimpleUrlAuthenticationSuccessHan
                 .build().toUriString();
 
         log.info("redirect url is {}", redirectURL);
+        log.info("accessToken: {}", accessToken);
 //        response.sendRedirect(redirectURL);
         response.sendRedirect("http://localhost:8080");
 
