@@ -3,9 +3,9 @@ package com.jupjup.www.jupjup.model.dto.user;
 import lombok.*;
 
 @Getter @Setter
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class UserResponse {
     private Long sequence;
     private String providerId;
