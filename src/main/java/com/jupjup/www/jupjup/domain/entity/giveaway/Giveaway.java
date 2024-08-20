@@ -4,17 +4,23 @@ import com.jupjup.www.jupjup.domain.entity.User;
 import com.jupjup.www.jupjup.domain.entity.chat.Room;
 import com.jupjup.www.jupjup.domain.enums.GiveawayStatus;
 import jakarta.persistence.*;
+import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-@Table(name = "giveaway")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+@EntityListeners(AuditingEntityListener.class)
 @Entity
+@Table(name = "giveaway")
 public class Giveaway {
 
     @Id
@@ -22,11 +28,14 @@ public class Giveaway {
     @Column(name = "id", updatable = false)
     private Long id;
 
-    @Column(name = "name", nullable = false)
-    private String name;
+    @Column(name = "title", nullable = false)
+    private String title;
+
+    @Column(name = "description")
+    private String description;
 
     @Column(name = "status")
-    private GiveawayStatus status;
+    private GiveawayStatus status = GiveawayStatus.PENDING;
 
     @OneToMany(mappedBy = "giveaway")
     private List<Room> chatRooms = new ArrayList<>();
@@ -39,9 +48,19 @@ public class Giveaway {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "giver_id")
+    @Builder
+    public Giveaway(String title, String description, Long giverId) {
+        this.title = title;
+        this.description = description;
+        this.giverId = giverId;
+    }
+
+    @JoinColumn(name = "giver_id", insertable = false, updatable = false)
+    @ManyToOne(targetEntity = User.class, fetch = FetchType.LAZY)
     private User giver;
+
+    @Column(name = "giver_id")
+    private Long giverId;
 
     // TODO: 이미지의 저장 구현 방법은 고민해볼 것
     // TODO: cascade & orphanRemoval 에 대한 이해 필요
@@ -53,5 +72,11 @@ public class Giveaway {
     // TODO: 댓글 수 -> 관련 채팅 수인가?
 
     // TODO: 조회 수
+
+    public void update(String title, String description, GiveawayStatus status) {
+        this.title = title;
+        this.description = description;
+        this.status = status;
+    }
 
 }

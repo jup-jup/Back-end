@@ -1,9 +1,7 @@
 package com.jupjup.www.jupjup.service.oauth;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.jupjup.www.jupjup.controller.UserController;
-import com.jupjup.www.jupjup.domain.entity.RefreshToken;
 import com.jupjup.www.jupjup.config.JWTUtil;
+import com.jupjup.www.jupjup.domain.entity.RefreshToken;
 import com.jupjup.www.jupjup.domain.enums.BaseUrl;
 import com.jupjup.www.jupjup.domain.repository.RefreshTokenRepository;
 import jakarta.servlet.http.HttpServletRequest;
@@ -21,7 +19,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.util.*;
+import java.util.Iterator;
 
 /*로그인 성공 시 호출 페이지*/
 @Component
@@ -80,7 +78,9 @@ public class CustomOAuthSuccessHandler extends SimpleUrlAuthenticationSuccessHan
                 .build().toUriString();
 
         log.info("redirect url is {}", redirectURL);
+        log.info("accessToken: {}", accessToken);
         response.sendRedirect(redirectURL);
+
     }
 
 }

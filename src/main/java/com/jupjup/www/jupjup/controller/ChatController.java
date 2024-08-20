@@ -7,7 +7,8 @@ import org.springframework.web.bind.annotation.*;
 import java.net.URI;
 
 @RestController
-@RequestMapping("/chat-rooms/{roomId}/chats") // 메인은 채팅인데 채팅 방을 기준으로 가는 URL 이 괜찮을지..
+// TODO: 전체 서버 관점에서 /api/v1 prefix 를 사용한다면 application.yml 에서 설정하는 것이 좋아보임
+@RequestMapping("/api/v1/chat-rooms/{roomId}/chats") // 메인은 채팅인데 채팅 방을 기준으로 가는 URL 이 괜찮을지..
 public class ChatController {
 
     @GetMapping("/{id}")
@@ -18,7 +19,7 @@ public class ChatController {
                 .build();
     }
 
-    @PostMapping("/")
+    @PostMapping("")
     public ResponseEntity<?> createChat(@PathVariable Long roomId,
                                         @RequestBody CreateChatRequest request) {
 //        return ResponseEntity

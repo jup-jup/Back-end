@@ -31,7 +31,7 @@ public class RefreshToken {
     @Column(name = "provider_id", nullable = false)
     private String providerId;
 
-    @Column(name = "refresh_token", nullable = false)
+    @Column(name = "refresh_token", nullable = false, length = 500)
     private String refreshToken;
 
     @Column(name = "expiration", nullable = false)
