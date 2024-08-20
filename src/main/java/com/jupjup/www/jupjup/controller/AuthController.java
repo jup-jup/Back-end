@@ -26,7 +26,7 @@ public class AuthController {
     private final RefreshReissueService refreshReissueService;
 
     @Operation(summary = "리프레시 토큰 재발급 시 요청 api")
-    @PostMapping("/reissue/{userEmail}")
+    @PostMapping("/reissue/{userEmail}") // TODO: 영효) 개인적인 생각으론 refreshToken 이 넘어오고 userName, userEmail 이 담겨있으니깐 패스파람으로 안받아도 괜찮을 것 같아요
     public ResponseEntity<String> reissue(@CookieValue("refreshToken") String refreshToken, @PathVariable String userEmail ,HttpServletResponse resp) {
 
         try {

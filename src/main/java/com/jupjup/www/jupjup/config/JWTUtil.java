@@ -27,9 +27,9 @@ public class JWTUtil {
     private String accessSecretKey;
     @Value("${jwt.refresh-secret}")
     private String refreshSecretKey;
-    private static final long expirationTime = 30 * 60 * 1000;; // 30분;
+    private static final long expirationTime = 24 * 60 * 60 * 1000; // 개발 환경 24시간
 //    public static final long expirationTime = 60000; // 1분
-    public static final long refreshExpirationTime = 7 * 24 * 60 * 60 * 1000L; //7일
+    public static final long refreshExpirationTime = 7 * 24 * 60 * 60 * 1000L; // 7일
     public static final int COOKIE =30 * 24 * 60 * 60 ; // 30일
 
     private static SecretKey accessEncKey;
@@ -43,17 +43,19 @@ public class JWTUtil {
         refreshEncKey = new SecretKeySpec(refreshSecretKey.getBytes(StandardCharsets.UTF_8), "HmacSHA256");
     }
 
-    public static String generateAccessToken(String userEmail, String role) {
-        return generateToken(userEmail, role, accessEncKey, expirationTime);
+    public static String generateAccessToken(String userName, String userEmail, String role) {
+        return generateToken(userName, userEmail, role, accessEncKey, expirationTime);
     }
 
-    public static String generateRefreshToken(String userEmail, String role) {
-        return generateToken(userEmail, role, refreshEncKey, refreshExpirationTime);
+    public static String generateRefreshToken(String userName, String userEmail, String role) {
+        return generateToken(userName, userEmail, role, refreshEncKey, refreshExpirationTime);
     }
 
-    private static String generateToken(String userEmail, String role, Key key, long expirationTime) {
+    private static String generateToken(String userName, String userEmail, String role, Key key, long expirationTime) {
 
+        // TODO: 일단 claim 에 넣어놨는데 issuer, subject 등 개념 활용해도 괜찮을 것 같네요
         return Jwts.builder()
+                .claim("userName", userName)
                 .claim("userEmail", userEmail)
                 .claim("role", role)
                 // 액세스 토큰 발급 시 리프레시 만료시간 같이 보내 DB접근 줄이기
@@ -112,12 +114,20 @@ public class JWTUtil {
     }
 
 
-    public static String getUsernameFromAccessToken(String token) {
+    public static String getUserNameFromAccessToken(String token) {
+        return extractClaim(token, accessEncKey, "userName");
+    }
+
+    public static String getUserEmailFromAccessToken(String token) {
         return extractClaim(token, accessEncKey, "userEmail");
     }
 
     public static String getRoleFromAccessToken(String token) {
         return extractClaim(token, accessEncKey, "role");
+    }
+
+    public static String getUserNameFromRefreshToken(String token) {
+        return extractClaim(token, accessEncKey, "userName");
     }
 
     public static String getRoleFromRefreshToken(String token) {

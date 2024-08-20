@@ -1,12 +1,16 @@
 package com.jupjup.www.jupjup.model.dto.giveaway;
 
 import com.jupjup.www.jupjup.domain.enums.GiveawayStatus;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
+@AllArgsConstructor
+@Builder
 @Getter
 @Setter
 public class GiveawayListResponse {
@@ -24,5 +28,9 @@ public class GiveawayListResponse {
     private List<String> images; // 이미지 파일 경로
     private Integer chatCnt; // 코멘트 수?
     private Integer viewCnt; // 조회수
+
+    public GiveawayListResponse(Long id) {
+        this.giveawayId = id;
+    }
 
 }

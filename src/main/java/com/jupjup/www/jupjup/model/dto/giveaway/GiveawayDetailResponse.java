@@ -1,12 +1,15 @@
 package com.jupjup.www.jupjup.model.dto.giveaway;
 
+import com.jupjup.www.jupjup.domain.entity.giveaway.Giveaway;
 import com.jupjup.www.jupjup.domain.enums.GiveawayStatus;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Builder
 @Getter
 @Setter
 public class GiveawayDetailResponse {
@@ -22,7 +25,7 @@ public class GiveawayDetailResponse {
 
     private GiveawayStatus status; // 상태
 
-    private String giverId; // 글쓴이 id
+    private Long giverId; // 글쓴이 id
 
     private String giverName; // 글쓴이 이름
 
