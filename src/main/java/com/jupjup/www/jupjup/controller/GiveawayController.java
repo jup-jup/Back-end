@@ -6,7 +6,9 @@ import com.jupjup.www.jupjup.model.dto.giveaway.GiveawayDetailResponse;
 import com.jupjup.www.jupjup.model.dto.giveaway.GiveawayListResponse;
 import com.jupjup.www.jupjup.model.dto.giveaway.UpdateGiveawayRequest;
 import com.jupjup.www.jupjup.service.giveaway.GiveawayService;
+import com.jupjup.www.jupjup.service.oauth.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -44,11 +46,16 @@ public class GiveawayController {
     // 나눔 올리기
     @PostMapping("")
     public ResponseEntity<?> addGiveaway(@RequestBody CreateGiveawayRequest request, Authentication authentication) {
-        Giveaway giveaway = giveawayService.save(request, authentication.getName());
+        try {
+            CustomUserDetails customOAuth2User = (CustomUserDetails) authentication.getPrincipal();
+            Giveaway giveaway = giveawayService.save(request, customOAuth2User.getUserEmail());
 
-        return ResponseEntity
-                .created(URI.create(String.format("/giveaways/%d", giveaway.getId())))
-                .build();
+            return ResponseEntity
+                    .created(URI.create(String.format("/giveaways/%d", giveaway.getId())))
+                    .build();
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
     }
 
     // 나눔 업데이트

@@ -15,8 +15,10 @@ public class GiveawayService {
     private final UserRepository userRepository;
 
     public Giveaway save(CreateGiveawayRequest request, String userEmail) {
-        // TODO: userRepository 쪽이긴한데 해당 유저가 없는 경우도 처리 필요할듯해보임
         Long userId = userRepository.findByUserEmail(userEmail).getId();
+        if (userId == null) {
+            throw new IllegalArgumentException("unregistered user");
+        }
 
         Giveaway giveaway = Giveaway.builder()
                 .title(request.getTitle())
