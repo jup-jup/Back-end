@@ -36,7 +36,9 @@ public class GiveawayController {
                     .created(URI.create(String.format("/giveaways/%d", giveaway.getId())))
                     .build();
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            return ResponseEntity
+                    .status(HttpStatus.UNAUTHORIZED)
+                    .body(e.getMessage());
         }
     }
 
@@ -51,11 +53,17 @@ public class GiveawayController {
 
     // 나눔 상세 페이지
     @GetMapping("/{id}")
-    public ResponseEntity<GiveawayDetailResponse> getGiveaway(@PathVariable Long id) {
-
-        return ResponseEntity
-                .ok()
-                .build();
+    public ResponseEntity<?> getGiveaway(@PathVariable Long id) {
+        try {
+            GiveawayDetailResponse detail = giveawayService.findById(id);
+            return ResponseEntity
+                    .ok()
+                    .body(detail);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(e.getMessage());
+        }
     }
 
     // 나눔 업데이트
