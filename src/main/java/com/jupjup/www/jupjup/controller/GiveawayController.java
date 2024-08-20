@@ -25,24 +25,6 @@ public class GiveawayController {
 
     private final GiveawayService giveawayService;
 
-    // 나눔 리스트
-    @GetMapping("")
-    public ResponseEntity<List<GiveawayListResponse>> getList() {
-
-        return ResponseEntity
-                .ok()
-                .build();
-    }
-
-    // 나눔 상세 페이지
-    @GetMapping("/{id}")
-    public ResponseEntity<GiveawayDetailResponse> getGiveaway(@PathVariable Long id) {
-
-        return ResponseEntity
-                .ok()
-                .build();
-    }
-
     // 나눔 올리기
     @PostMapping("")
     public ResponseEntity<?> addGiveaway(@RequestBody CreateGiveawayRequest request, Authentication authentication) {
@@ -56,6 +38,24 @@ public class GiveawayController {
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
+    }
+
+    // 나눔 리스트
+    @GetMapping("")
+    public ResponseEntity<List<GiveawayListResponse>> getList() {
+        List<GiveawayListResponse> list = giveawayService.findAll();
+        return ResponseEntity
+                .ok()
+                .body(list);
+    }
+
+    // 나눔 상세 페이지
+    @GetMapping("/{id}")
+    public ResponseEntity<GiveawayDetailResponse> getGiveaway(@PathVariable Long id) {
+
+        return ResponseEntity
+                .ok()
+                .build();
     }
 
     // 나눔 업데이트
