@@ -30,13 +30,15 @@ public class RefreshReissueService {
             return false;
         }
 
+        String userName = JWTUtil.getUserNameFromRefreshToken(refreshToken);
+
         // 유저 권한 확인
         String userRole = JWTUtil.getRoleFromRefreshToken(refreshToken);
         String providerId = entity.get(0).getProviderId();
 
         // 액세스 토큰 재발급 및 리프레시 토큰 rotate
-        String newRefreshToken = JWTUtil.generateRefreshToken(userEmail, userRole);
-        String newAccessToken = JWTUtil.generateAccessToken(userEmail, userRole);
+        String newRefreshToken = JWTUtil.generateRefreshToken(userName, userEmail, userRole);
+        String newAccessToken = JWTUtil.generateAccessToken(userName, userEmail, userRole);
 
         // 기존 리프레시 토큰 삭제후 새로운 리프레시 토큰을 저장 (동시성 문제 해결을 위해 원자적으로 처리)
         refreshRepository.deleteAllByRefreshToken(refreshToken);
