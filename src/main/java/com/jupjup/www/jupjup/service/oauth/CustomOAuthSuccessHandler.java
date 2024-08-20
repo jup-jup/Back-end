@@ -1,9 +1,7 @@
 package com.jupjup.www.jupjup.service.oauth;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.jupjup.www.jupjup.controller.UserController;
-import com.jupjup.www.jupjup.domain.entity.RefreshToken;
 import com.jupjup.www.jupjup.config.JWTUtil;
+import com.jupjup.www.jupjup.domain.entity.RefreshToken;
 import com.jupjup.www.jupjup.domain.enums.BaseUrl;
 import com.jupjup.www.jupjup.domain.repository.RefreshTokenRepository;
 import jakarta.servlet.http.HttpServletRequest;
@@ -21,7 +19,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.util.*;
+import java.util.Iterator;
 
 /*로그인 성공 시 호출 페이지*/
 @Component
@@ -52,8 +50,8 @@ public class CustomOAuthSuccessHandler extends SimpleUrlAuthenticationSuccessHan
         String role = auth.getAuthority();
 
         // jwt 발급
-        String accessToken = JWTUtil.generateAccessToken(userEmail, role);
-        String refreshToken = JWTUtil.generateRefreshToken(userEmail, role);
+        String accessToken = JWTUtil.generateAccessToken(userName, userEmail, role);
+        String refreshToken = JWTUtil.generateRefreshToken(userName, userEmail, role);
 
         // 리프레시 저장
         refreshTokenRepository.save(RefreshToken.builder()
@@ -81,8 +79,7 @@ public class CustomOAuthSuccessHandler extends SimpleUrlAuthenticationSuccessHan
 
         log.info("redirect url is {}", redirectURL);
         log.info("accessToken: {}", accessToken);
-//        response.sendRedirect(redirectURL);
-        response.sendRedirect("http://localhost:8080");
+        response.sendRedirect(redirectURL);
 
     }
 

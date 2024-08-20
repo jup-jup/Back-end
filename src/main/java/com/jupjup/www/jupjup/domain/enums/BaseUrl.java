@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 @RequiredArgsConstructor
 public enum BaseUrl {
 
-    REACT("react", "http://localhost:3000");
+    REACT("react", "http://jupjup.shop/");
 
     private final String location;
     private final String url;

@@ -10,7 +10,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -29,7 +28,7 @@ public class JWTFilter extends OncePerRequestFilter {
     private static final String BEARER_PREFIX = "Bearer ";
     private final JWTUtil jwtUtil;
 
-    public List<String> list = List.of("/", "/login", "api/v1/user", "swagger", "api-docs", "api");
+    public List<String> list = List.of("/", "/login", "/api/v1/user", "swagger", "api-docs");
 
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
@@ -61,11 +60,16 @@ public class JWTFilter extends OncePerRequestFilter {
         }
 
         // 토큰에서 username, role 획득
-        String username = JWTUtil.getUsernameFromAccessToken(accessToken);
+        String userName = JWTUtil.getUserNameFromAccessToken(accessToken);
+        String userEmail = JWTUtil.getUserEmailFromAccessToken(accessToken);
         String role = JWTUtil.getRoleFromAccessToken(accessToken);
 
         // UserDTO 생성 및 값 설정
-        UserResponse userDTO = UserResponse.builder().username(username).role(role).build();
+        UserResponse userDTO = UserResponse.builder()
+                .username(userName)
+                .userEmail(userEmail)
+                .role(role)
+                .build();
 
         // CustomUserDetails 에 회원 정보 객체 담기
         CustomUserDetails customOAuth2User = new CustomUserDetails(userDTO);
