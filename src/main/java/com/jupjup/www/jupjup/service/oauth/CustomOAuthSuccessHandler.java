@@ -52,8 +52,8 @@ public class CustomOAuthSuccessHandler extends SimpleUrlAuthenticationSuccessHan
         String role = auth.getAuthority();
 
         // jwt 발급
-        String accessToken = JWTUtil.generateAccessToken(userEmail, role);
-        String refreshToken = JWTUtil.generateRefreshToken(userEmail, role);
+        String accessToken = JWTUtil.generateAccessToken(userName, userEmail, role);
+        String refreshToken = JWTUtil.generateRefreshToken(userName, userEmail, role);
 
         // 리프레시 저장
         refreshTokenRepository.save(RefreshToken.builder()

@@ -10,7 +10,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -29,18 +28,16 @@ public class JWTFilter extends OncePerRequestFilter {
     private static final String BEARER_PREFIX = "Bearer ";
     private final JWTUtil jwtUtil;
 
-    public List<String> list = List.of("api/v1/user", "swagger", "api-docs","/" , "api");
+    public List<String> list = List.of("/", "/login", "/api/v1/user", "swagger", "api-docs");
 
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
 
         // 토큰 유효성 체크 불필요한 요청일 경우
-        for(String i : list){
-            if(request.getRequestURI().contains(i)){
-                filterChain.doFilter(request, response);
-                return;
-            }
-         }
+        if (list.contains(request.getRequestURI())) {
+            filterChain.doFilter(request, response);
+            return;
+        }
 
         String authorization = request.getHeader("Authorization");
 
@@ -56,19 +53,21 @@ public class JWTFilter extends OncePerRequestFilter {
         // 토큰 유효성 검증
         try {
             JWTUtil.validateAccessToken(accessToken);
-        // 액세스 토큰 만료시 리프레시토큰으로 재발급
+            // 액세스 토큰 만료시 리프레시토큰으로 재발급
         } catch (ExpiredJwtException | IllegalArgumentException e) {
-            response.sendError(HttpServletResponse.SC_FORBIDDEN,"액세스 토큰 만료");
+            response.sendError(HttpServletResponse.SC_FORBIDDEN, "액세스 토큰 만료");
             return;
         }
 
         // 토큰에서 username, role 획득
-        String username = JWTUtil.getUsernameFromAccessToken(accessToken);
+        String userName = JWTUtil.getUserNameFromAccessToken(accessToken);
+        String userEmail = JWTUtil.getUserEmailFromAccessToken(accessToken);
         String role = JWTUtil.getRoleFromAccessToken(accessToken);
 
         // UserDTO 생성 및 값 설정
         UserResponse userDTO = UserResponse.builder()
-                .username(username)
+                .username(userName)
+                .userEmail(userEmail)
                 .role(role)
                 .build();
 
