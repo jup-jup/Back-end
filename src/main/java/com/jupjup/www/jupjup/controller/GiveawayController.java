@@ -67,13 +67,23 @@ public class GiveawayController {
     }
 
     // 나눔 업데이트
-    @PutMapping("/{id}")
-    public ResponseEntity<?> updateGiveaway(@PathVariable Long id,
-                                            @RequestBody UpdateGiveawayRequest request) {
+    @PatchMapping("/{id}")
+    public ResponseEntity<?> updateGiveaway(@PathVariable Long id
+            , @RequestBody UpdateGiveawayRequest request
+            , Authentication authentication
+    ) {
+        try {
+            CustomUserDetails customOAuth2User = (CustomUserDetails) authentication.getPrincipal();
+            Giveaway giveaway = giveawayService.update(id, request, customOAuth2User.getUserEmail());
 
-        return ResponseEntity
-                .ok()
-                .build();
+            return ResponseEntity
+                    .noContent()
+                    .build();
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(e.getMessage());
+        }
     }
 
     // 나눔 업데이트

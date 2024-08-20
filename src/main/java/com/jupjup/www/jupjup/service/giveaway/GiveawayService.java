@@ -7,6 +7,8 @@ import com.jupjup.www.jupjup.domain.repository.UserRepository;
 import com.jupjup.www.jupjup.model.dto.giveaway.CreateGiveawayRequest;
 import com.jupjup.www.jupjup.model.dto.giveaway.GiveawayDetailResponse;
 import com.jupjup.www.jupjup.model.dto.giveaway.GiveawayListResponse;
+import com.jupjup.www.jupjup.model.dto.giveaway.UpdateGiveawayRequest;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -50,7 +52,7 @@ public class GiveawayService {
 
     public GiveawayDetailResponse findById(Long id) {
         Giveaway giveaway = giveawayRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("없는 나눔 id"));
+                .orElseThrow(() -> new IllegalArgumentException("잘못된 나눔 id"));
 
         // TODO: 일단 예외처리는 했는데 탈퇴한 유저 같은 경우?
         User giver = userRepository.findById(giveaway.getGiverId())
@@ -66,6 +68,25 @@ public class GiveawayService {
                 .giverName(giver.getName())
                 .createdAt(giveaway.getCreatedAt())
                 .build();
+    }
+
+    @Transactional
+    public Giveaway update(Long id, UpdateGiveawayRequest request, String userEmail) {
+        Long userId = userRepository.findByUserEmail(userEmail).getId();
+        if (userId == null) {
+            throw new IllegalArgumentException("등록되지 않은 유저입니다.");
+        }
+
+        Giveaway giveaway = giveawayRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("잘못된 나눔 id"));
+
+        if (!userId.equals(giveaway.getGiverId())) {
+            throw new IllegalArgumentException("잘못된 유저 요청입니다.");
+        }
+
+        giveaway.update(request.getTitle(), request.getDescription(), request.getStatus());
+
+        return giveaway;
     }
 
 }

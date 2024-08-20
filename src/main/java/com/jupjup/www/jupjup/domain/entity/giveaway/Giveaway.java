@@ -73,4 +73,10 @@ public class Giveaway {
 
     // TODO: 조회 수
 
+    public void update(String title, String description, GiveawayStatus status) {
+        this.title = title;
+        this.description = description;
+        this.status = status;
+    }
+
 }
