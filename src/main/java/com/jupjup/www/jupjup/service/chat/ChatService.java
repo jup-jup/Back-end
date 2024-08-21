@@ -20,6 +20,24 @@ public class ChatService {
     private final UserChatRoomRepository userChatRoomRepository;
     private final UserRepository userRepository;
 
+    public Chat add(Long roomId, String content, String userEmail) {
+        // TODO: 중복 코드 제거 확인
+        // 유저 정보 호출
+        Long userId = userRepository.findByUserEmail(userEmail)
+                .orElseThrow(() -> new IllegalArgumentException("잘못된 유저입니다."))
+                .getId();
+
+        // TODO: 소켓으로 채팅 전송
+
+        Chat chat = Chat.builder()
+                .roomId(roomId)
+                .userId(userId)
+                .content(content)
+                .build();
+
+        return chatRepository.save(chat);
+    }
+
     public List<ChatList> chatList(Pageable pageable, Long roomId, String userEmail) {
         // 유저 정보 호출
         Long userId = userRepository.findByUserEmail(userEmail)

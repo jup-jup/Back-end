@@ -1,5 +1,6 @@
 package com.jupjup.www.jupjup.controller;
 
+import com.jupjup.www.jupjup.domain.entity.chat.Chat;
 import com.jupjup.www.jupjup.model.dto.chat.ChatList;
 import com.jupjup.www.jupjup.model.dto.chat.CreateChatRequest;
 import com.jupjup.www.jupjup.service.chat.ChatService;
@@ -10,6 +11,7 @@ import org.springdoc.core.converters.models.PageableAsQueryParam;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.user.OAuth2User;
@@ -26,10 +28,32 @@ public class ChatController {
 
     private final ChatService chatService;
 
+    @PostMapping("")
+    public ResponseEntity<?> createChat(
+            @PathVariable Long roomId,
+            @RequestBody CreateChatRequest request,
+            Authentication authentication
+    ) {
+        try {
+            CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
+            Chat chat = chatService.add(roomId, request.getContent(), customUserDetails.getUserEmail());
+
+            URI location = URI.create(String.format("/chat-rooms/%d/chats/%d", roomId, chat.getId()));
+
+            return ResponseEntity
+                    .created(location)
+                    .build();
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity
+                    .status(HttpStatus.UNAUTHORIZED)
+                    .body(e.getMessage());
+        }
+    }
+
     @GetMapping("")
     public ResponseEntity<List<ChatList>> getChatList(
             @PathVariable Long roomId,
-            @PageableDefault(sort = "created_at", direction = Sort.Direction.DESC) Pageable pageable,
+            @PageableDefault(sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable,
             Authentication authentication
     ) {
         CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
@@ -45,23 +69,6 @@ public class ChatController {
 
         return ResponseEntity
                 .ok()
-                .build();
-    }
-
-    @PostMapping("")
-    public ResponseEntity<?> createChat(
-            @PathVariable Long roomId,
-            @RequestBody CreateChatRequest request
-    ) {
-//        return ResponseEntity
-//                // TODO : 보람=> 이 부분 수정해야할 것 같아요 URL 만드는게 아마도 {} 내부 변수 값 인식 못할 것 같아용
-//                .created(URI.create("/rooms/{roomId}/chats/{chatId}"))
-//                .build();
-        Long chatId = null;
-        URI location = URI.create(String.format("/chat-rooms/%d/chats/%d", roomId, chatId));
-
-        return ResponseEntity
-                .created(location)
                 .build();
     }
 

@@ -2,14 +2,19 @@ package com.jupjup.www.jupjup.domain.entity.chat;
 
 import com.jupjup.www.jupjup.domain.entity.User;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
-@Table(name = "user_chat_room")
+@RequiredArgsConstructor
 @Getter
 @Entity
+@Table(name = "user_chat_room")
 public class UserChatRoom {
 
     @Id
@@ -31,8 +36,14 @@ public class UserChatRoom {
     @Column(name = "room_id")
     private Long roomId;
 
-    @CreatedDate
+    @CreationTimestamp
     @Column(name = "created_at")
     private LocalDateTime created_at;
+
+    @Builder
+    public UserChatRoom(Long roomId, Long userId) {
+        this.roomId = roomId;
+        this.userId = userId;
+    }
 
 }
