@@ -21,7 +21,8 @@ public class RefreshReissueService {
     public boolean refreshTokenReissue(String refreshToken, String userEmail, HttpServletResponse resp) {
 
         List<RefreshToken> entity = refreshRepository.findByUserEmailAndRefreshToken(userEmail, refreshToken);
-
+        String userNameFromRefreshToken = JWTUtil.getUserNameFromRefreshToken(refreshToken);
+        log.info("refreshTokenReissue: userNameFromRefreshToken={}", userNameFromRefreshToken);
         log.info("entity={}", entity.stream().toList());
 
         // refresh 토큰 유효성 체크
@@ -52,7 +53,7 @@ public class RefreshReissueService {
         log.info("New refresh token has been added");
 
         resp.addHeader("Authorization", "Bearer " + newAccessToken);
-        resp.addCookie(JWTUtil.createCookie(newRefreshToken));
+        resp.addCookie(JWTUtil.getCookieFromRefreshToken(newRefreshToken));
 
         return true;
     }

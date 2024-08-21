@@ -22,17 +22,4 @@ public class UserResponse {
         this.role = role;
     }
 
-    @Override
-    public String toString() {
-        return "UserResponse{" +
-                "sequence=" + sequence +
-                ", providerId='" + providerId + '\'' +
-                ", userEmail='" + userEmail + '\'' +
-                ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", role='" + role + '\'' +
-                ", picture='" + picture + '\'' +
-                '}';
-    }
-
 }

@@ -1,7 +1,8 @@
 package com.jupjup.www.jupjup.controller;
 
 
-import com.jupjup.www.jupjup.model.dto.mypage.MyPageListResponse;
+import com.jupjup.www.jupjup.model.dto.mypage.MyPageSharingListRequest;
+import com.jupjup.www.jupjup.model.dto.mypage.MyPageSharingListResponse;
 import com.jupjup.www.jupjup.service.mypageSharingService.MypageSharingService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
@@ -22,57 +23,47 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 public class MypageSharingController {
 
-     private final MypageSharingService mypageSharingService;
+    private final MypageSharingService mypageSharingService;
 
 
     @Operation(summary = "나눔 리스트")
-    @GetMapping("/sharingHistory/{userNickName}")
-    public ResponseEntity<?> sharingHistory(@PathVariable String userNickName) {
-        log.info("userNickName={}", userNickName);
-        try {
-            return ResponseEntity.ok(mypageSharingService.mypageSharingList(userNickName));
-        } catch (NullPointerException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
+    @GetMapping("/sharingHistory/{username}")
+    public ResponseEntity<?> sharingHistory(@PathVariable String username) {
+        return ResponseEntity.ok(mypageSharingService.getMyPageSharingListByUser(username));
     }
 
     @Operation(summary = "나눔 상세페이지 리스트")
     @GetMapping("/sharingHistoryDetail/{id}")
     public ResponseEntity<?> getListDetail(@PathVariable long id) {
-        try {
-            return ResponseEntity.ok(mypageSharingService.mypageSharingDetailList(id));
-        } catch (NullPointerException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
+        return ResponseEntity.ok(mypageSharingService.getMyPageSharingById(id));
     }
 
-    // TODO : 이미지 받아 저장하는 방법 확인
-    @Operation(summary = "나눔 수정 페이지 리스트")
+    // TODO : 이미지 업로드 불러오기 추후 개발
+    @Operation(summary = "나눔 수정 페이지")
     @GetMapping("/modify/{id}")
     public ResponseEntity<?> modify(@PathVariable long id) {
-        try {
-            return ResponseEntity.ok(mypageSharingService.modifyMyPageSharing(id));
-        } catch (NullPointerException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
+        return ResponseEntity.ok(mypageSharingService.getMyPageSharingById(id));
     }
 
     @Operation(summary = "나눔하기 업데이트")
     @PostMapping("/modify/save")
-    public ResponseEntity<?> modify(@RequestBody MyPageListResponse myPageListResponse) {
-
-        return ResponseEntity.ok().build();
+    // TODO : 이미지 업로드 추후 개발
+    public ResponseEntity<?> modify(@RequestBody MyPageSharingListRequest myPageSharingListRequest) {
+        if (mypageSharingService.modifySharedItem(myPageSharingListRequest)){
+            return ResponseEntity.ok().build();
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 
     @Operation(summary = "받은 내역 리스트")
     @GetMapping("/receivedHistory/{id}")
-    public ResponseEntity<?> receivedHistory(@PathVariable long id) {
-        return ResponseEntity.ok().build();
+    public ResponseEntity<?> receivedHistory(@PathVariable Long id) {
+        return ResponseEntity.ok(mypageSharingService.getMyPageSharingById(id));
     }
 
     @Operation(summary = "받은 내역 상세 리스트")
     @GetMapping("/receivedHistoryDetail/{id}")
     public ResponseEntity<?> receivedHistoryDetail(@PathVariable long id) {
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(mypageSharingService.getMyPageSharingById(id));
     }
 }

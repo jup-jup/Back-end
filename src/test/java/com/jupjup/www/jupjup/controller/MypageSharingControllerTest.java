@@ -1,7 +1,7 @@
 package com.jupjup.www.jupjup.controller;
 
 import com.jupjup.www.jupjup.domain.entity.mypage.MyPageSharingList;
-import com.jupjup.www.jupjup.model.dto.mypage.MyPageListResponse;
+import com.jupjup.www.jupjup.model.dto.mypage.MyPageSharingListResponse;
 import com.jupjup.www.jupjup.service.mypageSharingService.MypageSharingService;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -15,7 +15,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.util.Collections;
-import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -92,7 +91,7 @@ public class MypageSharingControllerTest {
 
     @Test
     public void testModifySave() throws Exception {
-        MyPageListResponse myPageListResponse = new MyPageListResponse();
+        MyPageSharingListResponse myPageListResponse = new MyPageSharingListResponse();
 
         mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/myPage/modify/save")
                         .contentType(MediaType.APPLICATION_JSON)

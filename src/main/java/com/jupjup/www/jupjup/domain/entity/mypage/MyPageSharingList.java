@@ -1,9 +1,7 @@
 package com.jupjup.www.jupjup.domain.entity.mypage;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
@@ -19,6 +17,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 @EnableJpaAuditing
 @Table(name = "my_page_sharing_list")
 public class MyPageSharingList {
@@ -60,4 +59,10 @@ public class MyPageSharingList {
     @Column(name = "view_count", nullable = false)
     private Long viewCount;  // 조회 수
 
+    @Builder
+    public MyPageSharingList(String title, String content, String imageUrl ,String tradeLocation) {
+        this.title = title;
+        this.content = content;
+        this.tradeLocation = tradeLocation;
+    }
 }

@@ -40,5 +40,16 @@ public class MypageSharingRepositoryImpl implements MypageSharingRepositoryCusto
                 .fetch();
     }
 
+    public boolean updateItem(MyPageSharingList myPageSharingList) {
+        long affectedRows = queryFactory
+                .update(QMyPageSharingList.myPageSharingList)
+                .set(QMyPageSharingList.myPageSharingList.title, myPageSharingList.getTitle())
+                .set(QMyPageSharingList.myPageSharingList.content, myPageSharingList.getContent())
+                .where(QMyPageSharingList.myPageSharingList.id.eq(myPageSharingList.getId()))
+                .execute();
+
+        return affectedRows > 0;
+    }
+
 
 }

@@ -28,19 +28,22 @@ public class JWTFilter extends OncePerRequestFilter {
     private static final String BEARER_PREFIX = "Bearer ";
     private final JWTUtil jwtUtil;
 
-    public List<String> list = List.of("/", "/login", "/api/v1/user", "swagger", "api-docs");
+    public List<String> list = List.of("/", "/login", "/api/v1/user/login", "swagger", "api-docs");
 
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
 
+        log.info("request.getRequestURI() = {}", request.getRequestURI());
         // 토큰 유효성 체크 불필요한 요청일 경우
-        if (list.contains(request.getRequestURI())) {
-            filterChain.doFilter(request, response);
-            return;
+        for (String i : list) {
+            if (i.contains(request.getRequestURI())) {
+                filterChain.doFilter(request, response);
+                return;
+            }
         }
 
         String authorization = request.getHeader("Authorization");
-
+        log.info("authorization = {}", authorization);
         // Authorization 헤더 검증
         if (authorization == null || !authorization.startsWith(BEARER_PREFIX)) {
             log.error("Token is null or does not start with 'Bearer ' | className = {}", getClass());

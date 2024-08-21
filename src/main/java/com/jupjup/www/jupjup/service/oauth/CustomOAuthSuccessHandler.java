@@ -62,23 +62,17 @@ public class CustomOAuthSuccessHandler extends SimpleUrlAuthenticationSuccessHan
                 .build());
 
 
-        // HttpHeaders 객체 생성
-        HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.SET_COOKIE, JWTUtil.createCookie(refreshToken).toString());
+        // 액세스,리프레시 로그인 1회성 쿠키에 넣어 발송
+        response.addCookie(JWTUtil.getCookieFromRefreshToken(refreshToken));
+        response.addCookie(JWTUtil.getCookieFromAccessToken(accessToken));
 
-        // 쿼리 스트링에 포함할 값을 URL 인코딩합니다.
-        String encodedUsername = URLEncoder.encode(userName, StandardCharsets.UTF_8);
-        String encodedUserEmail = URLEncoder.encode(userEmail, StandardCharsets.UTF_8);
-        String encodedAccessToken = URLEncoder.encode(accessToken, StandardCharsets.UTF_8);
-
-        String redirectURL = UriComponentsBuilder.fromUriString(BaseUrl.REACT.getUrl())
-                .queryParam("access_token", encodedAccessToken)
-                .queryParam("userEmail", encodedUserEmail)
-                .queryParam("userName", encodedUsername)
-                .build().toUriString();
+        // 리다이렉트할 URL 설정
+        String redirectURL = BaseUrl.REACT.getUrl();
 
         log.info("redirect url is {}", redirectURL);
         log.info("accessToken: {}", accessToken);
+
+        // 리다이렉트
         response.sendRedirect(redirectURL);
 
     }

@@ -134,9 +134,16 @@ public class JWTUtil {
         return extractClaim(token, refreshEncKey, "role");
     }
 
+    public static Cookie getCookieFromAccessToken(String accessToken) {
+        return createCookie(accessToken,"accessToken");
 
-    public static Cookie createCookie(String refreshToken) {
-        Cookie refreshTokenCookie = new Cookie("refreshToken", refreshToken);
+    }
+    public static Cookie getCookieFromRefreshToken(String refreshToken) {
+        return createCookie(refreshToken,"refreshToken");
+    }
+
+    public static Cookie createCookie(String token, String type) {
+        Cookie refreshTokenCookie = new Cookie(type, token);
         refreshTokenCookie.setHttpOnly(true); // JavaScript 에서 접근하지 못하도록 설정
         refreshTokenCookie.setSecure(true); // HTTPS 를 통해서만 전송되도록 설정
         refreshTokenCookie.setPath("/"); // 하위 모든 경로 쿠키 유효
