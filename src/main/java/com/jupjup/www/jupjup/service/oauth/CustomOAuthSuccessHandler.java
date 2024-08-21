@@ -29,13 +29,11 @@ public class CustomOAuthSuccessHandler extends SimpleUrlAuthenticationSuccessHan
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
         // OAuth2User
         CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
-        if (authentication instanceof OAuth2AuthenticationToken oauthToken) {
-            log.info("oauthToken: {}", oauthToken.getPrincipal());
-            log.info("oauthToken.getAuthorizedClientRegistrationId() = {}", oauthToken.getAuthorizedClientRegistrationId());
-        }
+
         String userName = customUserDetails.getName();
         String userEmail = customUserDetails.getUserEmail();
         String providerId = customUserDetails.getProviderId();
+
         log.info("providerId: {}", providerId);
 
         // 권한 (USER, ADMIN)

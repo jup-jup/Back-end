@@ -28,15 +28,15 @@ public class JWTFilter extends OncePerRequestFilter {
     private static final String BEARER_PREFIX = "Bearer ";
     private final JWTUtil jwtUtil;
 
-    public List<String> list = List.of("/", "/login", "/api/v1/user/login", "swagger", "api-docs");
+    public List<String> list = List.of("/", "/login", "/api/v1/user", "/swagger", "/api-docs");
 
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
 
         log.info("request.getRequestURI() = {}", request.getRequestURI());
         // 토큰 유효성 체크 불필요한 요청일 경우
-        for (String i : list) {
-            if (i.contains(request.getRequestURI())) {
+        for(String i : list){
+            if(request.getRequestURI().contains(i)){
                 filterChain.doFilter(request, response);
                 return;
             }

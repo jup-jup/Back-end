@@ -36,12 +36,13 @@ public class MypageSharingService {
     }
 
     public boolean modifySharedItem(MyPageSharingListRequest myPageSharingListRequest) {
-        return MypageSharingRepositoryImpl.updateItem(MyPageSharingList.builder()
-                .title(myPageSharingListRequest.getTitle())
-                .content(myPageSharingListRequest.getContent())
-                .tradeLocation(myPageSharingListRequest.getTradeLocation())
-                .build());
+        log.info("modifySharedItem: {}", myPageSharingListRequest.toString());
+        try {
+            MypageSharingRepositoryImpl.updateItem(myPageSharingListRequest);
+        } catch (IllegalArgumentException e) {
+            log.info(e.toString());
+            return false;
+        }
+        return true;
     }
-
-
 }

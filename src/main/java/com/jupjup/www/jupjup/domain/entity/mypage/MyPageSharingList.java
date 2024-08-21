@@ -60,9 +60,28 @@ public class MyPageSharingList {
     private Long viewCount;  // 조회 수
 
     @Builder
-    public MyPageSharingList(String title, String content, String imageUrl ,String tradeLocation) {
+    public MyPageSharingList(Long id, String title, String content, String imageUrl ,String tradeLocation) {
+        this.id = id;
         this.title = title;
         this.content = content;
         this.tradeLocation = tradeLocation;
+    }
+
+
+    @Override
+    public String toString() {
+        return "MyPageSharingList{" +
+                "id=" + id +
+                ", userName='" + userName + '\'' +
+                ", title='" + title + '\'' +
+                ", content='" + content + '\'' +
+                ", imageUrl='" + imageUrl + '\'' +
+                ", createdDate=" + createdDate +
+                ", updatedDate=" + updatedDate +
+                ", tradeLocation='" + tradeLocation + '\'' +
+                ", reservationStatus='" + reservationStatus + '\'' +
+                ", chatCount=" + chatCount +
+                ", viewCount=" + viewCount +
+                '}';
     }
 }
