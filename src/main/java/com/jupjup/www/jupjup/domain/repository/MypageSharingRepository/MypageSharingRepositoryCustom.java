@@ -10,7 +10,6 @@ import java.util.List;
 public interface MypageSharingRepositoryCustom {
 
     List<MyPageSharingList> findAllByUserName(String username);
-    MyPageSharingList findById(long id);
     List<MyPageSharingList> findSharingListWithImages(long id);
 
 }

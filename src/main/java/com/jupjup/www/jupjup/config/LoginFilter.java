@@ -109,7 +109,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
         refreshRepository.save(refreshEntity);
 
-        response.addCookie(JWTUtil.createCookie(refreshToken));
+        response.addCookie(JWTUtil.getCookieFromRefreshToken(refreshToken));
         response.addHeader("Authorization", "Bearer " + accessToken);
         response.setStatus(HttpServletResponse.SC_OK);
     }
