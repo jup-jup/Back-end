@@ -1,6 +1,7 @@
 package com.jupjup.www.jupjup.controller;
 
 
+import com.jupjup.www.jupjup.config.JWTUtil;
 import com.jupjup.www.jupjup.model.dto.mypage.MyPageSharingListRequest;
 import com.jupjup.www.jupjup.service.mypageService.MypageSharingService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -26,9 +27,11 @@ public class MypageController {
 
 
     @Operation(summary = "나눔 리스트")
-    @GetMapping("/sharingHistory/{username}")
-    public ResponseEntity<?> sharingHistory(@PathVariable String username) {
+    @GetMapping("/sharingHistory")
+    public ResponseEntity<?> sharingHistory(@RequestHeader("Authorization") String accessToken) {
+        String username = JWTUtil.getUserNameFromAccessToken(accessToken.substring(7).trim());
         return ResponseEntity.ok(mypageSharingService.getMyPageSharingListByUserName(username));
+
     }
 
     @Operation(summary = "나눔 상세페이지 리스트")
@@ -55,9 +58,9 @@ public class MypageController {
     }
 
     @Operation(summary = "받은 내역 리스트")
-    @GetMapping("/receivedHistory/{username}")
-    public ResponseEntity<?> receivedHistory(@PathVariable String username) {
-        log.info("username {}", username);
+    @GetMapping("/history/received")
+    public ResponseEntity<?> receivedHistory(@RequestHeader("Authorization") String accessToken) {
+        String username = JWTUtil.getUserNameFromAccessToken(accessToken.substring(7).trim());
         return ResponseEntity.ok(mypageSharingService.getMyPageReceivedListByUserName(username));
     }
 
