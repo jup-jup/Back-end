@@ -17,13 +17,19 @@ public class UserChatRoom {
     @Column(name = "id", updatable = false)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", insertable = false, updatable = false)
+    @ManyToOne(targetEntity = User.class, fetch = FetchType.LAZY)
     private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "room_id")
+    @Column(name = "user_id")
+    private Long userId;
+
+    @JoinColumn(name = "room_id", insertable = false, updatable = false)
+    @ManyToOne(targetEntity = Room.class, fetch = FetchType.LAZY)
     private Room room;
+
+    @Column(name = "room_id")
+    private Long roomId;
 
     @CreatedDate
     @Column(name = "created_at")

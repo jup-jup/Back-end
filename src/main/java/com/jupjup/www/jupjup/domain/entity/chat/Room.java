@@ -25,9 +25,12 @@ public class Room {
     @OneToMany(mappedBy = "room")
     private List<Chat> chats = new ArrayList<>();
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "giveaway_id")
+    @JoinColumn(name = "giveaway_id", insertable = false, updatable = false)
+    @ManyToOne(targetEntity = Giveaway.class, fetch = FetchType.LAZY)
     private Giveaway giveaway;
+
+    @Column(name = "giveaway_id")
+    private Long giveawayId;
 
     @CreatedDate
     private LocalDateTime created_at;
