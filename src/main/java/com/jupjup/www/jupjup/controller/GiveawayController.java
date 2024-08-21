@@ -8,6 +8,9 @@ import com.jupjup.www.jupjup.model.dto.giveaway.UpdateGiveawayRequest;
 import com.jupjup.www.jupjup.service.giveaway.GiveawayService;
 import com.jupjup.www.jupjup.service.oauth.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -44,8 +47,10 @@ public class GiveawayController {
 
     // 나눔 리스트
     @GetMapping("")
-    public ResponseEntity<List<GiveawayListResponse>> getList() {
-        List<GiveawayListResponse> list = giveawayService.findAll();
+    public ResponseEntity<List<GiveawayListResponse>> getList(
+            @PageableDefault(size = 30, sort = "created_at", direction = Sort.Direction.DESC) Pageable pageable
+    ) {
+        List<GiveawayListResponse> list = giveawayService.findAll(pageable);
         return ResponseEntity
                 .ok()
                 .body(list);
