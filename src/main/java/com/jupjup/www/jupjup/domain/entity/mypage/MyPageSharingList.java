@@ -19,7 +19,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @EnableJpaAuditing
-@Table(name = "my_page_sharing_list")
+@Table(name = "mypage_sharing_list")
 public class MyPageSharingList {
 
     @Id

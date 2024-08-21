@@ -1,13 +1,14 @@
 package com.jupjup.www.jupjup.model.dto.mypage;
 
 
-import lombok.*;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter @Setter
 @Builder
-@NoArgsConstructor
-@AllArgsConstructor
-public class MyPageSharingListRequest {
+public class MypageReceivedListRequest {
+
     private Long id;                // 게시글 번호
     private String title ;          // 제목
     private String content ;        // 내용

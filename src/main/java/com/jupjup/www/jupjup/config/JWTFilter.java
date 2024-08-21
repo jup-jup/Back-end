@@ -38,9 +38,12 @@ public class JWTFilter extends OncePerRequestFilter {
         for(String i : list){
             if(request.getRequestURI().contains(i)){
                 filterChain.doFilter(request, response);
+                log.info("JWT 토큰 유효성 검사 대상이 아닙니다.");
                 return;
             }
         }
+
+        log.info("JWT 유효성 검사 진행");
 
         String authorization = request.getHeader("Authorization");
         log.info("authorization = {}", authorization);
