@@ -12,9 +12,11 @@ import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
+import javax.naming.AuthenticationException;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Date;
+import java.util.NoSuchElementException;
 
 /**
  * JWT 발행 및 유효성 검증
@@ -53,9 +55,11 @@ public class JWTUtil {
     }
 
     private static String generateToken(String userName, String userEmail, String role, Key key, long expirationTime) {
-
-        // TODO: 일단 claim 에 넣어놨는데 issuer, subject 등 개념 활용해도 괜찮을 것 같네요
         return Jwts.builder()
+                // TODO : id 값만 사용하여 처리함
+//                .subject(userEmail)
+//                .subject(userName)
+//                .subject(role)
                 .claim("userName", userName)
                 .claim("userEmail", userEmail)
                 .claim("role", role)
@@ -71,8 +75,7 @@ public class JWTUtil {
     // 리프레시 토큰 DB 저
     public static Date RefreshTokenExTimeCul(String refresh) {
         // 현재 시간에 만료 시간을 더하여 Date 객체 생성
-        Date expirationDate = new Date(System.currentTimeMillis() + refreshExpirationTime);
-        return expirationDate;
+        return new Date(System.currentTimeMillis() + refreshExpirationTime);
 
     }
 
@@ -80,23 +83,29 @@ public class JWTUtil {
         validateToken(token, accessEncKey);
     }
 
-    public static boolean validateRefreshToken(String token){
-        return validateToken(token, refreshEncKey);
+    public static void validateRefreshToken(String token){
+        validateToken(token, refreshEncKey);
     }
 
-    private static String extractClaim(String token, Object keyValue, String role) {
-        if (keyValue instanceof SecretKey key) {
-            return Jwts.parser()
-                    .verifyWith(key)
-                    .build()
-                    .parseSignedClaims(token)
-                    .getPayload()
-                    .get(role, String.class);
+    private static String extractClaim(String token, Object keyValue, String value) {
+        try {
+            if (keyValue instanceof SecretKey key) {
+                return Jwts.parser()
+                        .verifyWith(key)
+                        .build()
+                        .parseSignedClaims(token)
+                        .getPayload()
+                        .get(value, String.class);
+            }
+            throw new IllegalArgumentException("The provided keyValue is not a valid SecretKey.");
+        } catch (ExpiredJwtException e) {
+            // 토큰이 만료된 경우 처리
+            log.info("토큰 만료 {}", e.getMessage());
+            throw e ;
         }
-        throw new NullPointerException("Invalid claim");
     }
 
-    private static boolean validateToken(String token, SecretKey key) {
+    private static void validateToken(String token, SecretKey key) {
         try {
             Date expiration = Jwts.parser()
                     .verifyWith(key)
@@ -104,13 +113,9 @@ public class JWTUtil {
                     .parseSignedClaims(token)
                     .getPayload()
                     .getExpiration();
-            return expiration.before(new Date());
-        } catch (ExpiredJwtException e) {
-            log.error("만료되었거나 유효하지 않은 토큰", e);
-            return true; // 만료되었거나 유효하지 않은 토큰으로 간주
-        } catch (NullPointerException e){
+         expiration.before(new Date());
+        } catch (NullPointerException e) {
             log.error("토큰이 비어 있습니다.", e);
-            return true;
         }
     }
 
@@ -119,16 +124,20 @@ public class JWTUtil {
         return extractClaim(token, accessEncKey, "userName");
     }
 
+    public static String getUserNameFromRefreshToken(String token) {
+        return extractClaim(token, refreshEncKey, "userName");
+    }
+
     public static String getUserEmailFromAccessToken(String token) {
         return extractClaim(token, accessEncKey, "userEmail");
     }
 
-    public static String getRoleFromAccessToken(String token) {
-        return extractClaim(token, accessEncKey, "role");
+    public static String getUserEmailFromRefreshToken(String token) {
+        return extractClaim(token, refreshEncKey, "userEmail");
     }
 
-    public static String getUserNameFromRefreshToken(String token) {
-        return extractClaim(token, accessEncKey, "userName");
+    public static String getRoleFromAccessToken(String token) {
+        return extractClaim(token, accessEncKey, "role");
     }
 
     public static String getRoleFromRefreshToken(String token) {

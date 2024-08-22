@@ -34,8 +34,6 @@ public class CustomOAuthSuccessHandler extends SimpleUrlAuthenticationSuccessHan
         String userEmail = customUserDetails.getUserEmail();
         String providerId = customUserDetails.getProviderId();
 
-        log.info("providerId: {}", providerId);
-
         // 권한 (USER, ADMIN)
         Iterator<? extends GrantedAuthority> iterator =  authentication.getAuthorities().iterator();
         GrantedAuthority auth = iterator.next();
@@ -54,7 +52,7 @@ public class CustomOAuthSuccessHandler extends SimpleUrlAuthenticationSuccessHan
                 .expiration(JWTUtil.RefreshTokenExTimeCul(refreshToken))
                 .build());
 
-        // JWTUtil을 통해 쿠키 생성 및 설정
+        // JWTUtil 을 통해 쿠키 생성 및 설정
         Cookie refreshTokenCookie = JWTUtil.getCookieFromRefreshToken(refreshToken);
         Cookie accessTokenCookie = JWTUtil.getCookieFromAccessToken(accessToken);
 
