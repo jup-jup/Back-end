@@ -46,15 +46,15 @@ public class JWTUtil {
         refreshEncKey = new SecretKeySpec(refreshSecretKey.getBytes(StandardCharsets.UTF_8), "HmacSHA256");
     }
 
-    public static String generateAccessToken(Long userId, String userName, String userEmail, String role) {
-        return generateToken(userId, userName, userEmail, role, accessEncKey, expirationTime);
+    public static String generateAccessToken(Long userId, String userName, String userEmail) {
+        return generateToken(userId, userName, userEmail, accessEncKey, expirationTime);
     }
 
-    public static String generateRefreshToken(Long userId, String userName, String userEmail, String role) {
-        return generateToken(userId, userName, userEmail, role, refreshEncKey, refreshExpirationTime);
+    public static String generateRefreshToken(Long userId, String userName, String userEmail) {
+        return generateToken(userId, userName, userEmail, refreshEncKey, refreshExpirationTime);
     }
 
-    private static String generateToken(Long userId, String userName, String userEmail, String role, Key key, long expirationTime) {
+    private static String generateToken(Long userId, String userName, String userEmail,  Key key, long expirationTime) {
 
         Date refreshDate = new Date(System.currentTimeMillis() + refreshExpirationTime);
 
