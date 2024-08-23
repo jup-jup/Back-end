@@ -30,6 +30,7 @@ public class CustomOAuthSuccessHandler extends SimpleUrlAuthenticationSuccessHan
         // OAuth2User
         CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
 
+        Long userId = customUserDetails.getUserId();
         String userName = customUserDetails.getName();
         String userEmail = customUserDetails.getUserEmail();
         String providerId = customUserDetails.getProviderId();
@@ -41,8 +42,8 @@ public class CustomOAuthSuccessHandler extends SimpleUrlAuthenticationSuccessHan
         String role = auth.getAuthority();
 
         // JWT 발급
-        String accessToken = JWTUtil.generateAccessToken(userName, userEmail, role);
-        String refreshToken = JWTUtil.generateRefreshToken(userName, userEmail, role);
+        String accessToken = JWTUtil.generateAccessToken(userId, userName, userEmail, role);
+        String refreshToken = JWTUtil.generateRefreshToken(userId, userName, userEmail, role);
 
         // 리프레시 토큰 저장
         refreshTokenRepository.save(RefreshToken.builder()
