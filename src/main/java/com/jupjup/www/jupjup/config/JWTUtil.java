@@ -55,13 +55,15 @@ public class JWTUtil {
     }
 
     private static String generateToken(Long userId, String userName, String userEmail, String role, Key key, long expirationTime) {
+
+        Date refreshDate = new Date(System.currentTimeMillis() + refreshExpirationTime);
+
         return Jwts.builder()
-                .claim("userId", 0)
-                .claim("userName", userName)
-                .claim("userEmail", userEmail)
-                .claim("role", role)
+                .subject(String.valueOf(userId))
+                .subject(userName)
+                .subject(userEmail)
                 // 액세스 토큰 발급 시 리프레시 만료시간 같이 보내 DB접근 줄이기
-                .claim("refreshTokenExpiration", new Date(System.currentTimeMillis() + refreshExpirationTime))
+                .subject(String.valueOf(refreshDate))
                 .issuedAt(new Date(System.currentTimeMillis()))  // 토큰 발급 시간
                 .expiration(new Date(System.currentTimeMillis() + expirationTime)) // 만료 시
                 .signWith(key)
