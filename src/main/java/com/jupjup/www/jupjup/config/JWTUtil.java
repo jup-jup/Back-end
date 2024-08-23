@@ -1,8 +1,8 @@
 package com.jupjup.www.jupjup.config;
 
-import com.jupjup.www.jupjup.domain.enums.BaseUrl;
 import com.jupjup.www.jupjup.domain.repository.RefreshTokenRepository;
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.Jwts;
 import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.Cookie;
 import lombok.RequiredArgsConstructor;
@@ -44,18 +44,17 @@ public class JWTUtil {
         refreshEncKey = new SecretKeySpec(refreshSecretKey.getBytes(StandardCharsets.UTF_8), "HmacSHA256");
     }
 
-    public static String generateAccessToken(String userName, String userEmail, String role) {
-        return generateToken(userName, userEmail, role, accessEncKey, expirationTime);
+    public static String generateAccessToken(Long userId, String userName, String userEmail, String role) {
+        return generateToken(userId, userName, userEmail, role, accessEncKey, expirationTime);
     }
 
-    public static String generateRefreshToken(String userName, String userEmail, String role) {
-        return generateToken(userName, userEmail, role, refreshEncKey, refreshExpirationTime);
+    public static String generateRefreshToken(Long userId, String userName, String userEmail, String role) {
+        return generateToken(userId, userName, userEmail, role, refreshEncKey, refreshExpirationTime);
     }
 
-    private static String generateToken(String userName, String userEmail, String role, Key key, long expirationTime) {
-
-        // TODO: 일단 claim 에 넣어놨는데 issuer, subject 등 개념 활용해도 괜찮을 것 같네요
+    private static String generateToken(Long userId, String userName, String userEmail, String role, Key key, long expirationTime) {
         return Jwts.builder()
+                .claim("userId", 0)
                 .claim("userName", userName)
                 .claim("userEmail", userEmail)
                 .claim("role", role)
@@ -115,6 +114,10 @@ public class JWTUtil {
     }
 
 
+    public static Long getUserIdFromAccessToken(String token) {
+        return Long.valueOf(extractClaim(token, accessEncKey, "userId"));
+    }
+
     public static String getUserNameFromAccessToken(String token) {
         return extractClaim(token, accessEncKey, "userName");
     }
@@ -125,6 +128,10 @@ public class JWTUtil {
 
     public static String getRoleFromAccessToken(String token) {
         return extractClaim(token, accessEncKey, "role");
+    }
+
+    public static Long getUserIdFromRefreshToken(String token) {
+        return Long.valueOf(extractClaim(token, accessEncKey, "userName"));
     }
 
     public static String getUserNameFromRefreshToken(String token) {
