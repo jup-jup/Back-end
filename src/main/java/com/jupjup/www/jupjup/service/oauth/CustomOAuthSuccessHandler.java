@@ -35,17 +35,13 @@ public class CustomOAuthSuccessHandler extends SimpleUrlAuthenticationSuccessHan
         String userEmail = customUserDetails.getUserEmail();
         String providerId = customUserDetails.getProviderId();
 
-        log.info("providerId: {}", providerId);
-
         // 권한 (USER, ADMIN)
         Iterator<? extends GrantedAuthority> iterator =  authentication.getAuthorities().iterator();
         GrantedAuthority auth = iterator.next();
 
-        String role = auth.getAuthority();
-
         // JWT 발급
-        String accessToken = JWTUtil.generateAccessToken(userId, userName, userEmail, role);
-        String refreshToken = JWTUtil.generateRefreshToken(userId, userName, userEmail, role);
+        String accessToken = JWTUtil.generateAccessToken(userId, userName, userEmail);
+        String refreshToken = JWTUtil.generateRefreshToken(userId, userName, userEmail);
 
         // 리프레시 토큰 저장
         refreshTokenRepository.save(RefreshToken.builder()
@@ -55,7 +51,7 @@ public class CustomOAuthSuccessHandler extends SimpleUrlAuthenticationSuccessHan
                 .expiration(JWTUtil.RefreshTokenExTimeCul(refreshToken))
                 .build());
 
-        // JWTUtil을 통해 쿠키 생성 및 설정
+        // JWTUtil 을 통해 쿠키 생성 및 설정
         Cookie refreshTokenCookie = JWTUtil.getCookieFromRefreshToken(refreshToken);
         Cookie accessTokenCookie = JWTUtil.getCookieFromAccessToken(accessToken);
 

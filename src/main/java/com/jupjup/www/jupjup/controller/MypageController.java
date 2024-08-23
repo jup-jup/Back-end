@@ -27,7 +27,7 @@ public class MypageController {
 
 
     @Operation(summary = "나눔 리스트")
-    @GetMapping("/sharingHistory")
+    @GetMapping("/giver/history")
     public ResponseEntity<?> sharingHistory(@RequestHeader("Authorization") String accessToken) {
         String username = JWTUtil.getUserNameFromAccessToken(accessToken.substring(7).trim());
         return ResponseEntity.ok(mypageSharingService.getMyPageSharingListByUserName(username));
@@ -35,7 +35,7 @@ public class MypageController {
     }
 
     @Operation(summary = "나눔 상세페이지 리스트")
-    @GetMapping("/sharingHistoryDetail/{id}")
+    @GetMapping("/giver/history/detail/{id}")
     public ResponseEntity<?> getListDetail(@PathVariable long id) {
         return ResponseEntity.ok(mypageSharingService.getMyPageSharingById(id));
     }
@@ -58,14 +58,14 @@ public class MypageController {
     }
 
     @Operation(summary = "받은 내역 리스트")
-    @GetMapping("/history/received")
+    @GetMapping("/received/history")
     public ResponseEntity<?> receivedHistory(@RequestHeader("Authorization") String accessToken) {
         String username = JWTUtil.getUserNameFromAccessToken(accessToken.substring(7).trim());
         return ResponseEntity.ok(mypageSharingService.getMyPageReceivedListByUserName(username));
     }
 
     @Operation(summary = "받은 내역 상세 리스트")
-    @GetMapping("/receivedHistoryDetail/{id}")
+    @GetMapping("/receive/history/detail/{id}")
     public ResponseEntity<?> receivedHistoryDetail(@PathVariable long id) {
         return ResponseEntity.ok(mypageSharingService.getMyPageReceivedById(id));
     }

@@ -84,7 +84,6 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
 
-        log.debug("로그인 성공 !!");
         CustomUserDetails userDetails = (CustomUserDetails) authResult.getPrincipal();
         Collection<? extends GrantedAuthority> authorities = userDetails.getAuthorities();
 
@@ -97,8 +96,8 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
                 .orElseThrow(() -> new RuntimeException("No authorities found"));
 
         // 토큰 생성
-        String accessToken = JWTUtil.generateAccessToken(userId, userName, userEmail, auth.getAuthority());
-        String refreshToken = JWTUtil.generateRefreshToken(userId, userName, userEmail, auth.getAuthority());
+        String accessToken = JWTUtil.generateAccessToken(userId, userName, userEmail);
+        String refreshToken = JWTUtil.generateRefreshToken(userId, userName, userEmail);
         log.info("refreshToken = {}", refreshToken);
 
         // 리프레시 토큰을 데이터베이스에 저장
