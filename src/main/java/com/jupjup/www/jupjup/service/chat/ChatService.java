@@ -29,6 +29,8 @@ public class ChatService {
 
         // TODO: 소켓으로 채팅 전송
 
+        // TODO: 해당 채팅방 마지막 메시지 업데이트
+
         Chat chat = Chat.builder()
                 .roomId(roomId)
                 .userId(userId)

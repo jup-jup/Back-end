@@ -6,8 +6,11 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.cglib.core.Local;
 import org.springframework.data.annotation.CreatedDate;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +43,11 @@ public class Room {
     @CreationTimestamp
     @Column(name = "created_at")
     private LocalDateTime createdAt;
+
+    // TODO: last_message_time 저장해야할듯
+//    @Column(name = "last_chat_time")
+//    @UpdateTimestamp
+//    private LocalDateTime lastChatTime;
 
     @Builder
     public Room(Long giveawayId) {

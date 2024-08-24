@@ -36,9 +36,13 @@ public class UserChatRoom {
     @Column(name = "room_id")
     private Long roomId;
 
+    // TODO: last read message id 저장 필요
+//    @Column(name = "last_read_chat_id")
+//    private Long lastReadChatId;
+
     @CreationTimestamp
     @Column(name = "created_at")
-    private LocalDateTime created_at;
+    private LocalDateTime createdAt;
 
     @Builder
     public UserChatRoom(Long roomId, Long userId) {

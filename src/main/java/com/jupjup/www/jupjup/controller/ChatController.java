@@ -64,12 +64,4 @@ public class ChatController {
                 .body(list);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<?> getChat(@PathVariable Long roomId, @PathVariable Long id) {
-
-        return ResponseEntity
-                .ok()
-                .build();
-    }
-
 }

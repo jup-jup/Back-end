@@ -1,7 +1,5 @@
 package com.jupjup.www.jupjup.controller;
 
-import com.jupjup.www.jupjup.domain.entity.chat.Chat;
-import com.jupjup.www.jupjup.domain.entity.chat.Room;
 import com.jupjup.www.jupjup.model.dto.chatRoom.CreateRoomRequest;
 import com.jupjup.www.jupjup.model.dto.chatRoom.CreateRoomResponse;
 import com.jupjup.www.jupjup.model.dto.chatRoom.RoomListResponse;
@@ -41,14 +39,25 @@ public class ChatRoomController {
         }
     }
 
+    // 해당 유저의 채팅 목록 전체를 가져옵니다.
     @GetMapping("")
-    public ResponseEntity<List<RoomListResponse>> getRooms() {
+    public ResponseEntity<?> getRooms(Authentication authentication) {
+        try {
+            CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
 
-        return ResponseEntity
-                .ok()
-                .build();
+            List<RoomListResponse> list = roomService.list(customUserDetails.getUserEmail());
+
+            return ResponseEntity
+                    .ok()
+                    .body(list);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity
+                    .status(HttpStatus.UNAUTHORIZED)
+                    .body(e.getMessage());
+        }
     }
 
+    // 참여 중인 채팅방 디테일을 가져옵니다.
     @GetMapping("/{id}")
     public ResponseEntity<RoomResponse> getRoom(@PathVariable Long id) {
 
