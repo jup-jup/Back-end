@@ -1,8 +1,8 @@
 spring:
   application:
     name: jup-jup
-  server:
-    port: ${SERVER_PORT}
+#  server:
+#    port: ${SERVER_PORT}
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
