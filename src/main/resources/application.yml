@@ -5,10 +5,10 @@ spring:
 #    port: ${SERVER_PORT}
 
   datasource:
+    url: jdbc:mysql://localhost:3306/jupjup?serverTimezone=Asia/Seoul
+    username: root
+    password: jupjup1234
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: ${MYSQL_URL}
-    username: ${MYSQL_USER}
-    password: ${MYSQL_PASSWORD}
 
   jpa:
     hibernate:
