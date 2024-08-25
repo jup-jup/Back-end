@@ -36,7 +36,7 @@ public class RefreshReissueService {
         String userName = JWTUtil.getUserNameFromRefreshToken(refreshToken);
 
         // 유저 권한 확인
-        String userRole = JWTUtil.getRoleFromRefreshToken(refreshToken);
+//        String userRole = JWTUtil.getRoleFromRefreshToken(refreshToken);
         String providerId = entity.get(0).getProviderId();
 
         // 액세스 토큰 재발급 및 리프레시 토큰 rotate

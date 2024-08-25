@@ -1,10 +1,12 @@
+
+
 spring:
   application:
     name: jup-jup
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://jupjup.store:3306/jupjup?serverTimezone=Asia/Seoul
+    url: jdbc:mysql://localhost:3306/jupjup?serverTimezone=Asia/Seoul
     username: root
     password: jupjup1234
 
@@ -71,10 +73,3 @@ server:
       charset: UTF-8
       force: true
       force-response: true
-
-  port: 8443
-  ssl:
-    key-store: /app/ssl/jupjup.store.p12
-    key-store-password: ${SSL_KEY_STORE_PASSWORD}
-    key-store-type: PKCS12
-    key-alias: tomcat
