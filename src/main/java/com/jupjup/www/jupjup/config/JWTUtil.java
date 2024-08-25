@@ -136,15 +136,11 @@ public class JWTUtil {
     }
 
     public static Long getUserIdFromRefreshToken(String token) {
-        return Long.valueOf(extractClaim(token, accessEncKey, "userName"));
+        return Long.valueOf(extractClaim(token, refreshEncKey, "userName"));
     }
 
     public static String getUserNameFromRefreshToken(String token) {
-        return extractClaim(token, accessEncKey, "userName");
-    }
-
-    public static String getRoleFromRefreshToken(String token) {
-        return extractClaim(token, refreshEncKey, "role");
+        return extractClaim(token, refreshEncKey, "userName");
     }
 
     public static Cookie getCookieFromAccessToken(String accessToken) {

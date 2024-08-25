@@ -1,18 +1,17 @@
 spring:
   application:
     name: jup-jup
-#  server:
-#    port: ${SERVER_PORT}
 
   datasource:
-    url: jdbc:mysql://localhost:3306/jupjup?serverTimezone=Asia/Seoul
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://jupjup.store:3306/jupjup?serverTimezone=Asia/Seoul
     username: root
     password: jupjup1234
-    driver-class-name: com.mysql.cj.jdbc.Driver
+
 
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     properties:
@@ -25,26 +24,26 @@ spring:
         registration:
           google:
             client-name: google
-            client-id: ${GOOGLE_CLIENT_ID}
-            client-secret: ${GOOGLE_CLIENT_SECRET}
-            redirect-uri: ${GOOGLE_REDIRECT_URI}
+            client-id: 541126883288-3qnon1d9hnllfaho31opp2kbaleaifg1.apps.googleusercontent.com
+            client-secret: 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
+            redirect-uri: https://jupjup.store/login/oauth2/code/google
             authorization-grant-type: authorization_code
             scope: profile,email
 
           naver:
             client-name: naver
-            client-id: ${NAVER_CLIENT_ID}
-            client-secret: ${NAVER_CLIENT_SECRET}
-            redirect-uri: ${NAVER_REDIRECT_URI}
+            client-id: P5rU2N4nihmGgZW9cU08
+            client-secret: EP1mnn2SSo
+            redirect-uri: https://jupjup.store/login/oauth2/code/naver
             authorization-grant-type: authorization_code
             scope: name,email
           kakao:
-            client-id: ${KAKAO_CLIENT_ID}
-#            client-secret: ${KAKAO_CLIENT_SECRET} # 오류로 인한 주석 ( 이거 켜놓으니깐 로긴이 안됨 ;; 왜지 )
+            client-id: 86cf25712d4c66f5fbd8dc40b7eae343
             scope: profile_nickname
             client-name: Kakao
             authorization-grant-type: authorization_code
-            redirect-uri: ${KAKAO_REDIRECT_URI}
+            redirect-uri: https://jupjup.store/login/oauth2/code/kakao
+
 
         provider:
           naver:
@@ -59,8 +58,8 @@ spring:
             user-name-attribute: id
 
 jwt:
-  secret: ${JWT_SECRET}
-  refresh-secret: ${JWT_REFRESH_SECRET}
+  secret: your_jwt_secret_here@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+  refresh-secret: your_jwt_refresh_secret_here@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
 springdoc:
   swagger-ui:
@@ -72,3 +71,10 @@ server:
       charset: UTF-8
       force: true
       force-response: true
+
+  port: 8443
+  ssl:
+    key-store: /app/ssl/jupjup.store.p12
+    key-store-password: ${SSL_KEY_STORE_PASSWORD}
+    key-store-type: PKCS12
+    key-alias: tomcat
