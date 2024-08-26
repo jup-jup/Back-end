@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "my_page_sharing_list_images")
+@Table(name = "mypage_sharing_list_images")
 public class MyPageSharingListImages {
 
     @Id

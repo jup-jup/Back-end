@@ -84,10 +84,10 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
 
-        log.debug("로그인 성공 !!");
         CustomUserDetails userDetails = (CustomUserDetails) authResult.getPrincipal();
         Collection<? extends GrantedAuthority> authorities = userDetails.getAuthorities();
 
+        Long userId = userDetails.getUserId();
         String userName = userDetails.getName();
         String userEmail = userDetails.getUserEmail();
         log.info("successfulAuthentication() userName: {}, userEmail : {}, ", userName, userEmail);
@@ -96,8 +96,8 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
                 .orElseThrow(() -> new RuntimeException("No authorities found"));
 
         // 토큰 생성
-        String accessToken = JWTUtil.generateAccessToken(userName, userEmail, auth.getAuthority());
-        String refreshToken = JWTUtil.generateRefreshToken(userName, userEmail, auth.getAuthority());
+        String accessToken = JWTUtil.generateAccessToken(userId, userName, userEmail);
+        String refreshToken = JWTUtil.generateRefreshToken(userId, userName, userEmail);
         log.info("refreshToken = {}", refreshToken);
 
         // 리프레시 토큰을 데이터베이스에 저장
@@ -109,7 +109,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
         refreshRepository.save(refreshEntity);
 
-        response.addCookie(JWTUtil.createCookie(refreshToken));
+        response.addCookie(JWTUtil.getCookieFromRefreshToken(refreshToken));
         response.addHeader("Authorization", "Bearer " + accessToken);
         response.setStatus(HttpServletResponse.SC_OK);
     }

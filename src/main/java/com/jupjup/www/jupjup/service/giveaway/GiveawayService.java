@@ -10,6 +10,8 @@ import com.jupjup.www.jupjup.model.dto.giveaway.GiveawayListResponse;
 import com.jupjup.www.jupjup.model.dto.giveaway.UpdateGiveawayRequest;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -37,8 +39,8 @@ public class GiveawayService {
         return giveawayRepository.save(giveaway);
     }
 
-    public List<GiveawayListResponse> findAll() {
-        List<Giveaway> list = giveawayRepository.findAll(Sort.by(Sort.Direction.DESC, "createdAt"));
+    public List<GiveawayListResponse> findAll(Pageable pageable) {
+        Page<Giveaway> list = giveawayRepository.findAll(pageable);
         return list.stream()
                 .map(o -> GiveawayListResponse.builder()
                         .giveawayId(o.getId())

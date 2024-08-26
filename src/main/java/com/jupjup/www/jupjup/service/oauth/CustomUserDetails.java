@@ -24,16 +24,20 @@ public record CustomUserDetails(UserResponse userDTO) implements OAuth2User {
         return Collections.singletonList((GrantedAuthority) userDTO::getRole);
     }
 
+    public Long getUserId() {
+        return userDTO.getUserId();
+    }
+
     @Override
     public String getName() {
         return userDTO.getUsername();
     }
 
-    public String getUserEmail(){
+    public String getUserEmail() {
         return userDTO.getUserEmail();
     }
 
-    public String getProviderId(){
+    public String getProviderId() {
         return userDTO.getProviderId();
     }
 

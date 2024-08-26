@@ -1,11 +1,14 @@
 package com.jupjup.www.jupjup.model.dto.chatRoom;
 
+import com.jupjup.www.jupjup.domain.entity.chat.Room;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Builder
 @Getter
 @Setter
 public class RoomListResponse {
@@ -19,5 +22,14 @@ public class RoomListResponse {
     private String lastChat; // 마지막 메시지
 
     private LocalDateTime lastChatCreatedAt; // 최신 메시지 생성일
+
+    public static RoomListResponse toDTO(Room room, List<Long> joinedUserIds) {
+        return RoomListResponse.builder()
+                .id(room.getId())
+                .joinedUserIds(joinedUserIds)
+                .giveawayId(room.getGiveawayId())
+                // TODO: lastChat, lastChatCreatedAt 추가
+                .build();
+    }
 
 }
