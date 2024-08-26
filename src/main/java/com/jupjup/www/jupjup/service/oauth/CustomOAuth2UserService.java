@@ -56,7 +56,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
      * 각 리소스 제공자(네이버, 구글, 카카오)에 따라 사용자의 속성을 파싱하여 특정 형식의 응답을 반환
      * 지원되지 않는 등록 ID가 입력되면 IllegalArgumentException 발생
      *
-     * @param oAuth2User OAuth2 인증을 통해 얻은 사용자 정보
+     * @param oAuth2User     OAuth2 인증을 통해 얻은 사용자 정보
      * @param registrationId 리소스 제공자를 식별하는 ID (예: 네이버, 구글, 카카오)
      * @return OAuth2Response 각 리소스 제공자에 맞게 변환된 사용자 정보를 담은 응답 객체
      * @throws IllegalArgumentException 지원되지 않는 리소스 제공자 ID가 입력될 경우 예외 발생
@@ -69,19 +69,19 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         } else if (registrationId == GOOGLE) {
             log.info("구글 로그인");
             return new GoogleResponse(oAuth2User.getAttributes());
-        } else if(registrationId == KAKAO){
+        } else if (registrationId == KAKAO) {
             log.info("카카오 로그인");
             return new KakaoResponse(oAuth2User.getAttributes());
-        }else{
+        } else {
             throw new IllegalArgumentException("지원되지 않는 리소스 제공자 입니다. registration id: " + registrationId);
         }
     }
 
     /**
-     * @author        : boramkim
-     * @since         : 2024. 8. 1.
-     * @description   : 가입이 안된 유저이면 회원가입되고 가입되어 있다면 기존계정 내용 업데이트
-     *                   카카오의 경우 이메일을 내려보내주지 않아, 닉네임+key 로 email insert
+     * @author : boramkim
+     * @description : 가입이 안된 유저이면 회원가입되고 가입되어 있다면 기존계정 내용 업데이트
+     * 카카오의 경우 이메일을 내려보내주지 않아, 닉네임+key 로 email insert
+     * @since : 2024. 8. 1.
      */
     private OAuth2User saveOrUpdateUser(OAuth2Response oAuth2Response) {
         String providerId = oAuth2Response.getProvider() + oAuth2Response.getProviderId();
@@ -95,7 +95,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             return registerNewUser(providerId, userName, userEmail);
         } else {
             log.info("기가입 유저 => 정보 업데이트");
-            return updateExistingUser(existingUser, userName, userEmail,providerId);
+            return updateExistingUser(existingUser, userName, userEmail, providerId);
         }
     }
 
@@ -122,11 +122,12 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
                 .build());
     }
 
-    private OAuth2User updateExistingUser(User user, String userName, String userEmail,String providerId) {
+    private OAuth2User updateExistingUser(User user, String userName, String userEmail, String providerId) {
         user.setUserEmail(userEmail);
         user.setName(userName);
         userRepository.save(user);
         return new CustomUserDetails(UserResponse.builder()
+                .userId(user.getId())
                 .providerId(providerId)
                 .username(userName)
                 .userEmail(userEmail)
