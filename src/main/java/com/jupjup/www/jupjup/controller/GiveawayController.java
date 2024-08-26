@@ -75,8 +75,8 @@ public class GiveawayController {
     @PatchMapping("/{id}")
     public ResponseEntity<?> updateGiveaway(@PathVariable Long id
             , @RequestBody UpdateGiveawayRequest request
-            , Authentication authentication
-    ) {
+            , Authentication authentication) {
+
         try {
             CustomUserDetails customOAuth2User = (CustomUserDetails) authentication.getPrincipal();
             Giveaway giveaway = giveawayService.update(id, request, customOAuth2User.getUserEmail());

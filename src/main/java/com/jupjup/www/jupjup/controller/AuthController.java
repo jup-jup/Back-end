@@ -1,5 +1,6 @@
 package com.jupjup.www.jupjup.controller;
 
+import com.jupjup.www.jupjup.config.JWTUtil;
 import com.jupjup.www.jupjup.service.refreshService.RefreshReissueService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.HttpServletResponse;
@@ -25,12 +26,16 @@ public class AuthController {
 
     private final RefreshReissueService refreshReissueService;
 
+
     @Operation(summary = "리프레시 토큰 재발급 시 요청 api")
-    @PostMapping("/reissue/{userEmail}") // TODO: 영효) 개인적인 생각으론 refreshToken 이 넘어오고 userName, userEmail 이 담겨있으니깐 패스파람으로 안받아도 괜찮을 것 같아요
-    public ResponseEntity<String> reissue(@CookieValue("refreshToken") String refreshToken, @PathVariable String userEmail ,HttpServletResponse resp) {
+    @GetMapping("/reissue")
+    public ResponseEntity<String> reissue(@CookieValue("refreshToken") String refreshToken,HttpServletResponse resp) {
+
+        log.info("refreshToken = {} ", refreshToken);
+        log.info("userEmail = {} ", JWTUtil.getUserEmailFromRefreshToken(refreshToken));
 
         try {
-            if (refreshReissueService.refreshTokenReissue(refreshToken, userEmail,resp)) {
+            if (refreshReissueService.refreshTokenReissue(refreshToken, JWTUtil.getUserEmailFromRefreshToken(refreshToken),resp)) {
                 return ResponseEntity.ok("액세스 토큰 재발급 완료");
             } else {
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("토큰 유효기간 만료 재 로그인 하세요.");

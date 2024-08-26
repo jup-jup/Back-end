@@ -1,0 +1,43 @@
+version: '3'
+services:
+  springboot:
+    build: .
+    container_name: springboot-app
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/jupjup
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=jupjup1234
+    networks:
+      - devlabsnetwork
+
+  mysql:
+    image: mysql:8.3
+    container_name: mysql-container
+    environment:
+      - MYSQL_ROOT_PASSWORD=jupjup1234
+      - MYSQL_DATABASE=jupjup
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      - devlabsnetwork
+
+  nginx:
+    image: nginx:latest
+    container_name: nginx-container
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/ssl:/etc/nginx/ssl:ro
+    depends_on:
+      - springboot
+    networks:
+      - devlabsnetwork
+
+networks:
+  devlabsnetwork:
+    driver: bridge
+
+volumes:
+  mysql-data:
