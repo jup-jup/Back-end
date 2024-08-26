@@ -59,11 +59,11 @@ public class JWTUtil {
         Date refreshDate = new Date(System.currentTimeMillis() + refreshExpirationTime);
 
         return Jwts.builder()
-                .subject(String.valueOf(userId))
-                .subject(userName)
-                .subject(userEmail)
+                .claim("userId", String.valueOf(userId))
+                .claim("userName", userName)
+                .claim("userEmail", userEmail)
                 // 액세스 토큰 발급 시 리프레시 만료시간 같이 보내 DB접근 줄이기
-                .subject(String.valueOf(refreshDate))
+                .claim("refreshTokenExpiration", new Date(System.currentTimeMillis() + refreshExpirationTime))
                 .issuedAt(new Date(System.currentTimeMillis()))  // 토큰 발급 시간
                 .expiration(new Date(System.currentTimeMillis() + expirationTime)) // 만료 시
                 .signWith(key)
@@ -136,7 +136,7 @@ public class JWTUtil {
     }
 
     public static Long getUserIdFromRefreshToken(String token) {
-        return Long.valueOf(extractClaim(token, refreshEncKey, "userName"));
+        return Long.valueOf(extractClaim(token, refreshEncKey, "userId"));
     }
 
     public static String getUserNameFromRefreshToken(String token) {
