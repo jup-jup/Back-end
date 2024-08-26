@@ -7,6 +7,7 @@ import lombok.Setter;
 @Setter
 public class CreateChatRequest {
 
-    private String message; // 채팅 메시지
+    private String content; // 채팅 메시지
+    // TODO: 파일 이미지 올리는 기능 필요하다면 파일 id 추가
 
 }
