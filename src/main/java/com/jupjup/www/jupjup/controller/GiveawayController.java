@@ -7,10 +7,19 @@ import com.jupjup.www.jupjup.model.dto.giveaway.GiveawayListResponse;
 import com.jupjup.www.jupjup.model.dto.giveaway.UpdateGiveawayRequest;
 import com.jupjup.www.jupjup.service.giveaway.GiveawayService;
 import com.jupjup.www.jupjup.service.oauth.CustomUserDetails;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.headers.Header;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -20,6 +29,7 @@ import java.net.URI;
 import java.util.List;
 
 
+@Tag(name = "Giveaway", description = "나눔 API")
 @RequiredArgsConstructor
 @RestController
 // TODO: 전체 서버 관점에서 /api/v1 prefix 를 사용한다면 application.yml 에서 설정하는 것이 좋아보임
@@ -28,7 +38,12 @@ public class GiveawayController {
 
     private final GiveawayService giveawayService;
 
-    // 나눔 올리기
+    @Operation(summary = "add giveaway", description = "나눔 올리기 API")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "나눔 정상 생성 완료",
+                    headers = @Header(name = HttpHeaders.LOCATION, description = "나눔 세부정보 url")),
+            @ApiResponse(responseCode = "401", description = "등록되지 않은 유저입니다.")
+    })
     @PostMapping("")
     public ResponseEntity<?> addGiveaway(@RequestBody CreateGiveawayRequest request, Authentication authentication) {
         try {
@@ -36,7 +51,7 @@ public class GiveawayController {
             Giveaway giveaway = giveawayService.save(request, customOAuth2User.getUserEmail());
 
             return ResponseEntity
-                    .created(URI.create(String.format("/giveaways/%d", giveaway.getId())))
+                    .created(URI.create(String.format("/api/v1/giveaways/%d", giveaway.getId())))
                     .build();
         } catch (IllegalArgumentException e) {
             return ResponseEntity
@@ -45,7 +60,14 @@ public class GiveawayController {
         }
     }
 
-    // 나눔 리스트
+    @Operation(summary = "get giveaway list", description = "나눔 리스트를 위한 API")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Success",
+                    content = {@Content(
+                            mediaType = "application/json",
+                            array = @ArraySchema(schema = @Schema(implementation = GiveawayListResponse.class)))}
+            )
+    })
     @GetMapping("")
     public ResponseEntity<List<GiveawayListResponse>> getList(
             @PageableDefault(size = 30, sort = "created_at", direction = Sort.Direction.DESC) Pageable pageable
@@ -56,7 +78,12 @@ public class GiveawayController {
                 .body(list);
     }
 
-    // 나눔 상세 페이지
+    @Operation(summary = "get giveaway detail", description = "나눔 세부정보를 위한 API")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Success",
+                    content = {@Content(schema = @Schema(implementation = GiveawayDetailResponse.class))}),
+            @ApiResponse(responseCode = "404", description = "잘못된 나눔 id")
+    })
     @GetMapping("/{id}")
     public ResponseEntity<?> getGiveaway(@PathVariable Long id) {
         try {
@@ -71,7 +98,11 @@ public class GiveawayController {
         }
     }
 
-    // 나눔 업데이트
+    @Operation(summary = "update giveaway", description = "나눔 수정을 위한 API")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "No Content"),
+            @ApiResponse(responseCode = "404", description = "잘못된 나눔 id")
+    })
     @PatchMapping("/{id}")
     public ResponseEntity<?> updateGiveaway(@PathVariable Long id
             , @RequestBody UpdateGiveawayRequest request
@@ -92,6 +123,11 @@ public class GiveawayController {
     }
 
     // 나눔 업데이트
+    @Operation(summary = "delete giveaway", description = "나눔 삭제를 위한 API")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "No Content"),
+            @ApiResponse(responseCode = "404", description = "잘못된 나눔 id")
+    })
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteGiveaway(@PathVariable Long id, Authentication authentication) {
         try {

@@ -1,7 +1,6 @@
 package com.jupjup.www.jupjup.config;
 
 import io.swagger.v3.oas.models.OpenAPI;
-import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
 import org.springdoc.core.models.GroupedOpenApi;
 import org.springframework.context.annotation.Bean;
@@ -29,10 +28,8 @@ public class SwaggerConfig {
                 .build();  // GroupedOpenApi 객체를 빌드하여 반환합니다.
     }
 
-
-
     @Bean
-    public GroupedOpenApi orderApi() {
+    public GroupedOpenApi authApi() {
         return GroupedOpenApi.builder()
                 .group("auths")
                 .pathsToMatch("/api/v1/auth/**")
@@ -51,7 +48,7 @@ public class SwaggerConfig {
     public GroupedOpenApi chatApi() {
         return GroupedOpenApi.builder()
                 .group("chat")
-                .pathsToMatch("/chat-rooms/**")
+                .pathsToMatch("/api/v1/chat-rooms/**")
                 .build();
     }
 
@@ -62,14 +59,13 @@ public class SwaggerConfig {
                 .pathsToMatch("/api/v1/profile/**")
                 .build();
     }
+
     @Bean
     public GroupedOpenApi giveawaysApi() {
         return GroupedOpenApi.builder()
                 .group("giveaways")
-                .pathsToMatch("/giveaways/**")
+                .pathsToMatch("/api/v1/giveaways/**")
                 .build();
     }
-
-
 
 }
