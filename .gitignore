@@ -39,4 +39,4 @@ out/
 
 /logs
 .env
-application.yml
+/images

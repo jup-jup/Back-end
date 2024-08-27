@@ -2,6 +2,7 @@ package com.jupjup.www.jupjup.model.dto.giveaway;
 
 import com.jupjup.www.jupjup.domain.entity.giveaway.Giveaway;
 import com.jupjup.www.jupjup.domain.enums.GiveawayStatus;
+import com.jupjup.www.jupjup.image.entity.Image;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -35,10 +36,26 @@ public class GiveawayDetailResponse {
 
     private LocalDateTime createdAt; // 등록 날짜
 
+    private List<Long> imageIds; // 이미지 아이디 리스트
+
     // TODO: 여기부터는 후순위 작업 (추가 설계 필요)
     private String location; // TODO: 장소 데이터 어떤 식으로 저장하고 내려줘야하는지 확인
-    private List<String> images; // 이미지 파일 경로
     private Integer chatCnt; // 코멘트 수?
     private Integer viewCnt;
+
+    public static GiveawayDetailResponse toDTO(Giveaway giveaway) {
+        return GiveawayDetailResponse.builder()
+                .giveawayId(giveaway.getGiverId())
+                .title(giveaway.getTitle())
+                .description(giveaway.getDescription())
+                .status(giveaway.getStatus())
+                .giverId(giveaway.getGiverId())
+//                .giverProfile()
+                .createdAt(giveaway.getCreatedAt())
+                .imageIds(giveaway.getImages().stream()
+                        .map(Image::getId)
+                        .toList())
+                .build();
+    }
 
 }

@@ -4,6 +4,8 @@ import com.jupjup.www.jupjup.domain.entity.User;
 import com.jupjup.www.jupjup.domain.entity.giveaway.Giveaway;
 import com.jupjup.www.jupjup.domain.repository.GiveawayRepository;
 import com.jupjup.www.jupjup.domain.repository.UserRepository;
+import com.jupjup.www.jupjup.image.entity.Image;
+import com.jupjup.www.jupjup.image.repository.ImageRepository;
 import com.jupjup.www.jupjup.model.dto.giveaway.CreateGiveawayRequest;
 import com.jupjup.www.jupjup.model.dto.giveaway.GiveawayDetailResponse;
 import com.jupjup.www.jupjup.model.dto.giveaway.GiveawayListResponse;
@@ -12,7 +14,6 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,16 +25,20 @@ public class GiveawayService {
 
     private final GiveawayRepository giveawayRepository;
     private final UserRepository userRepository;
+    private final ImageRepository imageRepository;
 
     public Giveaway save(CreateGiveawayRequest request, String userEmail) {
         Long userId = userRepository.findByUserEmail(userEmail)
                 .orElseThrow(() -> new IllegalArgumentException("등록되지 않은 유저입니다."))
                 .getId();
 
+        List<Image> images = imageRepository.findAllById(request.getImageIds());
+
         Giveaway giveaway = Giveaway.builder()
                 .title(request.getTitle())
                 .description(request.getDescription())
                 .giverId(userId)
+                .images(images)
                 .build();
 
         return giveawayRepository.save(giveaway);
@@ -42,12 +47,7 @@ public class GiveawayService {
     public List<GiveawayListResponse> findAll(Pageable pageable) {
         Page<Giveaway> list = giveawayRepository.findAll(pageable);
         return list.stream()
-                .map(o -> GiveawayListResponse.builder()
-                        .giveawayId(o.getId())
-                        .title(o.getTitle())
-                        .status(o.getStatus())
-                        .createdAt(o.getCreatedAt())
-                        .build())
+                .map(GiveawayListResponse::toDTO)
                 .collect(Collectors.toList());
     }
 
@@ -60,22 +60,19 @@ public class GiveawayService {
                 .orElseThrow(() -> new IllegalArgumentException("잘못된 유저 아이디"));
 
         // TODO: Entity to DTO 로직을 좀 더 예쁘고 수정에 용이하게 하는 방법이 없을까?
-        return GiveawayDetailResponse.builder()
-                .giveawayId(giveaway.getId())
-                .title(giveaway.getTitle())
-                .description(giveaway.getTitle())
-                .status(giveaway.getStatus())
-                .giverId(giver.getId())
-                .giverName(giver.getName())
-                .createdAt(giveaway.getCreatedAt())
-                .build();
+        return GiveawayDetailResponse.toDTO(giveaway);
     }
 
     @Transactional
     public Giveaway update(Long id, UpdateGiveawayRequest request, String userEmail) {
         Giveaway giveaway = authorizeGiveawayUser(id, userEmail);
 
-        giveaway.update(request.getTitle(), request.getDescription(), request.getStatus());
+        List<Image> images = List.of();
+        if (!request.getImageIds().isEmpty()) {
+            images = imageRepository.findAllById(request.getImageIds());
+        }
+
+        giveaway.update(request.getTitle(), request.getDescription(), request.getStatus(), images);
 
         return giveaway;
     }

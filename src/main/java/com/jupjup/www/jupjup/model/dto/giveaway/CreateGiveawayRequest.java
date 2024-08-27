@@ -15,6 +15,6 @@ public class CreateGiveawayRequest {
 
     private String location;
 
-    private List<String> imagePaths;
+    private List<Long> imageIds;
 
 }

@@ -16,6 +16,6 @@ public class UpdateGiveawayRequest {
 
     private GiveawayStatus status;
 
-    private List<String> imagePaths;
+    private List<Long> imageIds;
 
 }
