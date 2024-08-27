@@ -15,17 +15,16 @@ import java.util.Objects;
 @Service("local")
 public class LocalImageUploadServiceImpl implements ImageUploadService {
 
-    private final String rootPath = new File("").getAbsolutePath();
+    private final String baseDir = new File("images/").getAbsolutePath();
 
     @Override
     public String upload(MultipartFile file, Long userId) throws IOException {
         String fileName = generateUniqueFileName(Objects.requireNonNull(file.getOriginalFilename()));
 
-        String baseDir = "/images";
-        String filePath = baseDir + "/" + userId + "/" + LocalDate.now() + "/";
-        String uploadPath = rootPath + filePath + fileName;
+        String filePath = "/" + userId + "/" + LocalDate.now() + "/";
+        String uploadPath = baseDir + filePath + fileName;
 
-        Path dir = Paths.get(rootPath + filePath);
+        Path dir = Paths.get(baseDir + filePath);
         if (!Files.exists(dir)) {
             Files.createDirectories(dir);
         }
