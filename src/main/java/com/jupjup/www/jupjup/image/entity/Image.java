@@ -1,6 +1,7 @@
 package com.jupjup.www.jupjup.image.entity;
 
 import com.jupjup.www.jupjup.domain.entity.User;
+import com.jupjup.www.jupjup.domain.entity.giveaway.Giveaway;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -41,6 +42,10 @@ public class Image {
     @CreationTimestamp
     @Column(name = "created_at")
     private LocalDateTime createdAt;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "giveaway_id")
+    private Giveaway giveaway;
 
     @Builder
     public Image(String path, String fileName, Long userId) {

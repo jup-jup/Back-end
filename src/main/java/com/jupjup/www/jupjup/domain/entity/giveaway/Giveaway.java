@@ -3,6 +3,7 @@ package com.jupjup.www.jupjup.domain.entity.giveaway;
 import com.jupjup.www.jupjup.domain.entity.User;
 import com.jupjup.www.jupjup.domain.entity.chat.Room;
 import com.jupjup.www.jupjup.domain.enums.GiveawayStatus;
+import com.jupjup.www.jupjup.image.entity.Image;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -48,13 +49,6 @@ public class Giveaway {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    @Builder
-    public Giveaway(String title, String description, Long giverId) {
-        this.title = title;
-        this.description = description;
-        this.giverId = giverId;
-    }
-
     @JoinColumn(name = "giver_id", insertable = false, updatable = false)
     @ManyToOne(targetEntity = User.class, fetch = FetchType.LAZY)
     private User giver;
@@ -62,10 +56,12 @@ public class Giveaway {
     @Column(name = "giver_id")
     private Long giverId;
 
-    // TODO: 이미지의 저장 구현 방법은 고민해볼 것
     // TODO: cascade & orphanRemoval 에 대한 이해 필요
-//    @OneToMany(mappedBy = "giveaway", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-//    private List<GiveawayImage> imagePaths;
+    // cascade
+    // orphanRemoval: 부모와 자식간의 연관관계를 제거하면 자식 엔티티가 고아가 되어 DB 에서 삭제됨
+    @JoinColumn(name = "images")
+    @OneToMany(mappedBy = "giveaway", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Image> images;
 
     // TODO: 거래 장소
 
@@ -73,10 +69,20 @@ public class Giveaway {
 
     // TODO: 조회 수
 
-    public void update(String title, String description, GiveawayStatus status) {
+
+    @Builder
+    public Giveaway(String title, String description, Long giverId, List<Image> images) {
+        this.title = title;
+        this.description = description;
+        this.giverId = giverId;
+        this.images = images;
+    }
+
+    public void update(String title, String description, GiveawayStatus status, List<Image> images) {
         this.title = title;
         this.description = description;
         this.status = status;
+        this.images = images;
     }
 
 }
