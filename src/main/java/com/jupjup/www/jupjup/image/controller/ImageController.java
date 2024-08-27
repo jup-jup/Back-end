@@ -6,28 +6,29 @@ import com.jupjup.www.jupjup.image.dto.GetImageResponse;
 import com.jupjup.www.jupjup.image.dto.UploadImageResponse;
 import com.jupjup.www.jupjup.image.service.ImageService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.headers.Header;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.util.UriUtils;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 
 @Tag(name = "Image", description = "이미지 관련 API")
+@SecurityRequirement(name = "JWT")
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/v1/images")
@@ -38,6 +39,13 @@ public class ImageController {
     private static final String BEARER_PREFIX = "Bearer ";
 
     @Operation(summary = "upload image", description = "이미지 업로드 API")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Success", content = {
+                    @Content(mediaType = "application/json",
+                            array = @ArraySchema(schema = @Schema(implementation = UploadImageResponse.class)))
+            }),
+            @ApiResponse(responseCode = "500", description = "파일 업로드 에러")
+    })
     @PostMapping("")
     public ResponseEntity<?> upload(@Valid @RequestBody List<MultipartFile> files, @Valid @RequestHeader("Authorization") String header) {
         // TODO: authorization header 에서 userId 뽑아오는 방법이 이게 최선일까..
@@ -57,6 +65,13 @@ public class ImageController {
     }
 
     @Operation(summary = "get image", description = "이미지 메타 정보를 가져오는 API")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Success", content = {
+                    @Content(mediaType = "application/json",
+                            array = @ArraySchema(schema = @Schema(implementation = GetImageResponse.class)))
+            }),
+            @ApiResponse(responseCode = "400", description = "존재하지 않는 id 입니다.")
+    })
     @GetMapping("/{id}")
     public ResponseEntity<?> getImage(@PathVariable Long id) {
         try {
@@ -72,6 +87,18 @@ public class ImageController {
     }
 
     @Operation(summary = "display image", description = "실제 이미지를 보여주기 위한 API")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Success",
+                    headers = {@Header(name = HttpHeaders.CONTENT_DISPOSITION)},
+                    content = {
+                            @Content(mediaType = "image/png, application/octet-stream",
+                                    schema = @Schema(implementation = Resource.class),
+                                    array = @ArraySchema(schema = @Schema(implementation = GetImageResponse.class)))
+                    }
+            ),
+            @ApiResponse(responseCode = "400", description = "존재하지 않는 id 입니다."),
+            @ApiResponse(responseCode = "500", description = "서버에 파일이 없는 경우")
+    })
     @GetMapping("/display/{id}")
     public ResponseEntity<?> showImage(@PathVariable Long id) {
         try {
