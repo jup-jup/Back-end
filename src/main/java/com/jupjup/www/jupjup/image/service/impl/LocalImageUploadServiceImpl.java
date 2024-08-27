@@ -15,28 +15,30 @@ import java.util.Objects;
 @Service("local")
 public class LocalImageUploadServiceImpl implements ImageUploadService {
 
-    private final String baseDir = new File("images/").getAbsolutePath();
+    private final String rootPath = new File("").getAbsolutePath();
 
     @Override
     public String upload(MultipartFile file, Long userId) throws IOException {
         String fileName = generateUniqueFileName(Objects.requireNonNull(file.getOriginalFilename()));
-        String uploadDir = baseDir + "/" + userId + "/" + LocalDate.now() + "/";
-        String filePath = uploadDir + fileName;
 
-        Path dir = Paths.get(uploadDir);
+        String baseDir = "/images";
+        String filePath = baseDir + "/" + userId + "/" + LocalDate.now() + "/";
+        String uploadPath = rootPath + filePath + fileName;
+
+        Path dir = Paths.get(rootPath + filePath);
         if (!Files.exists(dir)) {
             Files.createDirectories(dir);
         }
 
-        File f = new File(filePath);
+        File f = new File(uploadPath);
         file.transferTo(f);
 
-        return filePath;
+        return filePath + fileName;
     }
 
     // TODO: 공통 기능인데 어디에 위치하는게 좋을지..?
     public String generateUniqueFileName(String originalFileName) {
-        String baseName = originalFileName.substring(0, originalFileName.lastIndexOf("."));
+        String baseName = originalFileName.substring(0, originalFileName.lastIndexOf(".")).replaceAll(" ", "");
         String extension = originalFileName.substring(originalFileName.lastIndexOf("."));
         String timestamp = String.valueOf(System.currentTimeMillis());
         return baseName + "_" + timestamp + extension;
