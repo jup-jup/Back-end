@@ -1,5 +1,6 @@
 package com.jupjup.www.jupjup.model.dto.giveaway;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,6 +16,7 @@ public class CreateGiveawayRequest {
 
     private String location;
 
+    @JsonProperty("image_ids")
     private List<Long> imageIds;
 
 }

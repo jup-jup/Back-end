@@ -27,11 +27,7 @@ public class GiveawayService {
     private final UserRepository userRepository;
     private final ImageRepository imageRepository;
 
-    public Giveaway save(CreateGiveawayRequest request, String userEmail) {
-        Long userId = userRepository.findByUserEmail(userEmail)
-                .orElseThrow(() -> new IllegalArgumentException("등록되지 않은 유저입니다."))
-                .getId();
-
+    public Giveaway save(CreateGiveawayRequest request, Long userId) {
         List<Image> images = imageRepository.findAllById(request.getImageIds());
 
         Giveaway giveaway = Giveaway.builder()
@@ -64,8 +60,8 @@ public class GiveawayService {
     }
 
     @Transactional
-    public Giveaway update(Long id, UpdateGiveawayRequest request, String userEmail) {
-        Giveaway giveaway = authorizeGiveawayUser(id, userEmail);
+    public Giveaway update(Long id, UpdateGiveawayRequest request, Long userId) {
+        Giveaway giveaway = authorizeGiveawayUser(id, userId);
 
         List<Image> images = List.of();
         if (!request.getImageIds().isEmpty()) {
@@ -77,16 +73,12 @@ public class GiveawayService {
         return giveaway;
     }
 
-    public void delete(Long id, String userEmail) {
-        Giveaway giveaway = authorizeGiveawayUser(id, userEmail);
+    public void delete(Long id, Long userId) {
+        Giveaway giveaway = authorizeGiveawayUser(id, userId);
         giveawayRepository.delete(giveaway);
     }
 
-    public Giveaway authorizeGiveawayUser(Long id, String userEmail) {
-        Long userId = userRepository.findByUserEmail(userEmail)
-                .orElseThrow(() -> new IllegalArgumentException("등록되지 않은 유저입니다."))
-                .getId();
-
+    public Giveaway authorizeGiveawayUser(Long id, Long userId) {
         Giveaway giveaway = giveawayRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("잘못된 나눔 id"));
 

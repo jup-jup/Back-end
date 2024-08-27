@@ -1,12 +1,12 @@
 package com.jupjup.www.jupjup.controller;
 
+import com.jupjup.www.jupjup.config.JWTUtil;
 import com.jupjup.www.jupjup.domain.entity.giveaway.Giveaway;
 import com.jupjup.www.jupjup.model.dto.giveaway.CreateGiveawayRequest;
 import com.jupjup.www.jupjup.model.dto.giveaway.GiveawayDetailResponse;
 import com.jupjup.www.jupjup.model.dto.giveaway.GiveawayListResponse;
 import com.jupjup.www.jupjup.model.dto.giveaway.UpdateGiveawayRequest;
 import com.jupjup.www.jupjup.service.giveaway.GiveawayService;
-import com.jupjup.www.jupjup.service.oauth.CustomUserDetails;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.headers.Header;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -15,6 +15,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -22,7 +23,6 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -38,6 +38,8 @@ public class GiveawayController {
 
     private final GiveawayService giveawayService;
 
+    private static final String BEARER_PREFIX = "Bearer ";
+
     @Operation(summary = "add giveaway", description = "나눔 올리기 API")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "나눔 정상 생성 완료",
@@ -45,10 +47,11 @@ public class GiveawayController {
             @ApiResponse(responseCode = "401", description = "등록되지 않은 유저입니다.")
     })
     @PostMapping("")
-    public ResponseEntity<?> addGiveaway(@RequestBody CreateGiveawayRequest request, Authentication authentication) {
+    public ResponseEntity<?> addGiveaway(@RequestBody CreateGiveawayRequest request, @Valid @RequestHeader("Authorization") String header) {
         try {
-            CustomUserDetails customOAuth2User = (CustomUserDetails) authentication.getPrincipal();
-            Giveaway giveaway = giveawayService.save(request, customOAuth2User.getUserEmail());
+            String token = header.substring(BEARER_PREFIX.length());
+            Long userId = JWTUtil.getUserIdFromAccessToken(token);
+            Giveaway giveaway = giveawayService.save(request, userId);
 
             return ResponseEntity
                     .created(URI.create(String.format("/api/v1/giveaways/%d", giveaway.getId())))
@@ -70,7 +73,7 @@ public class GiveawayController {
     })
     @GetMapping("")
     public ResponseEntity<List<GiveawayListResponse>> getList(
-            @PageableDefault(size = 30, sort = "created_at", direction = Sort.Direction.DESC) Pageable pageable
+            @PageableDefault(size = 30, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable
     ) {
         List<GiveawayListResponse> list = giveawayService.findAll(pageable);
         return ResponseEntity
@@ -106,11 +109,13 @@ public class GiveawayController {
     @PatchMapping("/{id}")
     public ResponseEntity<?> updateGiveaway(@PathVariable Long id
             , @RequestBody UpdateGiveawayRequest request
-            , Authentication authentication) {
+            , @Valid @RequestHeader("Authorization") String header) {
 
         try {
-            CustomUserDetails customOAuth2User = (CustomUserDetails) authentication.getPrincipal();
-            Giveaway giveaway = giveawayService.update(id, request, customOAuth2User.getUserEmail());
+            String token = header.substring(BEARER_PREFIX.length());
+            Long userId = JWTUtil.getUserIdFromAccessToken(token);
+
+            Giveaway giveaway = giveawayService.update(id, request, userId);
 
             return ResponseEntity
                     .noContent()
@@ -129,10 +134,11 @@ public class GiveawayController {
             @ApiResponse(responseCode = "404", description = "잘못된 나눔 id")
     })
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteGiveaway(@PathVariable Long id, Authentication authentication) {
+    public ResponseEntity<?> deleteGiveaway(@PathVariable Long id, @Valid @RequestHeader("Authorization") String header) {
         try {
-            CustomUserDetails customOAuth2User = (CustomUserDetails) authentication.getPrincipal();
-            giveawayService.delete(id, customOAuth2User.getUserEmail());
+            String token = header.substring(BEARER_PREFIX.length());
+            Long userId = JWTUtil.getUserIdFromAccessToken(token);
+            giveawayService.delete(id, userId);
 
             return ResponseEntity
                     .noContent()

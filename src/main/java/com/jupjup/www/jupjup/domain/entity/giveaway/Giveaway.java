@@ -59,7 +59,6 @@ public class Giveaway {
     // TODO: cascade & orphanRemoval 에 대한 이해 필요
     // cascade
     // orphanRemoval: 부모와 자식간의 연관관계를 제거하면 자식 엔티티가 고아가 되어 DB 에서 삭제됨
-    @JoinColumn(name = "images")
     @OneToMany(mappedBy = "giveaway", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Image> images;
 
