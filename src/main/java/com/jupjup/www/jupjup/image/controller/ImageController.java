@@ -1,8 +1,10 @@
 package com.jupjup.www.jupjup.image.controller;
 
 import com.jupjup.www.jupjup.config.JWTUtil;
+import com.jupjup.www.jupjup.image.dto.GetImageResponse;
 import com.jupjup.www.jupjup.image.dto.UploadImageResponse;
 import com.jupjup.www.jupjup.image.service.ImageService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +17,7 @@ import java.util.List;
 @Tag(name = "Image", description = "이미지 관련 API")
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/v1/image")
+@RequestMapping("/api/v1/images")
 public class ImageController {
 
     private final ImageService imageService;
@@ -40,11 +42,21 @@ public class ImageController {
         }
     }
 
-    // TODO: 경로로 이미지 찾는 기능
+    @Operation(summary = "get image", description = "이미지 메타 정보를 가져옵니다.")
     @GetMapping("/{id}")
-    public ResponseEntity<?> findImage(@PathVariable Long id) {
-
-        return ResponseEntity.ok().build();
+    public ResponseEntity<?> getImage(@PathVariable Long id) {
+        try {
+            GetImageResponse resp = imageService.find(id);
+            return ResponseEntity
+                    .ok()
+                    .body(resp);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(e.getMessage());
+        }
     }
+
+    // TODO: path 로 실제 이미지 파일 가져오는 API
 
 }

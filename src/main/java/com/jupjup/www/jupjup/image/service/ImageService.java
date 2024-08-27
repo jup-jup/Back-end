@@ -1,5 +1,6 @@
 package com.jupjup.www.jupjup.image.service;
 
+import com.jupjup.www.jupjup.image.dto.GetImageResponse;
 import com.jupjup.www.jupjup.image.dto.UploadImageResponse;
 import com.jupjup.www.jupjup.image.entity.Image;
 import com.jupjup.www.jupjup.image.repository.ImageRepository;
@@ -46,6 +47,13 @@ public class ImageService {
         return images.stream()
                 .map(UploadImageResponse::toDTO)
                 .toList();
+    }
+
+    public GetImageResponse find(Long id) {
+        Image image = imageRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 id 입니다."));
+
+        return GetImageResponse.toDTO(image);
     }
 
 }
