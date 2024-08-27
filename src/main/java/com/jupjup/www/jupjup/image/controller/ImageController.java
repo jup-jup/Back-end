@@ -41,8 +41,8 @@ public class ImageController {
     }
 
     // TODO: 경로로 이미지 찾는 기능
-    @GetMapping("")
-    public ResponseEntity<?> findImage() {
+    @GetMapping("/{id}")
+    public ResponseEntity<?> findImage(@PathVariable Long id) {
 
         return ResponseEntity.ok().build();
     }
