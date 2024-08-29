@@ -2,9 +2,12 @@ package com.jupjup.www.jupjup.config;
 
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.servers.Server;
 import org.springdoc.core.models.GroupedOpenApi;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import java.util.List;
 
 @Configuration
 public class SwaggerConfig {
@@ -15,8 +18,12 @@ public class SwaggerConfig {
                 .info(new Info()
                         .title("JUP-JUP API")
                         .version("1.0.0")
-                        .description("Back-end API Documentation"));
-//                        .contact(new Contact().name("bo ram kim").url("http://example.com/contact").email("boram04415@naver.com")));
+                        .description("Back-end API Documentation"))
+                .servers(List.of(
+                        new Server().url("https://jupjup.store").description("Production server"),
+                        new Server().url("http://localhost:8080").description("Local server")
+                ));
+
 
     }
 

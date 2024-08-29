@@ -1,28 +1,19 @@
 spring:
   application:
     name: jup-jup
-  server:
-    port: ${SERVER_PORT}
-  servlet:
-    multipart:
-      maxFileSize: 10MB # 파일 하나의 최대 크기
-      maxRequestSize: 50MB  # 한 번에 최대 업로드 가능 용량
-
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: ${MYSQL_URL}
-    username: ${MYSQL_USER}
+    username: ${MYSQL_USERNAME}
     password: ${MYSQL_PASSWORD}
-
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     properties:
       hibernate:
         format_sql: true
-
   security:
     oauth2:
       client:
@@ -34,7 +25,6 @@ spring:
             redirect-uri: ${GOOGLE_REDIRECT_URI}
             authorization-grant-type: authorization_code
             scope: profile,email
-
           naver:
             client-name: naver
             client-id: ${NAVER_CLIENT_ID}
@@ -44,12 +34,11 @@ spring:
             scope: name,email
           kakao:
             client-id: ${KAKAO_CLIENT_ID}
-            #            client-secret: ${KAKAO_CLIENT_SECRET} # 오류로 인한 주석 ( 이거 켜놓으니깐 로긴이 안됨 ;; 왜지 )
+            #            client-secret: ${KAKAO_CLIENT_SECRET}
             scope: profile_nickname
             client-name: Kakao
             authorization-grant-type: authorization_code
             redirect-uri: ${KAKAO_REDIRECT_URI}
-
         provider:
           naver:
             authorization-uri: https://nid.naver.com/oauth2.0/authorize
@@ -61,6 +50,10 @@ spring:
             token-uri: https://kauth.kakao.com/oauth/token
             user-info-uri: https://kapi.kakao.com/v2/user/me
             user-name-attribute: id
+  servlet:
+    multipart:
+      maxFileSize: 10MB
+      maxRequestSize: 50MB
 
 jwt:
   secret: ${JWT_SECRET}
@@ -70,7 +63,7 @@ springdoc:
   swagger-ui:
     url: '/docs/api.yaml'
   paths-to-match:
-  - /api/v1/**
+    - /api/v1/**
 
 server:
   servlet:

@@ -1,11 +1,11 @@
 package com.jupjup.www.jupjup.service.mypageService;
 
 
-import com.jupjup.www.jupjup.domain.entity.mypage.MyPageSharingList;
+import com.jupjup.www.jupjup.domain.entity.mypage.MyPageGiveawayList;
 import com.jupjup.www.jupjup.domain.entity.mypage.MypageReceivedList;
 import com.jupjup.www.jupjup.domain.repository.MypageReceivedRepository.MypageReceivedRepository;
-import com.jupjup.www.jupjup.domain.repository.MypageSharingRepository.MypageSharingRepository;
-import com.jupjup.www.jupjup.domain.repository.MypageSharingRepository.MypageSharingRepositoryImpl;
+import com.jupjup.www.jupjup.domain.repository.MypageSharingRepository.MypageGiveawayRepository;
+import com.jupjup.www.jupjup.domain.repository.MypageSharingRepository.MypageGiveawayRepositoryImpl;
 import com.jupjup.www.jupjup.model.dto.mypage.MyPageSharingListRequest;
 import com.jupjup.www.jupjup.model.dto.mypage.MyPageSharingListResponse;
 import com.jupjup.www.jupjup.model.dto.mypage.MypageReceivedListResponse;
@@ -28,10 +28,10 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class MypageSharingService {
+public class MypageGiveawayService {
 
-    private final MypageSharingRepositoryImpl MypageSharingRepositoryImpl;
-    private final MypageSharingRepository mypageSharingRepository;
+    private final MypageGiveawayRepositoryImpl mypageGiveawayRepositoryImpl;
+    private final MypageGiveawayRepository mypageGiveawayRepository;
     private final MypageReceivedRepository mypageReceivedRepository;
 
     /**
@@ -41,7 +41,7 @@ public class MypageSharingService {
      */
     public List<MyPageSharingListResponse> getMyPageSharingListByUserName(String userNickName) {
 
-        List<MyPageSharingList> list = MypageSharingRepositoryImpl.findAllByUserName(userNickName);
+        List<MyPageGiveawayList> list = mypageGiveawayRepositoryImpl.findAllByUserName(userNickName);
 
         if (list.isEmpty()) {
             throw new NoSuchElementException();
@@ -66,8 +66,8 @@ public class MypageSharingService {
      * @since         : 2024. 8. 21.
      * @description   : 게시물 id 값으로 마이페이지 나눔내역 디테일 리스트 메서드
      */
-    public MyPageSharingList getMyPageSharingById(long id) {
-        return mypageSharingRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+    public MyPageGiveawayList getMyPageSharingById(long id) {
+        return mypageGiveawayRepository.findById(id).orElseThrow(EntityNotFoundException::new);
     }
 
 
@@ -79,7 +79,7 @@ public class MypageSharingService {
     public boolean updateItem(MyPageSharingListRequest myPageSharingListRequest) {
         log.info("modifySharedItem: {}", myPageSharingListRequest.toString());
         try {
-            MypageSharingRepositoryImpl.updateItem(myPageSharingListRequest);
+            mypageGiveawayRepositoryImpl.updateItem(myPageSharingListRequest);
         } catch (IllegalArgumentException e) {
             log.info(e.toString());
             return false;
