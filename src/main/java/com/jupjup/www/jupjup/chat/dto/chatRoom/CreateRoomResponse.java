@@ -1,6 +1,8 @@
-package com.jupjup.www.jupjup.model.dto.chatRoom;
+package com.jupjup.www.jupjup.chat.dto.chatRoom;
 
-import com.jupjup.www.jupjup.domain.entity.chat.Room;
+import com.jupjup.www.jupjup.chat.entity.Room;
+import com.jupjup.www.jupjup.chat.entity.UserChatRoom;
+import com.jupjup.www.jupjup.domain.entity.User;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,10 +20,15 @@ public class CreateRoomResponse {
     private Long giveawayId;
     private LocalDateTime createdAt;
 
-    public static CreateRoomResponse toDTO(Room room, List<Long> userIds) {
+    public static CreateRoomResponse toDTO(Room room) {
+        List<Long> userIds = room.getUserChatRooms().stream()
+                .map(UserChatRoom::getUser)
+                .map(User::getId)
+                .toList();
+
         return CreateRoomResponse.builder()
                 .roomId(room.getId())
-                .userIds(userIds) // TODO: userIds 는 어떻게 넘겨줄지 확인 필요. ManyToMany 에서 연관 테이블에 저장하는 데이터에 대한 이슈
+                .userIds(userIds)
                 .giveawayId(room.getGiveawayId())
                 .createdAt(room.getCreatedAt())
                 .build();

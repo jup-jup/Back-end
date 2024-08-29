@@ -1,16 +1,13 @@
-package com.jupjup.www.jupjup.domain.entity.chat;
+package com.jupjup.www.jupjup.chat.entity;
 
+import com.jupjup.www.jupjup.domain.entity.User;
 import com.jupjup.www.jupjup.domain.entity.giveaway.Giveaway;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
-import org.springframework.cglib.core.Local;
-import org.springframework.data.annotation.CreatedDate;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,9 +23,18 @@ public class Room {
     @Column(name = "id", updatable = false)
     private Long id;
 
-    // TODO: ManyToMany 를 UserChatRoom 엔티티로 분리해놨는데 어떻게 관리할 것인지 확인 필요.
-    @OneToMany(mappedBy = "room")
+    // TODO: N+1 문제 관련해서 고민해볼것
+    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<UserChatRoom> userChatRooms = new ArrayList<>();
+
+    public void addUserChatRoom(Long userId) {
+        UserChatRoom userChatRoom = UserChatRoom.builder()
+                .userId(userId)
+                .room(this)
+                .build();
+
+        userChatRooms.add(userChatRoom);
+    }
 
     @OneToMany(mappedBy = "room")
     private List<Chat> chats = new ArrayList<>();
@@ -44,7 +50,7 @@ public class Room {
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
-    // TODO: last_message_time 저장해야할듯
+    // TODO: last_chat_time 저장해야할듯
 //    @Column(name = "last_chat_time")
 //    @UpdateTimestamp
 //    private LocalDateTime lastChatTime;

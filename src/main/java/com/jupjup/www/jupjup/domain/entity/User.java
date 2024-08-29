@@ -1,7 +1,7 @@
 package com.jupjup.www.jupjup.domain.entity;
 
-import com.jupjup.www.jupjup.domain.entity.chat.Chat;
-import com.jupjup.www.jupjup.domain.entity.chat.UserChatRoom;
+import com.jupjup.www.jupjup.chat.entity.Chat;
+import com.jupjup.www.jupjup.chat.entity.UserChatRoom;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;

@@ -8,12 +8,13 @@ spring:
     password: ${MYSQL_PASSWORD}
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     properties:
       hibernate:
         format_sql: true
+        show_sql: true
   security:
     oauth2:
       client:
@@ -62,7 +63,7 @@ springdoc:
   swagger-ui:
     url: '/docs/api.yaml'
   paths-to-match:
-    - /api/v1/**
+  - /api/v1/**
 
 server:
   servlet:

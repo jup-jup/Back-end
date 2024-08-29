@@ -1,6 +1,6 @@
-package com.jupjup.www.jupjup.domain.repository.chat;
+package com.jupjup.www.jupjup.chat.repository;
 
-import com.jupjup.www.jupjup.domain.entity.chat.Chat;
+import com.jupjup.www.jupjup.chat.entity.Chat;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
