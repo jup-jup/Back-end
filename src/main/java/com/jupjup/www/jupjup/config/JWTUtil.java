@@ -155,7 +155,7 @@ public class JWTUtil {
         toKen.setHttpOnly(true); // JavaScript 에서 접근하지 못하도록 설정
         toKen.setPath("/"); // 하위 모든 경로 쿠키 유효
         toKen.setMaxAge(COOKIE); // 쿠키의 유효기간 설정 (30일)
-        toKen.setSecure(true); // HTTP에서 사용 가능하게 설정
+        toKen.setSecure(false); // HTTP 에서 사용 가능하게 설정
         return toKen;
     }
 
