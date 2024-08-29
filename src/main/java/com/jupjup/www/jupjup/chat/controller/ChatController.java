@@ -51,23 +51,17 @@ public class ChatController {
             @RequestBody CreateChatRequest request,
             @Valid @RequestHeader("Authorization") String header
     ) {
-        try {
-            // TODO: authorization header 에서 userId 뽑아오는 방법이 이게 최선일까..
-            String token = header.substring(BEARER_PREFIX.length());
-            Long userId = JWTUtil.getUserIdFromAccessToken(token);
+        // TODO: authorization header 에서 userId 뽑아오는 방법이 이게 최선일까..
+        String token = header.substring(BEARER_PREFIX.length());
+        Long userId = JWTUtil.getUserIdFromAccessToken(token);
 
-            Chat chat = chatService.add(roomId, request.getContent(), userId);
+        Chat chat = chatService.add(roomId, request.getContent(), userId);
 
-            URI location = URI.create(String.format("/chat-rooms/%d/chats/%d", roomId, chat.getId()));
+        URI location = URI.create(String.format("/chat-rooms/%d/chats/%d", roomId, chat.getId()));
 
-            return ResponseEntity
-                    .created(location)
-                    .build();
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity
-                    .status(HttpStatus.UNAUTHORIZED)
-                    .body(e.getMessage());
-        }
+        return ResponseEntity
+                .created(location)
+                .build();
     }
 
     @Operation(summary = "get chat list", description = "채팅방의 채팅 리스트 API")
@@ -98,7 +92,7 @@ public class ChatController {
 
         } catch (IllegalArgumentException e) {
             return ResponseEntity
-                    .status(HttpStatus.UNAUTHORIZED)
+                    .badRequest()
                     .body(e.getMessage());
         }
     }

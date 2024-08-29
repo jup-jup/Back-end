@@ -44,21 +44,15 @@ public class ChatRoomController {
     @PostMapping("")
     public ResponseEntity<?> createRoom(@RequestBody CreateRoomRequest request, @Valid @RequestHeader("Authorization") String header) {
 
-        try {
-            // TODO: authorization header 에서 userId 뽑아오는 방법이 이게 최선일까..
-            String token = header.substring(BEARER_PREFIX.length());
-            Long userId = JWTUtil.getUserIdFromAccessToken(token);
+        // TODO: authorization header 에서 userId 뽑아오는 방법이 이게 최선일까..
+        String token = header.substring(BEARER_PREFIX.length());
+        Long userId = JWTUtil.getUserIdFromAccessToken(token);
 
-            CreateRoomResponse roomDTO = roomService.create(request, userId);
+        CreateRoomResponse roomDTO = roomService.create(request, userId);
 
-            return ResponseEntity
-                    .ok()
-                    .body(roomDTO);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity
-                    .status(HttpStatus.UNAUTHORIZED)
-                    .body(e.getMessage());
-        }
+        return ResponseEntity
+                .ok()
+                .body(roomDTO);
     }
 
     @Operation(summary = "get rooms", description = "채팅방 목록 API. 해당 유저의 채팅 목록 전체를 가져옵니다.")
@@ -70,21 +64,15 @@ public class ChatRoomController {
     })
     @GetMapping("")
     public ResponseEntity<?> getRooms(@Valid @RequestHeader("Authorization") String header) {
-        try {
-            // TODO: authorization header 에서 userId 뽑아오는 방법이 이게 최선일까..
-            String token = header.substring(BEARER_PREFIX.length());
-            Long userId = JWTUtil.getUserIdFromAccessToken(token);
+        // TODO: authorization header 에서 userId 뽑아오는 방법이 이게 최선일까..
+        String token = header.substring(BEARER_PREFIX.length());
+        Long userId = JWTUtil.getUserIdFromAccessToken(token);
 
-            List<RoomListResponse> list = roomService.list(userId);
+        List<RoomListResponse> list = roomService.list(userId);
 
-            return ResponseEntity
-                    .ok()
-                    .body(list);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity
-                    .status(HttpStatus.UNAUTHORIZED)
-                    .body(e.getMessage());
-        }
+        return ResponseEntity
+                .ok()
+                .body(list);
     }
 
     @Operation(summary = "get rooms", description = "채팅방 정보 API. 참여 중인 채팅방 디테일을 가져옵니다.")
