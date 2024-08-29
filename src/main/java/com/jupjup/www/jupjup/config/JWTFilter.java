@@ -67,7 +67,6 @@ public class JWTFilter extends OncePerRequestFilter {
             response.sendRedirect("/api/v1/auth/reissue");
             return;
         }
-
         filterChain.doFilter(request, response);
     }
 }

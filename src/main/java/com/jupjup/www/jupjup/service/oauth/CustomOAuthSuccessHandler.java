@@ -36,7 +36,6 @@ public class CustomOAuthSuccessHandler extends SimpleUrlAuthenticationSuccessHan
         String userEmail = customUserDetails.getUserEmail();
         String providerId = customUserDetails.getProviderId();
 
-        // 권한 (USER, ADMIN)
         Iterator<? extends GrantedAuthority> iterator =  authentication.getAuthorities().iterator();
         GrantedAuthority auth = iterator.next();
 

@@ -17,14 +17,13 @@ import java.util.Collection;
 @Slf4j
 public class CustomSuccessHandler implements AuthenticationSuccessHandler {
 
-//    private static final Logger log = LoggerFactory.getLogger(CustomSuccessHandler.class);
-
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-        for (GrantedAuthority grantedAuthority : authorities) {
-            log.info("grantedAuthority.getAuthority() = {}", grantedAuthority.getAuthority());
-        }
+
+//        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+//        for (GrantedAuthority grantedAuthority : authorities) {
+//            log.info("grantedAuthority.getAuthority() = {}", grantedAuthority.getAuthority());
+//        }
 
         // 사용자의 주체 정보
         Object principal = authentication.getPrincipal();
