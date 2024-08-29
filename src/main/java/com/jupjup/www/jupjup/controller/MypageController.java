@@ -3,7 +3,7 @@ package com.jupjup.www.jupjup.controller;
 
 import com.jupjup.www.jupjup.config.JWTUtil;
 import com.jupjup.www.jupjup.model.dto.mypage.MyPageSharingListRequest;
-import com.jupjup.www.jupjup.service.mypageService.MypageSharingService;
+import com.jupjup.www.jupjup.service.mypageService.MypageGiveawayService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 public class MypageController {
 
-    private final MypageSharingService mypageSharingService;
+    private final MypageGiveawayService mypageSharingService;
 
 
     @Operation(summary = "나눔 리스트")
@@ -48,7 +48,7 @@ public class MypageController {
     }
 
     @Operation(summary = "나눔하기 업데이트")
-    @PostMapping("/modify/save")
+    @PostMapping("/modify/update")
     // TODO : 이미지 업로드 추후 개발
     public ResponseEntity<?> modify(@RequestBody MyPageSharingListRequest myPageSharingListRequest) {
         if (mypageSharingService.updateItem(myPageSharingListRequest)){

@@ -27,7 +27,9 @@ public class RefreshReissueService {
         List<RefreshToken> entity = refreshRepository.findByUserEmailAndRefreshToken(userEmail, refreshToken);
         try {
             if(entity.isEmpty()) return false;
-            JWTUtil.validateRefreshToken(refreshToken);
+            if (JWTUtil.validateRefreshToken(refreshToken)) {
+
+            }
         } catch (ExpiredJwtException e) {
             resp.sendError(HttpStatus.FORBIDDEN.value());
         }

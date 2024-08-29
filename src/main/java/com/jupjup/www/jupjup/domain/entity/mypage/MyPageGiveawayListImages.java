@@ -7,8 +7,8 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "mypage_sharing_list_images")
-public class MyPageSharingListImages {
+@Table(name = "mypage_giveaway_list_images")
+public class MyPageGiveawayListImages {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,6 +20,6 @@ public class MyPageSharingListImages {
 
     @ManyToOne
     @JoinColumn(name = "mypage_sharing_list_id")
-    private MyPageSharingList myPageSharingListId;
+    private MyPageGiveawayList myPageSharingListId;
 
 }

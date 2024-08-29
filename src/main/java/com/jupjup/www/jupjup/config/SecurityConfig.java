@@ -51,7 +51,8 @@ public class SecurityConfig {
         http.httpBasic(AbstractHttpConfigurer::disable);
 
         //cors 보안 강화
-        http.cors(cors -> cors.configurationSource(corsConfigurationSource()));
+//        http.cors(cors -> cors.configurationSource(corsConfigurationSource()));
+        http.cors(AbstractHttpConfigurer::disable);
 
         // OAuth2 설정 추가
         http.oauth2Login(oauth2 -> oauth2
@@ -91,7 +92,7 @@ public class SecurityConfig {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("*")); // 구체적인 도메인으로 수정
+        configuration.setAllowedOrigins(List.of("https://api.jupjup.shop,http://localhost:8080"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "Origin", "Accept"));
         configuration.setAllowCredentials(true);
