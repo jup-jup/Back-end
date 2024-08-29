@@ -7,16 +7,22 @@ services:
       - "443:443"
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf
-      - ./certbot/conf:/etc/letsencrypt
+      - /etc/letsencrypt:/etc/letsencrypt  # 호스트의 실제 인증서 위치
       - ./certbot/www:/var/www/certbot
     command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
+    depends_on:
+      - app
+    networks:
+      - app-network
 
   certbot:
     image: certbot/certbot
     volumes:
-      - ./certbot/conf:/etc/letsencrypt
+      - /etc/letsencrypt:/etc/letsencrypt  # 호스트의 실제 인증서 위치
       - ./certbot/www:/var/www/certbot
     entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
+    networks:
+      - app-network
 
   app:
     build: .
@@ -28,16 +34,24 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/jupjup
       - SPRING_DATASOURCE_USERNAME=root
       - SPRING_DATASOURCE_PASSWORD=jupjup1234
+    volumes:
+      - ./logs:/app/logs
+    networks:
+      - app-network
 
   db:
     image: mysql:8.0
     environment:
       MYSQL_ROOT_PASSWORD: jupjup1234
       MYSQL_DATABASE: jupjup
-      MYSQL_USER: root
-      MYSQL_PASSWORD: jupjup1234
     volumes:
       - mysql_data:/var/lib/mysql
+    networks:
+      - app-network
 
 volumes:
   mysql_data:
+
+networks:
+  app-network:
+    driver: bridge

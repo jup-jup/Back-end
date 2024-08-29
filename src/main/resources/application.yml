@@ -34,7 +34,6 @@ spring:
             scope: name,email
           kakao:
             client-id: ${KAKAO_CLIENT_ID}
-            #            client-secret: ${KAKAO_CLIENT_SECRET}
             scope: profile_nickname
             client-name: Kakao
             authorization-grant-type: authorization_code
