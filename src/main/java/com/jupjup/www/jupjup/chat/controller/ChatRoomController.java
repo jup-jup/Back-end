@@ -6,7 +6,6 @@ import com.jupjup.www.jupjup.chat.dto.chatRoom.RoomListResponse;
 import com.jupjup.www.jupjup.chat.dto.chatRoom.RoomResponse;
 import com.jupjup.www.jupjup.chat.service.RoomService;
 import com.jupjup.www.jupjup.config.JWTUtil;
-import com.jupjup.www.jupjup.service.oauth.CustomUserDetails;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -16,9 +15,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -38,12 +35,10 @@ public class ChatRoomController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Success",
                     content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = CreateRoomResponse.class))),
-            @ApiResponse(responseCode = "401", description = "잘못된 유저입니다.")
+                            schema = @Schema(implementation = CreateRoomResponse.class)))
     })
     @PostMapping("")
     public ResponseEntity<?> createRoom(@RequestBody CreateRoomRequest request, @Valid @RequestHeader("Authorization") String header) {
-
         // TODO: authorization header 에서 userId 뽑아오는 방법이 이게 최선일까..
         String token = header.substring(BEARER_PREFIX.length());
         Long userId = JWTUtil.getUserIdFromAccessToken(token);

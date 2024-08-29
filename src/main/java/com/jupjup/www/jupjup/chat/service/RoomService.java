@@ -2,6 +2,7 @@ package com.jupjup.www.jupjup.chat.service;
 
 import com.jupjup.www.jupjup.chat.entity.Room;
 import com.jupjup.www.jupjup.chat.entity.UserChatRoom;
+import com.jupjup.www.jupjup.domain.entity.User;
 import com.jupjup.www.jupjup.domain.repository.UserRepository;
 import com.jupjup.www.jupjup.chat.repository.RoomRepository;
 import com.jupjup.www.jupjup.chat.repository.UserChatRoomRepository;
@@ -25,27 +26,22 @@ public class RoomService {
 
     @Transactional
     public CreateRoomResponse create(CreateRoomRequest request, Long userId) {
-        // TODO: 두 유저간에는 나눔당 하나만의 채팅방이 생겨야 하므로 이 부분 체크하는 로직 추가 필요
+        // 유저간 대화방이 있는지 확인
+        List<Room> rooms = roomRepository.findByUserIdAndGiveawayId(userId, request.getGiveawayId());
+        if (!rooms.isEmpty()) { // 이미 채팅방 존재하면 해당 채팅방 정보로 리턴
+            return CreateRoomResponse.toDTO(rooms.get(0));
+        }
 
         Room room = Room.builder()
                 .giveawayId(request.getGiveawayId())
                 .build();
 
+        room.addUserChatRoom(userId);
+        room.addUserChatRoom(request.getGiveawayId());
+
         roomRepository.save(room);
 
-        List<UserChatRoom> userChatRoom = Arrays.asList(
-                UserChatRoom.builder()
-                        .roomId(room.getId())
-                        .userId(userId)
-                        .build(),
-                UserChatRoom.builder()
-                        .roomId(room.getId())
-                        .userId(request.getGiverId())
-                        .build()
-        );
-        userChatRoomRepository.saveAll(userChatRoom);
-
-        return CreateRoomResponse.toDTO(room, Arrays.asList(userId, request.getGiverId()));
+        return CreateRoomResponse.toDTO(room);
     }
 
     @Transactional
@@ -60,23 +56,24 @@ public class RoomService {
         // TODO: room 별로 마지막 메시지 정보도 가져와야 함.
 
         // room_id 별로 참여 중인 user 목록 필터링
-        Map<Long, List<Long>> roomUserMap = roomUsers.stream()
-                .collect(Collectors.groupingBy(
-                        UserChatRoom::getRoomId,
-                        Collectors.mapping(UserChatRoom::getUserId, Collectors.toList())
-                ));
+//        Map<Long, List<Long>> roomUserMap = roomUsers.stream()
+//                .collect(Collectors.groupingBy(
+//                        UserChatRoom::getRoomId,
+//                        Collectors.mapping(UserChatRoom::getUserId, Collectors.toList())
+//                ));
+//
+//        // room_id 들로 해당 채팅 리스트 조회
+//        List<Long> roomIds = roomUsers.stream()
+//                .map(UserChatRoom::getRoomId)
+//                .distinct()
+//                .toList();
+//        List<Room> rooms = roomRepository.findAllById(roomIds);
 
-        // room_id 들로 해당 채팅 리스트 조회
-        List<Long> roomIds = roomUsers.stream()
-                .map(UserChatRoom::getRoomId)
-                .distinct()
-                .toList();
-        List<Room> rooms = roomRepository.findAllById(roomIds);
 
-
-        return rooms.stream()
-                .map(o -> RoomListResponse.toDTO(o, roomUserMap.get(o.getId())))
-                .toList();
+//        return rooms.stream()
+//                .map(o -> RoomListResponse.toDTO(o, roomUserMap.get(o.getId())))
+//                .toList();
+        return null;
     }
 
 }
