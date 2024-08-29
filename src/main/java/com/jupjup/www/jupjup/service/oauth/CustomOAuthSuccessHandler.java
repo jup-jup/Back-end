@@ -27,6 +27,7 @@ public class CustomOAuthSuccessHandler extends SimpleUrlAuthenticationSuccessHan
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
+        log.info("실행 ,onAuthenticationSuccess !!!!!!!!! ");
         // OAuth2User
         CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
 
