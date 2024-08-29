@@ -1,20 +1,15 @@
 package com.jupjup.www.jupjup.chat.service;
 
-import com.jupjup.www.jupjup.chat.entity.Room;
-import com.jupjup.www.jupjup.chat.entity.UserChatRoom;
-import com.jupjup.www.jupjup.domain.entity.User;
-import com.jupjup.www.jupjup.domain.repository.UserRepository;
-import com.jupjup.www.jupjup.chat.repository.RoomRepository;
-import com.jupjup.www.jupjup.chat.repository.UserChatRoomRepository;
 import com.jupjup.www.jupjup.chat.dto.chatRoom.CreateRoomRequest;
 import com.jupjup.www.jupjup.chat.dto.chatRoom.CreateRoomResponse;
 import com.jupjup.www.jupjup.chat.dto.chatRoom.RoomListResponse;
+import com.jupjup.www.jupjup.chat.entity.Room;
+import com.jupjup.www.jupjup.chat.repository.RoomRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Service
