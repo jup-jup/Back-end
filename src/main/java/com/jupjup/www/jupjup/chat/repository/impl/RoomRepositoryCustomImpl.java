@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @RequiredArgsConstructor
@@ -44,6 +45,24 @@ public class RoomRepositoryCustomImpl implements RoomRepositoryCustom {
                 .join(qRoom.userChatRooms, qUserChatRoom)
                 .where(qUserChatRoom.userId.eq(userId))
                 .fetch();
+    }
+
+    @Override
+    public Optional<Room> findByIdAndUserId(Long roomId, Long userId) {
+        QRoom qRoom = QRoom.room;
+        QUserChatRoom qUserChatRoom = QUserChatRoom.userChatRoom;
+
+        Room result = queryFactory
+                .select(qRoom)
+                .from(qRoom)
+                .join(qRoom.userChatRooms, qUserChatRoom)
+                .where(
+                        qRoom.id.eq(roomId)
+                                .and(qUserChatRoom.userId.eq(userId))
+                )
+                .fetchFirst();
+
+        return Optional.ofNullable(result);
     }
 
 }

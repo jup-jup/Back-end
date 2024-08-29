@@ -21,8 +21,6 @@ import java.util.stream.Collectors;
 public class RoomService {
 
     private final RoomRepository roomRepository;
-    private final UserChatRoomRepository userChatRoomRepository;
-    private final UserRepository userRepository;
 
     @Transactional
     public CreateRoomResponse create(CreateRoomRequest request, Long userId) {
