@@ -3,12 +3,13 @@ name: CI/CD Pipeline
 on:
   push:
     branches:
-      - main  # main 브랜치에 Push될 때 실행
+      - main
+  schedule:
+    - cron: '0 0 */5 * *'  # 5일마다 실행
 
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
       - name: Check out the repository
         uses: actions/checkout@v3
@@ -27,18 +28,53 @@ jobs:
         with:
           context: .
           push: true
-          tags: boram0415/back-end_app:latest
+          tags: |
+            boram0415/back-end_app:latest
+            boram0415/back-end_app:${{ github.run_number }}
 
   deploy:
     runs-on: ubuntu-latest
     needs: build
     steps:
-      - name: Deploy to server
-        run: |
-          ssh -o StrictHostKeyChecking=no user@your-server-ip << EOF
-            cd /path/to/your/docker-compose-directory
+      - name: Deploy to EC2
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: root
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd /root/Back-end
             docker-compose pull
             docker-compose up -d
-          EOF
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+            
+            # 헬스 체크
+            MAX_RETRIES=5
+            RETRY_INTERVAL=10
+            for i in $(seq 1 $MAX_RETRIES); do
+              if curl -f http://localhost:YOUR_PORT/health; then
+                echo "Application is healthy"
+                exit 0
+              fi
+              echo "Health check failed. Retrying in $RETRY_INTERVAL seconds..."
+              sleep $RETRY_INTERVAL
+            done
+            
+            # 롤백
+            echo "Health check failed after $MAX_RETRIES attempts. Rolling back..."
+            docker-compose down
+            docker-compose pull boram0415/back-end_app:$(({{ github.run_number }} - 1))
+            docker-compose up -d
+            exit 1
+
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clean up old images
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: root
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            # 5일 이상 된 이미지 삭제
+            docker image prune -af --filter "until=120h"
