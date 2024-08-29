@@ -24,13 +24,7 @@ public class RoomService {
     private final UserRepository userRepository;
 
     @Transactional
-    public CreateRoomResponse create(CreateRoomRequest request, String userEmail) {
-        // TODO: 유저 확인 중복 코드 제거 확인
-        // 유저 정보 호출
-        Long userId = userRepository.findByUserEmail(userEmail)
-                .orElseThrow(() -> new IllegalArgumentException("잘못된 유저입니다."))
-                .getId();
-
+    public CreateRoomResponse create(CreateRoomRequest request, Long userId) {
         // TODO: 두 유저간에는 나눔당 하나만의 채팅방이 생겨야 하므로 이 부분 체크하는 로직 추가 필요
 
         Room room = Room.builder()
@@ -55,13 +49,7 @@ public class RoomService {
     }
 
     @Transactional
-    public List<RoomListResponse> list(String userEmail) {
-        // TODO: 유저 확인 중복 코드 제거 확인
-        // 유저 정보 호출
-        Long userId = userRepository.findByUserEmail(userEmail)
-                .orElseThrow(() -> new IllegalArgumentException("잘못된 유저입니다."))
-                .getId();
-
+    public List<RoomListResponse> list(Long userId) {
         // user_chat_room 테이블에서 참여중인 room_id 가져오기
         List<UserChatRoom> roomUsers = userChatRoomRepository.findJoinedRoomByUserId(userId);
         if (roomUsers.isEmpty()) {

@@ -4,6 +4,7 @@ import com.jupjup.www.jupjup.chat.entity.Chat;
 import com.jupjup.www.jupjup.chat.dto.ChatList;
 import com.jupjup.www.jupjup.chat.dto.CreateChatRequest;
 import com.jupjup.www.jupjup.chat.service.ChatService;
+import com.jupjup.www.jupjup.config.JWTUtil;
 import com.jupjup.www.jupjup.service.oauth.CustomUserDetails;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.headers.Header;
@@ -13,6 +14,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -35,6 +37,8 @@ public class ChatController {
 
     private final ChatService chatService;
 
+    private static final String BEARER_PREFIX = "Bearer ";
+
     @Operation(summary = "create chat", description = "채팅 생성 API")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "채팅 정상 생성 완료",
@@ -45,11 +49,14 @@ public class ChatController {
     public ResponseEntity<?> createChat(
             @PathVariable Long roomId,
             @RequestBody CreateChatRequest request,
-            Authentication authentication
+            @Valid @RequestHeader("Authorization") String header
     ) {
         try {
-            CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
-            Chat chat = chatService.add(roomId, request.getContent(), customUserDetails.getUserEmail());
+            // TODO: authorization header 에서 userId 뽑아오는 방법이 이게 최선일까..
+            String token = header.substring(BEARER_PREFIX.length());
+            Long userId = JWTUtil.getUserIdFromAccessToken(token);
+
+            Chat chat = chatService.add(roomId, request.getContent(), userId);
 
             URI location = URI.create(String.format("/chat-rooms/%d/chats/%d", roomId, chat.getId()));
 
@@ -76,11 +83,14 @@ public class ChatController {
     public ResponseEntity<?> getChatList(
             @PathVariable Long roomId,
             @PageableDefault(sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable,
-            Authentication authentication
+            @Valid @RequestHeader("Authorization") String header
     ) {
         try {
-            CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
-            List<ChatList> list = chatService.chatList(pageable, roomId, customUserDetails.getUserEmail());
+            // TODO: authorization header 에서 userId 뽑아오는 방법이 이게 최선일까..
+            String token = header.substring(BEARER_PREFIX.length());
+            Long userId = JWTUtil.getUserIdFromAccessToken(token);
+
+            List<ChatList> list = chatService.chatList(pageable, roomId, userId);
 
             return ResponseEntity
                     .ok()

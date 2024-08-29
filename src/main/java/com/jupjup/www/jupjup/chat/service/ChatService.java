@@ -20,13 +20,7 @@ public class ChatService {
     private final UserChatRoomRepository userChatRoomRepository;
     private final UserRepository userRepository;
 
-    public Chat add(Long roomId, String content, String userEmail) {
-        // TODO: 중복 코드 제거 확인
-        // 유저 정보 호출
-        Long userId = userRepository.findByUserEmail(userEmail)
-                .orElseThrow(() -> new IllegalArgumentException("잘못된 유저입니다."))
-                .getId();
-
+    public Chat add(Long roomId, String content, Long userId) {
         // TODO: 소켓으로 채팅 전송
 
         // TODO: 해당 채팅방 마지막 메시지 업데이트
@@ -40,12 +34,7 @@ public class ChatService {
         return chatRepository.save(chat);
     }
 
-    public List<ChatList> chatList(Pageable pageable, Long roomId, String userEmail) {
-        // 유저 정보 호출
-        Long userId = userRepository.findByUserEmail(userEmail)
-                .orElseThrow(() -> new IllegalArgumentException("잘못된 유저입니다."))
-                .getId();
-
+    public List<ChatList> chatList(Pageable pageable, Long roomId, Long userId) {
         // 해당 room 에 참여중인 user 인지 확인
         UserChatRoom chatRoom = userChatRoomRepository.findByIdAndUserId(roomId, userId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 채팅방의 유저가 아닙니다."));
