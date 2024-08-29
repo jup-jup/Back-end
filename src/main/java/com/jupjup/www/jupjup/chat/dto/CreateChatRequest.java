@@ -1,4 +1,4 @@
-package com.jupjup.www.jupjup.model.dto.chat;
+package com.jupjup.www.jupjup.chat.dto;
 
 import lombok.Getter;
 import lombok.Setter;
