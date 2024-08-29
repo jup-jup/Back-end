@@ -1,6 +1,6 @@
-package com.jupjup.www.jupjup.model.dto.chatRoom;
+package com.jupjup.www.jupjup.chat.dto.chatRoom;
 
-import com.jupjup.www.jupjup.domain.entity.chat.Room;
+import com.jupjup.www.jupjup.chat.entity.Room;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;

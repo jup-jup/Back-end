@@ -1,13 +1,12 @@
-package com.jupjup.www.jupjup.controller;
+package com.jupjup.www.jupjup.chat.controller;
 
-import com.jupjup.www.jupjup.model.dto.chatRoom.CreateRoomRequest;
-import com.jupjup.www.jupjup.model.dto.chatRoom.CreateRoomResponse;
-import com.jupjup.www.jupjup.model.dto.chatRoom.RoomListResponse;
-import com.jupjup.www.jupjup.model.dto.chatRoom.RoomResponse;
-import com.jupjup.www.jupjup.service.chat.RoomService;
+import com.jupjup.www.jupjup.chat.dto.chatRoom.CreateRoomRequest;
+import com.jupjup.www.jupjup.chat.dto.chatRoom.CreateRoomResponse;
+import com.jupjup.www.jupjup.chat.dto.chatRoom.RoomListResponse;
+import com.jupjup.www.jupjup.chat.dto.chatRoom.RoomResponse;
+import com.jupjup.www.jupjup.chat.service.RoomService;
 import com.jupjup.www.jupjup.service.oauth.CustomUserDetails;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.headers.Header;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -15,8 +14,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.annotations.Array;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;

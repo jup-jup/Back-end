@@ -1,4 +1,4 @@
-package com.jupjup.www.jupjup.domain.entity.chat;
+package com.jupjup.www.jupjup.chat.entity;
 
 import com.jupjup.www.jupjup.domain.entity.User;
 import jakarta.persistence.*;
@@ -6,10 +6,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
-import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @RequiredArgsConstructor
 @Getter

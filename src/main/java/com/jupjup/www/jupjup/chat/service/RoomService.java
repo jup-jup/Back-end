@@ -1,14 +1,13 @@
-package com.jupjup.www.jupjup.service.chat;
+package com.jupjup.www.jupjup.chat.service;
 
-import com.jupjup.www.jupjup.domain.entity.chat.Room;
-import com.jupjup.www.jupjup.domain.entity.chat.UserChatRoom;
+import com.jupjup.www.jupjup.chat.entity.Room;
+import com.jupjup.www.jupjup.chat.entity.UserChatRoom;
 import com.jupjup.www.jupjup.domain.repository.UserRepository;
-import com.jupjup.www.jupjup.domain.repository.chat.RoomRepository;
-import com.jupjup.www.jupjup.domain.repository.chat.UserChatRoomRepository;
-import com.jupjup.www.jupjup.model.dto.chatRoom.CreateRoomRequest;
-import com.jupjup.www.jupjup.model.dto.chatRoom.CreateRoomResponse;
-import com.jupjup.www.jupjup.model.dto.chatRoom.RoomListResponse;
-import com.jupjup.www.jupjup.model.dto.chatRoom.RoomUser;
+import com.jupjup.www.jupjup.chat.repository.RoomRepository;
+import com.jupjup.www.jupjup.chat.repository.UserChatRoomRepository;
+import com.jupjup.www.jupjup.chat.dto.chatRoom.CreateRoomRequest;
+import com.jupjup.www.jupjup.chat.dto.chatRoom.CreateRoomResponse;
+import com.jupjup.www.jupjup.chat.dto.chatRoom.RoomListResponse;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

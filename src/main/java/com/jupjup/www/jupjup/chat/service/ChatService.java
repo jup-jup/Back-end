@@ -1,11 +1,11 @@
-package com.jupjup.www.jupjup.service.chat;
+package com.jupjup.www.jupjup.chat.service;
 
-import com.jupjup.www.jupjup.domain.entity.chat.Chat;
-import com.jupjup.www.jupjup.domain.entity.chat.UserChatRoom;
+import com.jupjup.www.jupjup.chat.entity.Chat;
+import com.jupjup.www.jupjup.chat.entity.UserChatRoom;
 import com.jupjup.www.jupjup.domain.repository.UserRepository;
-import com.jupjup.www.jupjup.domain.repository.chat.ChatRepository;
-import com.jupjup.www.jupjup.domain.repository.chat.UserChatRoomRepository;
-import com.jupjup.www.jupjup.model.dto.chat.ChatList;
+import com.jupjup.www.jupjup.chat.repository.ChatRepository;
+import com.jupjup.www.jupjup.chat.repository.UserChatRoomRepository;
+import com.jupjup.www.jupjup.chat.dto.ChatList;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;

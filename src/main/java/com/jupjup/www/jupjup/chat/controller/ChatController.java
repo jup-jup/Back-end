@@ -1,9 +1,9 @@
-package com.jupjup.www.jupjup.controller;
+package com.jupjup.www.jupjup.chat.controller;
 
-import com.jupjup.www.jupjup.domain.entity.chat.Chat;
-import com.jupjup.www.jupjup.model.dto.chat.ChatList;
-import com.jupjup.www.jupjup.model.dto.chat.CreateChatRequest;
-import com.jupjup.www.jupjup.service.chat.ChatService;
+import com.jupjup.www.jupjup.chat.entity.Chat;
+import com.jupjup.www.jupjup.chat.dto.ChatList;
+import com.jupjup.www.jupjup.chat.dto.CreateChatRequest;
+import com.jupjup.www.jupjup.chat.service.ChatService;
 import com.jupjup.www.jupjup.service.oauth.CustomUserDetails;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.headers.Header;
@@ -14,9 +14,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.annotations.Array;
-import org.springdoc.core.annotations.ParameterObject;
-import org.springdoc.core.converters.models.PageableAsQueryParam;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -24,7 +21,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
