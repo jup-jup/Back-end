@@ -46,34 +46,16 @@ public class RoomService {
 
     @Transactional
     public List<RoomListResponse> list(Long userId) {
-        // user_chat_room 테이블에서 참여중인 room_id 가져오기
-        List<UserChatRoom> roomUsers = userChatRoomRepository.findJoinedRoomByUserId(userId);
-        if (roomUsers.isEmpty()) {
+        List<Room> joinedRooms = roomRepository.findJoinedRoomsByUserId(userId);
+        if (joinedRooms.isEmpty()) {
             return List.of(RoomListResponse.builder().build());
         }
 
+        // TODO: room 별로 마지막 메시지 정보도 가져와서 정렬
 
-        // TODO: room 별로 마지막 메시지 정보도 가져와야 함.
-
-        // room_id 별로 참여 중인 user 목록 필터링
-//        Map<Long, List<Long>> roomUserMap = roomUsers.stream()
-//                .collect(Collectors.groupingBy(
-//                        UserChatRoom::getRoomId,
-//                        Collectors.mapping(UserChatRoom::getUserId, Collectors.toList())
-//                ));
-//
-//        // room_id 들로 해당 채팅 리스트 조회
-//        List<Long> roomIds = roomUsers.stream()
-//                .map(UserChatRoom::getRoomId)
-//                .distinct()
-//                .toList();
-//        List<Room> rooms = roomRepository.findAllById(roomIds);
-
-
-//        return rooms.stream()
-//                .map(o -> RoomListResponse.toDTO(o, roomUserMap.get(o.getId())))
-//                .toList();
-        return null;
+        return joinedRooms.stream()
+                .map(RoomListResponse::toDTO)
+                .toList();
     }
 
 }

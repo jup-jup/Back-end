@@ -7,5 +7,6 @@ import java.util.List;
 public interface RoomRepositoryCustom {
 
     List<Room> findByUserIdAndGiveawayId(Long userId, Long giveawayId);
+    List<Room> findJoinedRoomsByUserId(Long userId);
 
 }

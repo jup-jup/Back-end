@@ -19,17 +19,30 @@ public class RoomRepositoryCustomImpl implements RoomRepositoryCustom {
 
     @Override
     public List<Room> findByUserIdAndGiveawayId(Long userId, Long giveawayId) {
-        QUserChatRoom qUserChatRoom = QUserChatRoom.userChatRoom;
         QRoom qRoom = QRoom.room;
+        QUserChatRoom qUserChatRoom = QUserChatRoom.userChatRoom;
 
         return queryFactory
                 .select(qRoom)
                 .from(qRoom)
                 .join(qRoom.userChatRooms, qUserChatRoom)
                 .where(
-                        qUserChatRoom.user.id.eq(userId)
+                        qUserChatRoom.userId.eq(userId)
                                 .and(qRoom.giveawayId.eq(giveawayId))
                 )
+                .fetch();
+    }
+
+    @Override
+    public List<Room> findJoinedRoomsByUserId(Long userId) {
+        QRoom qRoom = QRoom.room;
+        QUserChatRoom qUserChatRoom = QUserChatRoom.userChatRoom;
+
+        return queryFactory
+                .select(qRoom)
+                .from(qRoom)
+                .join(qRoom.userChatRooms, qUserChatRoom)
+                .where(qUserChatRoom.userId.eq(userId))
                 .fetch();
     }
 
