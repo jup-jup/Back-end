@@ -30,6 +30,10 @@ services:
       - "8080:8080"
     depends_on:
       - db
+    environment:
+      - SPRING_DATASOURCE_URL=${MYSQL_URL}
+      - SPRING_DATASOURCE_USERNAME=${MYSQL_USERNAME}
+      - SPRING_DATASOURCE_PASSWORD=${MYSQL_PASSWORD}
     env_file:
       - .env
     volumes:
@@ -39,6 +43,8 @@ services:
 
   db:
     image: mysql:8.0
+    ports:
+      - "3306:3306"
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
       MYSQL_DATABASE: jupjup
