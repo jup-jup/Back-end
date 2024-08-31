@@ -46,7 +46,7 @@
     </logger>
 
     <!-- 루트 로거 설정 -->
-    <root level="DEBUG">
+    <root level="INFO">
         <!-- 루트 로거가 로그 메시지를 기록할 Appender 지정 -->
         <appender-ref ref="CONSOLE"/>
         <appender-ref ref="FILE"/>
