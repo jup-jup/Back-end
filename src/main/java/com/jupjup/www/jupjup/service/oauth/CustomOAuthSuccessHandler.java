@@ -54,14 +54,11 @@ public class CustomOAuthSuccessHandler extends SimpleUrlAuthenticationSuccessHan
         // JWTUtil 을 통해 쿠키 생성 및 설정
         Cookie refreshTokenCookie = JWTUtil.getCookieFromRefreshToken(refreshToken);
         Cookie accessTokenCookie = JWTUtil.getCookieFromAccessToken(accessToken);
-
         // 응답에 쿠키 추가
         response.addCookie(refreshTokenCookie);
         response.addCookie(accessTokenCookie);
-
         // 리다이렉트할 URL 설정
         String redirectURL = BaseUrl.REACT.getUrl();
-
         // 리다이렉트
         response.sendRedirect(redirectURL);
     }

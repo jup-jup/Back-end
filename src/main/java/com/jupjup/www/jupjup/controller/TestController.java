@@ -10,6 +10,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Slf4j
 public class TestController {
 
+    @GetMapping("/health")
+    public String actionCheck(){
+        return "OK";
+    }
+
     @GetMapping("/index")
     public String showIndex() {
         return "index";
