@@ -58,19 +58,17 @@ jobs:
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.EC2_HOST }}
-          username: root
+          username: ubuntu  # 'ubuntu' 사용자로 로그인
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            cd /root/Back-end
-            docker-compose pull
-            docker-compose --env-file .env up -d
+            sudo su -c "cd /root/Back-end && docker-compose pull && docker-compose --env-file .env up -d"
             
             # 헬스 체크
             MAX_RETRIES=5
             RETRY_INTERVAL=10
             for i in $(seq 1 $MAX_RETRIES); do
               if curl -f http://localhost:8080/health; then
-                echo "Application is healthy"
+                echo 'Application is healthy'
                 exit 0
               fi
               echo "Health check failed. Retrying in $RETRY_INTERVAL seconds..."
@@ -79,9 +77,7 @@ jobs:
             
             # 롤백
             echo "Health check failed after $MAX_RETRIES attempts. Rolling back..."
-            docker-compose down
-            docker-compose pull boram0415/back-end_app:$(docker inspect --format='{{index .Config.Labels "org.opencontainers.image.revision"}}' boram0415/back-end_app:latest)
-            docker-compose --env-file .env up -d
+            sudo su -c "docker-compose down && docker-compose pull boram0415/back-end_app:$(docker inspect --format='{{index .Config.Labels "org.opencontainers.image.revision"}}' boram0415/back-end_app:latest) && docker-compose --env-file .env up -d"
             exit 1
 
   cleanup:
@@ -92,16 +88,16 @@ jobs:
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.EC2_HOST }}
-          username: ubuntu
+          username: ubuntu  # 'ubuntu' 사용자로 로그인
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             # 중지된 컨테이너 제거
-            docker container prune -f
+            sudo docker container prune -f
             # 사용하지 않는 볼륨 제거
-            docker volume prune -f
+            sudo docker volume prune -f
             # 오래된 이미지 제거
-            docker image prune -af --filter "until=120h"
+            sudo docker image prune -af --filter "until=120h"
             # 사용하지 않는 네트워크 제거
-            docker network prune -f
+            sudo docker network prune -f
             # Docker 시스템 전체 정리 (빌드 캐시 포함)
-            docker system prune -af
+            sudo docker system prune -af
