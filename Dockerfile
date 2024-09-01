@@ -12,7 +12,7 @@ COPY src ./src
 RUN gradle build --no-daemon
 
 # 실행 스테이지
-FROM eclipse-temurin:17-jre-alpine
+FROM --platform=linux/amd64 eclipse-temurin:17-jre-alpine
 # 작업 디렉토리 설정
 WORKDIR /app
 # 비루트 사용자 및 그룹 생성

@@ -25,7 +25,7 @@ services:
       - app-network
 
   app:
-    build: .
+    image: boram0415/back-end-app:latest  # Docker Hub에 푸시한 이미지 사용
     ports:
       - "8080:8080"
     depends_on:
