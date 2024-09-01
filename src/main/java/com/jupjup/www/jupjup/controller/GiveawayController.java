@@ -71,7 +71,7 @@ public class GiveawayController {
                             array = @ArraySchema(schema = @Schema(implementation = GiveawayListResponse.class)))}
             )
     })
-    @GetMapping("")
+    @GetMapping("/list")
     public ResponseEntity<List<GiveawayListResponse>> getList(
             @PageableDefault(size = 30, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable
     ) {
@@ -87,8 +87,9 @@ public class GiveawayController {
                     content = {@Content(schema = @Schema(implementation = GiveawayDetailResponse.class))}),
             @ApiResponse(responseCode = "404", description = "잘못된 나눔 id")
     })
-    @GetMapping("/{id}")
+    @GetMapping("/detail/{id}")
     public ResponseEntity<?> getGiveaway(@PathVariable Long id) {
+
         try {
             GiveawayDetailResponse detail = giveawayService.findById(id);
             return ResponseEntity

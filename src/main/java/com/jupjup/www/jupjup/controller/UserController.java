@@ -1,5 +1,6 @@
 package com.jupjup.www.jupjup.controller;
 
+import com.jupjup.www.jupjup.config.JWTUtil;
 import com.jupjup.www.jupjup.domain.repository.RefreshTokenRepository;
 import com.jupjup.www.jupjup.service.basicLogin.JoinService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -30,12 +31,6 @@ public class UserController {
     private final RefreshTokenRepository refreshTokenRepository;
     private static final List<String> SUPPORTED_PROVIDERS = Arrays.asList("google", "kakao", "naver");
 
-//    @PostMapping("/join")
-//    public ResponseEntity<?> join(@RequestBody UserResponse userDTO) {
-//        String result = joinService.joinProcess(userDTO);
-//        return ResponseEntity.ok(result);
-//    }
-
     @Operation(summary = "소셜 로그인 접근 = https://jupjup.store/api/v1/user/login?provider={naver} ")
     @GetMapping("/login")
     public ResponseEntity<?> redirectToAuthorization(@RequestParam String provider) {
@@ -49,9 +44,9 @@ public class UserController {
     }
 
 
-    @GetMapping("/logout/{userEmail}")
-    public ResponseEntity<?> logout(@PathVariable String userEmail) {
-        log.info("userEmail={}", userEmail);
+    @GetMapping("/logout")
+    public ResponseEntity<?> logout(@RequestHeader("Authorization") String accessToken) {
+        String userEmail = JWTUtil.getUserEmailFromAccessToken(accessToken.substring(7).trim());
         refreshTokenRepository.deleteByUserEmail(userEmail);
         return ResponseEntity.ok("로그아웃 완료");
     }
