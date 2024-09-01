@@ -36,7 +36,8 @@ public class JWTFilter extends OncePerRequestFilter {
                     "/api-docs",
                     "/reissue",
                     "/api/v1/giveaways/list",
-                    "/api/v1/giveaways/detail/");
+                    "/api/v1/giveaways/detail/",
+                    "/health");
 
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
