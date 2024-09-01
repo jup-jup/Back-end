@@ -16,11 +16,16 @@
 ---
 
 #### JAVADOC 
-- @param: 메서드 매개변수를 설명합니다.<br>
-- @return: 메서드의 반환 값을 설명합니다.<br>
-- @throws 또는 @exception: 메서드가 던질 수 있는 예외를 설명합니다.<br>
-- @see: 참조할 다른 클래스나 메서드를 설명합니다.<br>
+- @param: 메서드 매개변수를 설명합니다.
+- @return: 메서드의 반환 값을 설명합니다.
+- @throws 또는 @exception: 메서드가 던질 수 있는 예외를 설명합니다.
+- @see: 참조할 다른 클래스나 메서드를 설명합니다.
 - @deprecated: 더 이상 사용되지 않는 클래스나 메서드를 설명합니다.
 
 
-test
+### GitHub Action CI/CD 파이프라인 
+- 코드 빌드 및 Docker 이미지 생성
+- Docker 이미지 Docker Hub에 푸시
+- EC2 인스턴스에 배포 및 헬스 체크
+- 서버의 불필요한 Docker 자원 정리
+
