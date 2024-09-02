@@ -1,7 +1,7 @@
 package com.jupjup.www.jupjup.image.entity;
 
 import com.jupjup.www.jupjup.domain.entity.User;
-import com.jupjup.www.jupjup.domain.entity.giveaway.Giveaway;
+import com.jupjup.www.jupjup.giveaway.entity.Giveaway;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;

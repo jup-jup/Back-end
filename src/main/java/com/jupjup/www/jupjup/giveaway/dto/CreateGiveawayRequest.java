@@ -1,4 +1,4 @@
-package com.jupjup.www.jupjup.model.dto.giveaway;
+package com.jupjup.www.jupjup.giveaway.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;

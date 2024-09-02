@@ -1,6 +1,6 @@
-package com.jupjup.www.jupjup.model.dto.giveaway;
+package com.jupjup.www.jupjup.giveaway.dto;
 
-import com.jupjup.www.jupjup.domain.enums.GiveawayStatus;
+import com.jupjup.www.jupjup.giveaway.enums.GiveawayStatus;
 import lombok.Getter;
 import lombok.Setter;
 
