@@ -38,9 +38,7 @@ public class JWTFilter extends OncePerRequestFilter {
                     "/reissue",
                     "/api/v1/giveaways/list",
                     "/api/v1/giveaways/detail/",
-                    "/health",
-                    "/api/v1/giveaways"
-                    );
+                    "/health");
 
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
@@ -48,6 +46,7 @@ public class JWTFilter extends OncePerRequestFilter {
         // 1.토큰 유효성 체크 불필요한 요청일 경우
         for (String i : list) {
             if (request.getRequestURI().contains(i)) {
+                log.info("깃헙 액션 테스트");
                 log.info("JWT 유효성 검사 불필요 URI =  {}", request.getRequestURI());
                 filterChain.doFilter(request, response);
                 return;

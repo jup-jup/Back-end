@@ -40,8 +40,8 @@ jobs:
           context: .
           push: true
           tags: |
-            boram0415/back-end_app:latest
-            boram0415/back-end_app:${{ github.sha }}
+            back-end-app:latest
+            back-end-app:${{ github.sha }}
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
 
@@ -77,7 +77,7 @@ jobs:
             
             # 롤백
             echo "Health check failed after $MAX_RETRIES attempts. Rolling back..."
-            sudo su -c "docker-compose down && docker-compose pull boram0415/back-end_app:$(docker inspect --format='{{index .Config.Labels "org.opencontainers.image.revision"}}' boram0415/back-end_app:latest) && docker-compose --env-file .env up -d"
+            sudo su -c "docker-compose down && docker-compose pull back-end-app:$(docker inspect --format='{{index .Config.Labels "org.opencontainers.image.revision"}}' back-end-app:latest) && docker-compose --env-file .env up -d"
             exit 1
 
   cleanup:
