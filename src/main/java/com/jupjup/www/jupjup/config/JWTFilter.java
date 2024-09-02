@@ -4,6 +4,7 @@ import com.jupjup.www.jupjup.common.response.ErrorResponse;
 import com.jupjup.www.jupjup.model.dto.user.UserResponse;
 import com.jupjup.www.jupjup.service.oauth.CustomUserDetails;
 import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -37,7 +38,8 @@ public class JWTFilter extends OncePerRequestFilter {
                     "/reissue",
                     "/api/v1/giveaways/list",
                     "/api/v1/giveaways/detail/",
-                    "/health");
+                    "/health"
+                    );
 
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
@@ -45,7 +47,7 @@ public class JWTFilter extends OncePerRequestFilter {
         // 1.토큰 유효성 체크 불필요한 요청일 경우
         for (String i : list) {
             if (request.getRequestURI().contains(i)) {
-                log.info("JWT 유효성 검사 불필요 URI =  {}",request.getRequestURI());
+                log.info("JWT 유효성 검사 불필요 URI =  {}", request.getRequestURI());
                 filterChain.doFilter(request, response);
                 return;
             }
@@ -53,28 +55,27 @@ public class JWTFilter extends OncePerRequestFilter {
 
         // 2.헤더에서 액세스 토큰 가져오기
         String authorization = request.getHeader("Authorization");
-        log.info("authorization = {}", authorization);
 
-        // 3.액세스토큰 검증
+        // 3.액세스 토큰 null 체크
         if (authorization == null || !authorization.startsWith(BEARER_PREFIX)) {
             log.error("토큰이 비어 있거나, 형식이 올바르지 않습니다. ");
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }
 
-        String accessToken = authorization.substring(BEARER_PREFIX.length());
-
         // 4.토큰 유효성 검증
         try {
+            String accessToken = authorization.substring(BEARER_PREFIX.length());
             if (!JWTUtil.validateAccessToken(accessToken)) {
-                log.error("토큰이 만료되었습니다.");
-                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                log.info("토큰 유효성 검사 완료!");
+                filterChain.doFilter(request, response);
                 return;
             }
+            log.error("토큰 유효성 검사 실해!");
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         } catch (ExpiredJwtException | IllegalArgumentException e) {
             response.sendRedirect("/api/v1/auth/reissue");
-            return;
         }
-        filterChain.doFilter(request, response);
+
     }
 }

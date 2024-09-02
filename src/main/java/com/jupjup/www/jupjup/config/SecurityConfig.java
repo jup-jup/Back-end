@@ -32,29 +32,23 @@ public class SecurityConfig {
 
     private final CustomOAuth2UserService customOAuth2UserService;
     private final CustomOAuthSuccessHandler customOAuthSuccessHandler;
-    private final CustomSuccessHandler customSuccessHandler;
-    private final AuthenticationConfiguration configuration;
     private final JWTUtil jwtUtil;
-    private final RefreshTokenRepository refreshTokenRepository;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
-        //csrf disable
+        // CSRF 비활성화
         http.csrf(AbstractHttpConfigurer::disable);
 
-        // From 로그인 방식 disable
+        // 폼 로그인과 HTTP 기본 인증 비활성화
         http.formLogin(AbstractHttpConfigurer::disable);
         http.logout(AbstractHttpConfigurer::disable);
-
-        //HTTP Basic 인증 방식 disable
         http.httpBasic(AbstractHttpConfigurer::disable);
 
-        //cors 보안 강화
-//        http.cors(cors -> cors.configurationSource(corsConfigurationSource()));
-        http.cors(AbstractHttpConfigurer::disable);
+        // CORS 설정
+        http.cors(cors -> cors.configurationSource(corsConfigurationSource()));
 
-        // OAuth2 설정 추가
+        // OAuth2 로그인 설정
         http.oauth2Login(oauth2 -> oauth2
                 .userInfoEndpoint(userInfo -> userInfo
                         .userService(customOAuth2UserService))
@@ -65,15 +59,11 @@ public class SecurityConfig {
                         .baseUri("/login/oauth2/code/*"))
         );
 
+        // JWTFilter 추가 - UsernamePasswordAuthenticationFilter 이전에 배치
+        http.addFilterBefore(new JWTFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
 
-        // JWTFilter 추가 - JWTFilter 는 로그인 필터(LoginFilter) 후에 실행되어야 합니다.
-        http.addFilterBefore(new JWTFilter(jwtUtil), LoginFilter.class);
-
-        // LoginFilter 는 UsernamePasswordAuthenticationFilter 와 동일한 위치에 배치
-        http.addFilterAt(new LoginFilter(customAuthenticationManager(configuration), jwtUtil, refreshTokenRepository), UsernamePasswordAuthenticationFilter.class);
-
-        // 세션 설정 : STATELESS
-        http.sessionManagement((session) -> session
+        // 세션 관리 - STATELESS 설정
+        http.sessionManagement(session -> session
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         return http.build();
@@ -103,16 +93,9 @@ public class SecurityConfig {
         return source;
     }
 
-
-/**
- * 이 메서드는 정적 자원에 대해 보안을 적용하지 않도록 설정한다.
- * 정적 자원은 보통 HTML, CSS, JavaScript, 이미지 파일 등을 의미하며, 이들에 대해 보안을 적용하지 않음으로써 성능을 향상시킬 수 있다.
- */
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
         return web -> web.ignoring()
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations());
-
     }
-
 }

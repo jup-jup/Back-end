@@ -44,7 +44,7 @@ public class UserController {
     }
 
 
-    @GetMapping("/logout")
+    @PostMapping("/logout")
     public ResponseEntity<?> logout(@RequestHeader("Authorization") String accessToken) {
         String userEmail = JWTUtil.getUserEmailFromAccessToken(accessToken.substring(7).trim());
         refreshTokenRepository.deleteByUserEmail(userEmail);

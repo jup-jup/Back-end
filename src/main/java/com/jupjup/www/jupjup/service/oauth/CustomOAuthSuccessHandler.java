@@ -41,6 +41,7 @@ public class CustomOAuthSuccessHandler extends SimpleUrlAuthenticationSuccessHan
 
         // JWT 발급
         String accessToken = JWTUtil.generateAccessToken(userId, userName, userEmail);
+        log.info("accessToken = {}",accessToken);
         String refreshToken = JWTUtil.generateRefreshToken(userId, userName, userEmail);
 
         // 리프레시 토큰 저장
