@@ -35,6 +35,7 @@ public class GiveawayService {
                 .description(request.getDescription())
                 .giverId(userId)
                 .images(images)
+                .location(request.getLocation())
                 .build();
 
         return giveawayRepository.save(giveaway);
@@ -55,7 +56,6 @@ public class GiveawayService {
         User giver = userRepository.findById(giveaway.getGiverId())
                 .orElseThrow(() -> new IllegalArgumentException("잘못된 유저 아이디"));
 
-        // TODO: Entity to DTO 로직을 좀 더 예쁘고 수정에 용이하게 하는 방법이 없을까?
         return GiveawayDetailResponse.toDTO(giveaway);
     }
 

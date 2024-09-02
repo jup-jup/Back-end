@@ -38,8 +38,9 @@ public class GiveawayDetailResponse {
 
     private List<Long> imageIds; // 이미지 아이디 리스트
 
+    private String location;
+
     // TODO: 여기부터는 후순위 작업 (추가 설계 필요)
-    private String location; // TODO: 장소 데이터 어떤 식으로 저장하고 내려줘야하는지 확인
     private Integer chatCnt; // 코멘트 수?
     private Integer viewCnt;
 
@@ -55,6 +56,7 @@ public class GiveawayDetailResponse {
                 .imageIds(giveaway.getImages().stream()
                         .map(Image::getId)
                         .toList())
+                .location(giveaway.getLocation())
                 .build();
     }
 
