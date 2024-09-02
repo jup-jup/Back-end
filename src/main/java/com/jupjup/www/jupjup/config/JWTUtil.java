@@ -1,24 +1,20 @@
 package com.jupjup.www.jupjup.config;
 
-import com.jupjup.www.jupjup.domain.repository.RefreshTokenRepository;
+import com.jupjup.www.jupjup.user.repository.RefreshTokenRepository;
 import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.Cookie;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.oauth2.jwt.JwtValidationException;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
-import javax.naming.AuthenticationException;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Date;
-import java.util.NoSuchElementException;
 
 /**
  * JWT 발행 및 유효성 검증
@@ -163,6 +159,10 @@ public class JWTUtil {
         toKen.setMaxAge(COOKIE); // 쿠키의 유효기간 설정 (30일)
         toKen.setSecure(false);
         return toKen;
+    }
+
+    public static String parseUsernameFromToken (String accessToken){
+        return JWTUtil.getUserEmailFromAccessToken(accessToken.substring(7).trim());
     }
 
 

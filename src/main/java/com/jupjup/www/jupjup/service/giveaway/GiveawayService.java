@@ -3,7 +3,7 @@ package com.jupjup.www.jupjup.service.giveaway;
 import com.jupjup.www.jupjup.domain.entity.User;
 import com.jupjup.www.jupjup.domain.entity.giveaway.Giveaway;
 import com.jupjup.www.jupjup.domain.repository.GiveawayRepository;
-import com.jupjup.www.jupjup.domain.repository.UserRepository;
+import com.jupjup.www.jupjup.user.repository.UserRepository;
 import com.jupjup.www.jupjup.image.entity.Image;
 import com.jupjup.www.jupjup.image.repository.ImageRepository;
 import com.jupjup.www.jupjup.model.dto.giveaway.CreateGiveawayRequest;

@@ -1,9 +1,9 @@
-package com.jupjup.www.jupjup.service.refreshService;
+package com.jupjup.www.jupjup.user.service.refreshService;
 
 
 import com.jupjup.www.jupjup.config.JWTUtil;
 import com.jupjup.www.jupjup.domain.entity.RefreshToken;
-import com.jupjup.www.jupjup.domain.repository.RefreshTokenRepository;
+import com.jupjup.www.jupjup.user.repository.RefreshTokenRepository;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;

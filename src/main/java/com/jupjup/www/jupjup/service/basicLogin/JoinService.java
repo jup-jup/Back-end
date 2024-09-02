@@ -1,8 +1,8 @@
 package com.jupjup.www.jupjup.service.basicLogin;
 
-import com.jupjup.www.jupjup.model.dto.user.UserResponse;
-import com.jupjup.www.jupjup.domain.repository.RefreshTokenRepository;
-import com.jupjup.www.jupjup.domain.repository.UserRepository;
+import com.jupjup.www.jupjup.user.dto.user.UserResponse;
+import com.jupjup.www.jupjup.user.repository.RefreshTokenRepository;
+import com.jupjup.www.jupjup.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;

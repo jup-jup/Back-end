@@ -1,4 +1,4 @@
-package com.jupjup.www.jupjup.model.dto.profile;
+package com.jupjup.www.jupjup.user.dto.profile;
 
 
 import lombok.Getter;

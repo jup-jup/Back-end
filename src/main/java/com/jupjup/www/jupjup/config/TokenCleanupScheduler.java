@@ -1,7 +1,7 @@
 package com.jupjup.www.jupjup.config;
 
 
-import com.jupjup.www.jupjup.domain.repository.RefreshTokenRepository;
+import com.jupjup.www.jupjup.user.repository.RefreshTokenRepository;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 

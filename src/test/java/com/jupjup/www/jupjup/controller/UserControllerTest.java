@@ -1,6 +1,6 @@
 //package com.jupjup.www.jupjup.controller;
 //
-//import com.jupjup.www.jupjup.domain.repository.RefreshTokenRepository;
+//import com.jupjup.www.jupjup.user.repository.RefreshTokenRepository;
 //import com.jupjup.www.jupjup.service.basicLogin.JoinService;
 //import org.junit.jupiter.api.Test;
 //import org.mockito.Mockito;

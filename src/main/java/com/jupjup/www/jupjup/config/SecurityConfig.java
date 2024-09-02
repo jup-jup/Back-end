@@ -2,8 +2,6 @@ package com.jupjup.www.jupjup.config;
 
 import com.jupjup.www.jupjup.service.oauth.CustomOAuth2UserService;
 import com.jupjup.www.jupjup.service.oauth.CustomOAuthSuccessHandler;
-import com.jupjup.www.jupjup.domain.repository.RefreshTokenRepository;
-import com.jupjup.www.jupjup.service.basicLogin.CustomSuccessHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
@@ -82,7 +80,8 @@ public class SecurityConfig {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("https://jupjup.shop"));
+//        configuration.setAllowedOrigins(List.of("https://jupjup.shop"));
+        configuration.setAllowedOriginPatterns(List.of("*"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "Origin", "Accept"));
         configuration.setAllowCredentials(true);

@@ -1,4 +1,4 @@
-package com.jupjup.www.jupjup.model.dto.mypage;
+package com.jupjup.www.jupjup.user.dto.mypage;
 
 
 import lombok.Builder;
@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 
 @Getter @Setter
 @Builder
-public class MypageReceivedListResponse {
+public class MyPageReceivedListResponse {
 
         private Long id;
         private String title; // 제목

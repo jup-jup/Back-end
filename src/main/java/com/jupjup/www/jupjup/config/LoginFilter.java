@@ -3,7 +3,7 @@ package com.jupjup.www.jupjup.config;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jupjup.www.jupjup.domain.entity.RefreshToken;
 import com.jupjup.www.jupjup.service.oauth.CustomUserDetails;
-import com.jupjup.www.jupjup.domain.repository.RefreshTokenRepository;
+import com.jupjup.www.jupjup.user.repository.RefreshTokenRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

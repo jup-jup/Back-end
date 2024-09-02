@@ -1,7 +1,7 @@
-package com.jupjup.www.jupjup.controller;
+package com.jupjup.www.jupjup.user.controller;
 
 
-import com.jupjup.www.jupjup.model.dto.profile.ProfileRequest;
+import com.jupjup.www.jupjup.user.dto.profile.ProfileRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

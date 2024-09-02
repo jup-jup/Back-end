@@ -6,7 +6,7 @@
 //import com.jupjup.www.jupjup.domain.entity.User;
 //import com.jupjup.www.jupjup.domain.entity.giveaway.Giveaway;
 //import com.jupjup.www.jupjup.domain.repository.GiveawayRepository;
-//import com.jupjup.www.jupjup.domain.repository.UserRepository;
+//import com.jupjup.www.jupjup.user.repository.UserRepository;
 //import com.querydsl.jpa.impl.JPAQueryFactory;
 //import jakarta.transaction.Transactional;
 //import org.junit.jupiter.api.Assertions;

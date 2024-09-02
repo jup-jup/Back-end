@@ -1,4 +1,4 @@
-package com.jupjup.www.jupjup.domain.repository;
+package com.jupjup.www.jupjup.user.repository;
 
 import com.jupjup.www.jupjup.domain.entity.RefreshToken;
 import jakarta.transaction.Transactional;
@@ -6,7 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 @Transactional
 public interface RefreshTokenRepository extends JpaRepository<RefreshToken,Long> {

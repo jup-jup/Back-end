@@ -1,9 +1,9 @@
 package com.jupjup.www.jupjup.service.oauth;
 
 import com.jupjup.www.jupjup.domain.entity.User;
-import com.jupjup.www.jupjup.model.dto.user.UserResponse;
+import com.jupjup.www.jupjup.user.dto.user.UserResponse;
 import com.jupjup.www.jupjup.domain.enums.OauthRegistrationId;
-import com.jupjup.www.jupjup.domain.repository.UserRepository;
+import com.jupjup.www.jupjup.user.repository.UserRepository;
 import com.jupjup.www.jupjup.common.response.GoogleResponse;
 import com.jupjup.www.jupjup.common.response.KakaoResponse;
 import com.jupjup.www.jupjup.common.response.NaverResponse;
