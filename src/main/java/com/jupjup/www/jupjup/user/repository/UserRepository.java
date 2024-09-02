@@ -1,6 +1,6 @@
 package com.jupjup.www.jupjup.user.repository;
 
-import com.jupjup.www.jupjup.domain.entity.User;
+import com.jupjup.www.jupjup.user.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

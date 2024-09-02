@@ -5,7 +5,6 @@ import com.jupjup.www.jupjup.chat.dto.ChatList;
 import com.jupjup.www.jupjup.chat.dto.CreateChatRequest;
 import com.jupjup.www.jupjup.chat.service.ChatService;
 import com.jupjup.www.jupjup.config.JWTUtil;
-import com.jupjup.www.jupjup.service.oauth.CustomUserDetails;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.headers.Header;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -20,9 +19,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;

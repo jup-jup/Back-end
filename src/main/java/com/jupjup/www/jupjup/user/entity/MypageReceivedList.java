@@ -1,4 +1,4 @@
-package com.jupjup.www.jupjup.domain.entity.mypage;
+package com.jupjup.www.jupjup.user.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

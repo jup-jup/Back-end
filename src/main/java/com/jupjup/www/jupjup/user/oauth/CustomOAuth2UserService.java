@@ -1,6 +1,6 @@
-package com.jupjup.www.jupjup.service.oauth;
+package com.jupjup.www.jupjup.user.oauth;
 
-import com.jupjup.www.jupjup.domain.entity.User;
+import com.jupjup.www.jupjup.user.entity.User;
 import com.jupjup.www.jupjup.user.dto.user.UserResponse;
 import com.jupjup.www.jupjup.domain.enums.OauthRegistrationId;
 import com.jupjup.www.jupjup.user.repository.UserRepository;

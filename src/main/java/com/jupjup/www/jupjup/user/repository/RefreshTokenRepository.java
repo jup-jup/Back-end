@@ -1,6 +1,6 @@
 package com.jupjup.www.jupjup.user.repository;
 
-import com.jupjup.www.jupjup.domain.entity.RefreshToken;
+import com.jupjup.www.jupjup.user.entity.RefreshToken;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 

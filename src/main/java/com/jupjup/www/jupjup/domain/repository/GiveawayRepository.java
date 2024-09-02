@@ -1,6 +1,6 @@
 package com.jupjup.www.jupjup.domain.repository;
 
-import com.jupjup.www.jupjup.domain.entity.giveaway.Giveaway;
+import com.jupjup.www.jupjup.giveaway.entity.Giveaway;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,4 +1,4 @@
-package com.jupjup.www.jupjup.service.oauth;
+package com.jupjup.www.jupjup.user.oauth;
 
 import com.jupjup.www.jupjup.user.dto.user.UserResponse;
 import lombok.extern.slf4j.Slf4j;

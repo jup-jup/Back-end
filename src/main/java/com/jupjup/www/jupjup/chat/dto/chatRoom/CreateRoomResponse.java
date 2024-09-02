@@ -2,7 +2,7 @@ package com.jupjup.www.jupjup.chat.dto.chatRoom;
 
 import com.jupjup.www.jupjup.chat.entity.Room;
 import com.jupjup.www.jupjup.chat.entity.UserChatRoom;
-import com.jupjup.www.jupjup.domain.entity.User;
+import com.jupjup.www.jupjup.user.entity.User;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;

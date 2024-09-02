@@ -1,6 +1,6 @@
 package com.jupjup.www.jupjup.chat.entity;
 
-import com.jupjup.www.jupjup.domain.entity.User;
+import com.jupjup.www.jupjup.user.entity.User;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;

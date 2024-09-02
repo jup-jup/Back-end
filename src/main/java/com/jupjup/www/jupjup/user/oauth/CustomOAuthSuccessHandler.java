@@ -1,7 +1,7 @@
-package com.jupjup.www.jupjup.service.oauth;
+package com.jupjup.www.jupjup.user.oauth;
 
 import com.jupjup.www.jupjup.config.JWTUtil;
-import com.jupjup.www.jupjup.domain.entity.RefreshToken;
+import com.jupjup.www.jupjup.user.entity.RefreshToken;
 import com.jupjup.www.jupjup.domain.enums.BaseUrl;
 import com.jupjup.www.jupjup.user.repository.RefreshTokenRepository;
 import jakarta.servlet.http.HttpServletRequest;

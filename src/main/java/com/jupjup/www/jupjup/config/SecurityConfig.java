@@ -1,7 +1,7 @@
 package com.jupjup.www.jupjup.config;
 
-import com.jupjup.www.jupjup.service.oauth.CustomOAuth2UserService;
-import com.jupjup.www.jupjup.service.oauth.CustomOAuthSuccessHandler;
+import com.jupjup.www.jupjup.user.oauth.CustomOAuth2UserService;
+import com.jupjup.www.jupjup.user.oauth.CustomOAuthSuccessHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;

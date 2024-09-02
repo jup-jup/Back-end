@@ -1,8 +1,8 @@
-package com.jupjup.www.jupjup.domain.entity.giveaway;
+package com.jupjup.www.jupjup.giveaway.entity;
 
-import com.jupjup.www.jupjup.domain.entity.User;
+import com.jupjup.www.jupjup.user.entity.User;
 import com.jupjup.www.jupjup.chat.entity.Room;
-import com.jupjup.www.jupjup.domain.enums.GiveawayStatus;
+import com.jupjup.www.jupjup.giveaway.enums.GiveawayStatus;
 import com.jupjup.www.jupjup.image.entity.Image;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -62,7 +62,8 @@ public class Giveaway {
     @OneToMany(mappedBy = "giveaway", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Image> images;
 
-    // TODO: 거래 장소
+    @Column(name = "location")
+    private String location;
 
     // TODO: 댓글 수 -> 관련 채팅 수인가?
 
@@ -70,11 +71,12 @@ public class Giveaway {
 
 
     @Builder
-    public Giveaway(String title, String description, Long giverId, List<Image> images) {
+    public Giveaway(String title, String description, Long giverId, List<Image> images, String location) {
         this.title = title;
         this.description = description;
         this.giverId = giverId;
         this.images = images;
+        this.location = location;
     }
 
     public void update(String title, String description, GiveawayStatus status, List<Image> images) {

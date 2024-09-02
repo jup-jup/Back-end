@@ -2,7 +2,7 @@ package com.jupjup.www.jupjup.user.service.refreshService;
 
 
 import com.jupjup.www.jupjup.config.JWTUtil;
-import com.jupjup.www.jupjup.domain.entity.RefreshToken;
+import com.jupjup.www.jupjup.user.entity.RefreshToken;
 import com.jupjup.www.jupjup.user.repository.RefreshTokenRepository;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.http.HttpServletResponse;

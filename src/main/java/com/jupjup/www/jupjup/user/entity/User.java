@@ -1,4 +1,4 @@
-package com.jupjup.www.jupjup.domain.entity;
+package com.jupjup.www.jupjup.user.entity;
 
 import com.jupjup.www.jupjup.chat.entity.Chat;
 import com.jupjup.www.jupjup.chat.entity.UserChatRoom;
