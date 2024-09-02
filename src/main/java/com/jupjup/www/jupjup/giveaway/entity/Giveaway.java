@@ -1,8 +1,8 @@
-package com.jupjup.www.jupjup.domain.entity.giveaway;
+package com.jupjup.www.jupjup.giveaway.entity;
 
 import com.jupjup.www.jupjup.domain.entity.User;
 import com.jupjup.www.jupjup.chat.entity.Room;
-import com.jupjup.www.jupjup.domain.enums.GiveawayStatus;
+import com.jupjup.www.jupjup.giveaway.enums.GiveawayStatus;
 import com.jupjup.www.jupjup.image.entity.Image;
 import jakarta.persistence.*;
 import lombok.AccessLevel;

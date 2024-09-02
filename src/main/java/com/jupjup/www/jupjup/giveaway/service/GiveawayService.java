@@ -1,15 +1,15 @@
-package com.jupjup.www.jupjup.service.giveaway;
+package com.jupjup.www.jupjup.giveaway.service;
 
 import com.jupjup.www.jupjup.domain.entity.User;
-import com.jupjup.www.jupjup.domain.entity.giveaway.Giveaway;
+import com.jupjup.www.jupjup.giveaway.entity.Giveaway;
 import com.jupjup.www.jupjup.domain.repository.GiveawayRepository;
 import com.jupjup.www.jupjup.domain.repository.UserRepository;
 import com.jupjup.www.jupjup.image.entity.Image;
 import com.jupjup.www.jupjup.image.repository.ImageRepository;
-import com.jupjup.www.jupjup.model.dto.giveaway.CreateGiveawayRequest;
-import com.jupjup.www.jupjup.model.dto.giveaway.GiveawayDetailResponse;
-import com.jupjup.www.jupjup.model.dto.giveaway.GiveawayListResponse;
-import com.jupjup.www.jupjup.model.dto.giveaway.UpdateGiveawayRequest;
+import com.jupjup.www.jupjup.giveaway.dto.CreateGiveawayRequest;
+import com.jupjup.www.jupjup.giveaway.dto.GiveawayDetailResponse;
+import com.jupjup.www.jupjup.giveaway.dto.GiveawayListResponse;
+import com.jupjup.www.jupjup.giveaway.dto.UpdateGiveawayRequest;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

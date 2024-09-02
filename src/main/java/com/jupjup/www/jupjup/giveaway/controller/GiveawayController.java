@@ -1,12 +1,12 @@
-package com.jupjup.www.jupjup.controller;
+package com.jupjup.www.jupjup.giveaway.controller;
 
 import com.jupjup.www.jupjup.config.JWTUtil;
-import com.jupjup.www.jupjup.domain.entity.giveaway.Giveaway;
-import com.jupjup.www.jupjup.model.dto.giveaway.CreateGiveawayRequest;
-import com.jupjup.www.jupjup.model.dto.giveaway.GiveawayDetailResponse;
-import com.jupjup.www.jupjup.model.dto.giveaway.GiveawayListResponse;
-import com.jupjup.www.jupjup.model.dto.giveaway.UpdateGiveawayRequest;
-import com.jupjup.www.jupjup.service.giveaway.GiveawayService;
+import com.jupjup.www.jupjup.giveaway.entity.Giveaway;
+import com.jupjup.www.jupjup.giveaway.dto.CreateGiveawayRequest;
+import com.jupjup.www.jupjup.giveaway.dto.GiveawayDetailResponse;
+import com.jupjup.www.jupjup.giveaway.dto.GiveawayListResponse;
+import com.jupjup.www.jupjup.giveaway.dto.UpdateGiveawayRequest;
+import com.jupjup.www.jupjup.giveaway.service.GiveawayService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.headers.Header;
 import io.swagger.v3.oas.annotations.media.ArraySchema;

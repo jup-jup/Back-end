@@ -1,6 +1,6 @@
 package com.jupjup.www.jupjup.chat.dto.chatRoom;
 
-import com.jupjup.www.jupjup.domain.enums.GiveawayStatus;
+import com.jupjup.www.jupjup.giveaway.enums.GiveawayStatus;
 import lombok.Getter;
 import lombok.Setter;
 
