@@ -2,7 +2,7 @@ package com.jupjup.www.jupjup.giveaway.service;
 
 import com.jupjup.www.jupjup.user.entity.User;
 import com.jupjup.www.jupjup.giveaway.entity.Giveaway;
-import com.jupjup.www.jupjup.domain.repository.GiveawayRepository;
+import com.jupjup.www.jupjup.giveaway.repository.GiveawayRepository;
 import com.jupjup.www.jupjup.user.repository.UserRepository;
 import com.jupjup.www.jupjup.image.entity.Image;
 import com.jupjup.www.jupjup.image.repository.ImageRepository;
