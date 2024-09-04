@@ -23,15 +23,17 @@ public class JWTFilter extends OncePerRequestFilter {
     private static final String BEARER_PREFIX = "Bearer ";
     private final JWTUtil jwtUtil;
 
-    public List<String> list = List.of
-            ("/login",
-                    "/api/v1/user",
-                    "/swagger",
-                    "/api-docs",
-                    "/reissue",
-                    "/api/v1/giveaways/list",
-                    "/api/v1/giveaways/detail/",
-                    "/health");
+    public List<String> list = List.of(
+            "/login",
+            "/ws",
+            "/api/v1/user",
+            "/swagger",
+            "/api-docs",
+            "/reissue",
+            "/api/v1/giveaways/list",
+            "/api/v1/giveaways/detail/",
+            "/health"
+    );
 
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {

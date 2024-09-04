@@ -25,7 +25,7 @@ import java.util.List;
 @RestController
 // TODO: 전체 서버 관점에서 /api/v1 prefix 를 사용한다면 application.yml 에서 설정하는 것이 좋아보임
 @RequestMapping("/api/v1/chat-rooms")
-public class ChatRoomController {
+public class RoomController {
 
     private final RoomService roomService;
 

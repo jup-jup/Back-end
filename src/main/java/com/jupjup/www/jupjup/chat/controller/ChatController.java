@@ -1,12 +1,11 @@
 package com.jupjup.www.jupjup.chat.controller;
 
+import com.jupjup.www.jupjup.chat.dto.chat.ChatDTO;
+import com.jupjup.www.jupjup.chat.dto.chat.CreateChatRequest;
 import com.jupjup.www.jupjup.chat.entity.Chat;
-import com.jupjup.www.jupjup.chat.dto.ChatList;
-import com.jupjup.www.jupjup.chat.dto.CreateChatRequest;
 import com.jupjup.www.jupjup.chat.service.ChatService;
 import com.jupjup.www.jupjup.config.JWTUtil;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.headers.Header;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -18,11 +17,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.handler.annotation.DestinationVariable;
+import org.springframework.messaging.handler.annotation.Header;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.URI;
 import java.util.List;
 
 @Tag(name = "Chat", description = "채팅 API")
@@ -36,29 +37,19 @@ public class ChatController {
 
     private static final String BEARER_PREFIX = "Bearer ";
 
-    @Operation(summary = "create chat", description = "채팅 생성 API")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "채팅 정상 생성 완료",
-                    headers = @Header(name = HttpHeaders.LOCATION, description = "해당 채팅 url")),
-            @ApiResponse(responseCode = "401", description = "잘못된 유저입니다.")
-    })
-    @PostMapping("")
-    public ResponseEntity<?> createChat(
-            @PathVariable Long roomId,
-            @RequestBody CreateChatRequest request,
-            @Valid @RequestHeader("Authorization") String header
+    @MessageMapping("/room/{roomId}/chat")
+    @SendTo("/sub/room/{roomId}")
+    public ChatDTO sendChat(
+            @DestinationVariable Long roomId,
+            @Header("Authorization") String header,
+            CreateChatRequest request
     ) {
-        // TODO: authorization header 에서 userId 뽑아오는 방법이 이게 최선일까..
         String token = header.substring(BEARER_PREFIX.length());
         Long userId = JWTUtil.getUserIdFromAccessToken(token);
 
         Chat chat = chatService.add(roomId, request.getContent(), userId);
 
-        URI location = URI.create(String.format("/chat-rooms/%d/chats/%d", roomId, chat.getId()));
-
-        return ResponseEntity
-                .created(location)
-                .build();
+        return ChatDTO.of(chat);
     }
 
     @Operation(summary = "get chat list", description = "채팅방의 채팅 리스트 API")
@@ -66,7 +57,7 @@ public class ChatController {
             @ApiResponse(responseCode = "200", description = "Success",
                     content = {
                             @Content(mediaType = "application/json",
-                                    array = @ArraySchema(schema = @Schema(implementation = ChatList.class)))
+                                    array = @ArraySchema(schema = @Schema(implementation = ChatDTO.class)))
                     }),
             @ApiResponse(responseCode = "401", description = "잘못된 유저입니다. / 해당 채팅방의 유저가 아닙니다.")
     })
@@ -81,7 +72,7 @@ public class ChatController {
             String token = header.substring(BEARER_PREFIX.length());
             Long userId = JWTUtil.getUserIdFromAccessToken(token);
 
-            List<ChatList> list = chatService.chatList(pageable, roomId, userId);
+            List<ChatDTO> list = chatService.chatList(pageable, roomId, userId);
 
             return ResponseEntity
                     .ok()
