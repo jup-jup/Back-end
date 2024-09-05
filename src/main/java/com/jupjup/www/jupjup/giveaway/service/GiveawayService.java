@@ -42,9 +42,8 @@ public class GiveawayService {
     }
 
     public List<GiveawayListResponse> findAll(Pageable pageable) {
-//        Page<Giveaway> list = giveawayRepository.findAll(pageable);
         // 유저 정보 함께 리턴
-        Page<Giveaway> list = giveawayRepository.findAllWithUser(pageable);
+        Page<Giveaway> list = giveawayRepository.findAllGiveawaysWithUsers(pageable);
         return list.stream()
                 .map(GiveawayListResponse::toDTO)
                 .collect(Collectors.toList());

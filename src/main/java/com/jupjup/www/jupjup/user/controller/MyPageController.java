@@ -1,5 +1,6 @@
 package com.jupjup.www.jupjup.user.controller;
 
+import com.jupjup.www.jupjup.config.JWTUtil;
 import com.jupjup.www.jupjup.giveaway.dto.GiveawayListResponse;
 import com.jupjup.www.jupjup.user.enums.MyPageType;
 import com.jupjup.www.jupjup.user.service.MyPageService;
@@ -30,9 +31,11 @@ public class MyPageController {
     @GetMapping("/{type}/list")
     public ResponseEntity<List<GiveawayListResponse>> getList(
             @PageableDefault(size = 30, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable ,
-            @PathVariable String type) {
+            @PathVariable String type , @RequestHeader("Authorization") String accessToken) {
 
-        List<GiveawayListResponse> giverList = myPageService.findAllgiverList(pageable);
+        Long userId = JWTUtil.parseUserIdFromToken(accessToken);
+
+        List<GiveawayListResponse> giverList = myPageService.findAllgiverList(pageable,userId);
         List<GiveawayListResponse> receiverList = myPageService.findAllreceiverList(pageable);
 
         if(type.equals(MyPageType.GIVER.getType())){
