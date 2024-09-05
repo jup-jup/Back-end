@@ -1,4 +1,4 @@
-package com.jupjup.www.jupjup.chat.dto.chatRoom;
+package com.jupjup.www.jupjup.chat.dto.room;
 
 import com.jupjup.www.jupjup.chat.entity.Room;
 import com.jupjup.www.jupjup.chat.entity.UserChatRoom;

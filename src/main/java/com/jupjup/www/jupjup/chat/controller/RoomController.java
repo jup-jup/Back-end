@@ -1,9 +1,9 @@
 package com.jupjup.www.jupjup.chat.controller;
 
-import com.jupjup.www.jupjup.chat.dto.chatRoom.CreateRoomRequest;
-import com.jupjup.www.jupjup.chat.dto.chatRoom.CreateRoomResponse;
-import com.jupjup.www.jupjup.chat.dto.chatRoom.RoomListResponse;
-import com.jupjup.www.jupjup.chat.dto.chatRoom.RoomResponse;
+import com.jupjup.www.jupjup.chat.dto.room.CreateRoomRequest;
+import com.jupjup.www.jupjup.chat.dto.room.CreateRoomResponse;
+import com.jupjup.www.jupjup.chat.dto.room.RoomListResponse;
+import com.jupjup.www.jupjup.chat.dto.room.RoomResponse;
 import com.jupjup.www.jupjup.chat.service.RoomService;
 import com.jupjup.www.jupjup.config.JWTUtil;
 import io.swagger.v3.oas.annotations.Operation;
