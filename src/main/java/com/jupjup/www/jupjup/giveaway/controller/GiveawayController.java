@@ -48,6 +48,7 @@ public class GiveawayController {
                     headers = @Header(name = HttpHeaders.LOCATION, description = "나눔 세부정보 url")),
             @ApiResponse(responseCode = "401", description = "등록되지 않은 유저입니다.")
     })
+
     @PostMapping("")
     public ResponseEntity<?> addGiveaway(@RequestBody CreateGiveawayRequest request, @Valid @RequestHeader("Authorization") String header) {
         try {

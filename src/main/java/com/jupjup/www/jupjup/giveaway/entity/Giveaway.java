@@ -73,12 +73,14 @@ public class Giveaway {
     private Long viewCount;
 
     @Builder
-    public Giveaway(String title, String description, Long giverId, List<Image> images, String location) {
+    public Giveaway(String title, String description, Long giverId, List<Image> images, String location , Long chatCount , Long viewCount) {
         this.title = title;
         this.description = description;
         this.giverId = giverId;
         this.images = images;
         this.location = location;
+        this.chatCount = chatCount;
+        this.viewCount = viewCount;
     }
 
     public void update(String title, String description, GiveawayStatus status, List<Image> images) {

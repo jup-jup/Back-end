@@ -30,8 +30,8 @@ public class GiveawayListResponse {
     private String location;
 
     // TODO: 여기부터는 후순위 작업 (추가 설계 필요)
-    private Integer chatCnt; // 코멘트 수?
-    private Integer viewCnt; // 조회수
+    private Long chatCnt; // 코멘트 수?
+    private Long viewCnt; // 조회수
 
     public GiveawayListResponse(Long id) {
         this.giveawayId = id;
@@ -39,6 +39,8 @@ public class GiveawayListResponse {
 
     public static GiveawayListResponse toDTO(Giveaway giveaway) {
         return GiveawayListResponse.builder()
+                .chatCnt(giveaway.getChatCount())
+                .viewCnt(giveaway.getViewCount())
                 .giveawayId(giveaway.getId())
                 .title(giveaway.getTitle())
                 .status(giveaway.getStatus())
