@@ -25,7 +25,6 @@ public class JWTFilter extends OncePerRequestFilter {
 
     public List<String> list = List.of(
             "/login",
-            "/ws", // 웹소켓
             "/api/v1/user",
             "/swagger",
             "/api-docs",
