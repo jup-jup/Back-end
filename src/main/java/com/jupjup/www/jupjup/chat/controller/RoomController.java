@@ -1,9 +1,9 @@
 package com.jupjup.www.jupjup.chat.controller;
 
-import com.jupjup.www.jupjup.chat.dto.chatRoom.CreateRoomRequest;
-import com.jupjup.www.jupjup.chat.dto.chatRoom.CreateRoomResponse;
-import com.jupjup.www.jupjup.chat.dto.chatRoom.RoomListResponse;
-import com.jupjup.www.jupjup.chat.dto.chatRoom.RoomResponse;
+import com.jupjup.www.jupjup.chat.dto.room.CreateRoomRequest;
+import com.jupjup.www.jupjup.chat.dto.room.CreateRoomResponse;
+import com.jupjup.www.jupjup.chat.dto.room.RoomListResponse;
+import com.jupjup.www.jupjup.chat.dto.room.RoomResponse;
 import com.jupjup.www.jupjup.chat.service.RoomService;
 import com.jupjup.www.jupjup.config.JWTUtil;
 import io.swagger.v3.oas.annotations.Operation;
@@ -25,7 +25,7 @@ import java.util.List;
 @RestController
 // TODO: 전체 서버 관점에서 /api/v1 prefix 를 사용한다면 application.yml 에서 설정하는 것이 좋아보임
 @RequestMapping("/api/v1/chat-rooms")
-public class ChatRoomController {
+public class RoomController {
 
     private final RoomService roomService;
 

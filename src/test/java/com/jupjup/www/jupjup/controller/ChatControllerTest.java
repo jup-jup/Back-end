@@ -1,6 +1,6 @@
 //package com.jupjup.www.jupjup.controller;
 //
-//import com.jupjup.www.jupjup.chat.dto.CreateChatRequest;
+//import com.jupjup.www.jupjup.chat.dto.chat.CreateChatRequest;
 //import org.junit.jupiter.api.Test;
 //import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
