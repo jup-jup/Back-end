@@ -19,7 +19,7 @@ public class MyPageService {
 
 
     public List<GiveawayListResponse> findAllgiverList(Pageable pageable,Long userId) {
-        Page<Giveaway> list = giveawayRepository.findGiveawaysByGiverName(pageable,userId);
+        Page<Giveaway> list = giveawayRepository.findGiveawaysByGiverId(pageable,userId);
         return list.stream()
                 .map(GiveawayListResponse::toDTO)
                 .collect(Collectors.toList());

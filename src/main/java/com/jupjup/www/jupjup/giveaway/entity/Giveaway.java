@@ -66,21 +66,24 @@ public class Giveaway {
     private String location;
 
     // TODO: 댓글 수 -> 관련 채팅 수인가?
-    @Column(name = "chat_count")
-    private Long chatCount;
+
     // TODO: 조회 수
     @Column(name = "view_count")
     private Long viewCount;
 
+    // 나눔 저장될 때마다 조회수 기본값 0으로 세팅
+    @PrePersist
+    public void prePersist() {
+        this.viewCount = this.viewCount == null ? 0L : this.viewCount;
+    }
+
     @Builder
-    public Giveaway(String title, String description, Long giverId, List<Image> images, String location , Long chatCount , Long viewCount) {
+    public Giveaway(String title, String description, Long giverId, List<Image> images, String location) {
         this.title = title;
         this.description = description;
         this.giverId = giverId;
         this.images = images;
         this.location = location;
-        this.chatCount = chatCount;
-        this.viewCount = viewCount;
     }
 
     public void update(String title, String description, GiveawayStatus status, List<Image> images) {

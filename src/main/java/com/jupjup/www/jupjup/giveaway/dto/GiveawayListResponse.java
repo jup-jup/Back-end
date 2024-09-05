@@ -32,7 +32,8 @@ public class GiveawayListResponse {
     private String location;
 
     // TODO: 여기부터는 후순위 작업 (추가 설계 필요)
-    private Long chatCnt; // 코멘트 수?
+    // boram : chatCnt 이거 주석안하면 DTO 생성 시 null 값이 들어간 채 리스트가 내려질까요 ?/
+//    private Long chatCnt; // 코멘트 수?
     private Long viewCnt; // 조회수
 
     public GiveawayListResponse(Long id) {
@@ -41,8 +42,7 @@ public class GiveawayListResponse {
 
     public static GiveawayListResponse toDTO(Giveaway giveaway) {
         return GiveawayListResponse.builder()
-                .userName(giveaway.getGiver().getUserName())
-                .chatCnt(giveaway.getChatCount())
+                .userName(giveaway.getGiver().getName())
                 .viewCnt(giveaway.getViewCount())
                 .giveawayId(giveaway.getId())
                 .title(giveaway.getTitle())

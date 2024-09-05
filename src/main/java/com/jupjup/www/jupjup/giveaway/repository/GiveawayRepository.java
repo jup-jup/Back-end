@@ -20,6 +20,6 @@ public interface GiveawayRepository extends JpaRepository<Giveaway, Long> {
 
     @Query(value = "SELECT g FROM Giveaway g JOIN FETCH g.giver u WHERE u.id = :userId",
           countQuery = "SELECT COUNT(g) FROM Giveaway g JOIN g.giver u WHERE u.id = :userId")
-    Page<Giveaway> findGiveawaysByGiverName(Pageable pageable, @Param("userId") Long userId);
+    Page<Giveaway> findGiveawaysByGiverId(Pageable pageable, @Param("userId") Long userId);
 
 }

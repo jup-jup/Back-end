@@ -89,7 +89,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         String userName = oAuth2Response.getName();
         String userEmail = deriveEmail(oAuth2Response);
 
-        User existingUser = userRepository.findByUserEmailAndProviderKey(userEmail, providerId);
+        User existingUser = userRepository.findByEmailAndProviderKey(userEmail, providerId);
 
         if (existingUser == null) {
             log.info("회원가입이 완료");
@@ -111,8 +111,8 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
         User user = User.builder()
                 .providerKey(providerId)
-                .userEmail(userEmail)
-                .userName(userName)
+                .email(userEmail)
+                .name(userName)
                 .build();
 
         userRepository.save(user);
@@ -126,8 +126,8 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     }
 
     private OAuth2User updateExistingUser(User user, String userName, String userEmail, String providerId) {
-        user.setUserEmail(userEmail);
-        user.setUserName(userName);
+        user.setEmail(userEmail);
+        user.setName(userName);
         userRepository.save(user);
         return new CustomUserDetails(UserResponse.builder()
                 .userId(user.getId())
