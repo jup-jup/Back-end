@@ -1,4 +1,4 @@
-package com.jupjup.www.jupjup.domain.enums;
+package com.jupjup.www.jupjup.common.enums;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

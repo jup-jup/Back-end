@@ -2,7 +2,7 @@ package com.jupjup.www.jupjup.user.oauth;
 
 import com.jupjup.www.jupjup.user.entity.User;
 import com.jupjup.www.jupjup.user.dto.user.UserResponse;
-import com.jupjup.www.jupjup.domain.enums.OauthRegistrationId;
+import com.jupjup.www.jupjup.common.enums.OauthRegistrationId;
 import com.jupjup.www.jupjup.user.repository.UserRepository;
 import com.jupjup.www.jupjup.common.response.GoogleResponse;
 import com.jupjup.www.jupjup.common.response.KakaoResponse;
@@ -16,7 +16,7 @@ import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
-import static com.jupjup.www.jupjup.domain.enums.OauthRegistrationId.*;
+import static com.jupjup.www.jupjup.common.enums.OauthRegistrationId.*;
 
 /**
  * @author : boramkim
