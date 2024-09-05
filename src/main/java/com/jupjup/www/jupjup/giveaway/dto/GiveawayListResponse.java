@@ -21,6 +21,8 @@ public class GiveawayListResponse {
 
     private String title; // 제목
 
+    private String userName;
+
     private GiveawayStatus status; // 상태
 
     private LocalDateTime createdAt;
@@ -39,6 +41,7 @@ public class GiveawayListResponse {
 
     public static GiveawayListResponse toDTO(Giveaway giveaway) {
         return GiveawayListResponse.builder()
+                .userName(giveaway.getGiver().getUserName())
                 .chatCnt(giveaway.getChatCount())
                 .viewCnt(giveaway.getViewCount())
                 .giveawayId(giveaway.getId())
