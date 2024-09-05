@@ -4,7 +4,6 @@
 //import io.swagger.v3.oas.annotations.Operation;
 //import lombok.RequiredArgsConstructor;
 //import lombok.extern.slf4j.Slf4j;
-//import org.springframework.http.HttpStatus;
 //import org.springframework.http.ResponseEntity;
 //import org.springframework.web.bind.annotation.*;
 //
@@ -32,16 +31,6 @@
 //    @GetMapping("/sharings/{id}/edit")
 //    public ResponseEntity<?> getSharingForEdit(@PathVariable long id) {
 //        return ResponseEntity.ok(mypageSharingService.getMyPageSharingById(id));
-//    }
-//
-//    @Operation(summary = "나눔 업데이트")
-//    @PutMapping("/sharings")
-//    // TODO : 이미지 업로드 추후 개발
-//    public ResponseEntity<?> updateSharing(@RequestBody MyPageSharingListRequest myPageSharingListRequest) {
-//        if (mypageSharingService.updateItem(myPageSharingListRequest)){
-//            return ResponseEntity.ok().build();
-//        }
-//        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 //    }
 //
 //    @Operation(summary = "받은 내역 리스트 조회")
