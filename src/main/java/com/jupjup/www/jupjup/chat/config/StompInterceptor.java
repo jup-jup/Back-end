@@ -35,7 +35,7 @@ public class StompInterceptor implements ChannelInterceptor {
                 return null;
             }
 
-            try{
+            try {
                 String token = authorization.substring(BEARER_PREFIX.length());
                 if (!JWTUtil.validateAccessToken(token)) {
                     // TODO: exception 발생

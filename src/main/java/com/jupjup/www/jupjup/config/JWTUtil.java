@@ -24,6 +24,10 @@ import java.util.Date;
 @RequiredArgsConstructor
 public class JWTUtil {
 
+    // TODO: @Value 를 통해서 환경변수 지정 후 @PostConstruct 를 통해 static 변수인 accessEncKey 를 정해주고 있는데,
+    //  테스트 코드 작성시에 accessSecretKey 에 대한 이슈가 살짝 있었음. 검색 결과 static 으로 잘 사용하거나 Bean 으로 등록이 필요하다고 함
+    //  이 부분도 static 메서드로 사용하니 개선하면 좋을듯함. (GPT 결과로는 static 변수로 key 를 사용하고자 한다면, 매개변수로 받으라고 함)
+    //  아니라면 정적 필드를 제거하고 직접 초기화를 하는 것도 다른 방법임.
     @Value("${jwt.secret}")
     private String accessSecretKey;
     @Value("${jwt.refresh-secret}")

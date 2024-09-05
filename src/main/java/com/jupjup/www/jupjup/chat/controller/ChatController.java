@@ -41,7 +41,7 @@ public class ChatController {
     @SendTo("/sub/room/{roomId}")
     public ChatDTO sendChat(
             @DestinationVariable Long roomId,
-            @Header("Authorization") String header,
+            @Header("Authorization") String header, // TODO: 인증 정보를 인터셉터에서 처리하는데 필요없지 않나?
             CreateChatRequest request
     ) {
         String token = header.substring(BEARER_PREFIX.length());
