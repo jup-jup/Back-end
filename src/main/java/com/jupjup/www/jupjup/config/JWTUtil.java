@@ -101,20 +101,13 @@ public class JWTUtil {
     }
 
     private static boolean validateToken(String token, SecretKey key) {
-        System.out.println("token " + Jwts.parser()
+        return Jwts.parser()
                 .verifyWith(key)
                 .build()
                 .parseSignedClaims(token)// JWT 토큰을 파싱하고 서명 검증을 수행하여, 해당 토큰의 Claims 객체를 반환
                 .getPayload() // 사용자 정보 및 토큰의 만료 시간(exp 클레임)이 포함 됨
                 .getExpiration() // 클레임에서 만료시간을 들고옴
-                );
-            return Jwts.parser()
-                    .verifyWith(key)
-                    .build()
-                    .parseSignedClaims(token)// JWT 토큰을 파싱하고 서명 검증을 수행하여, 해당 토큰의 Claims 객체를 반환
-                    .getPayload() // 사용자 정보 및 토큰의 만료 시간(exp 클레임)이 포함 됨
-                    .getExpiration() // 클레임에서 만료시간을 들고옴
-                    .before(new Date()); //만료 시간이 현재 시간보다 이전인지 확인하여 boolean return
+                .after(new Date()); // 만료 시간이 현재 시간보다 이후인지 확인하여 boolean return
     }
 
 
@@ -161,7 +154,7 @@ public class JWTUtil {
         return toKen;
     }
 
-    public static String parseUsernameFromToken (String accessToken){
+    public static String parseUsernameFromToken(String accessToken) {
         return JWTUtil.getUserEmailFromAccessToken(accessToken.substring(7).trim());
     }
 

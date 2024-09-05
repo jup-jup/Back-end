@@ -25,7 +25,7 @@ public class JWTFilter extends OncePerRequestFilter {
 
     public List<String> list = List.of(
             "/login",
-            "/ws",
+            "/ws", // 웹소켓
             "/api/v1/user",
             "/swagger",
             "/api-docs",
@@ -62,12 +62,13 @@ public class JWTFilter extends OncePerRequestFilter {
         try {
             String accessToken = authorization.substring(BEARER_PREFIX.length());
             if (!JWTUtil.validateAccessToken(accessToken)) {
-                log.info("토큰 유효성 검사 완료!");
-                filterChain.doFilter(request, response);
+                log.error("토큰 유효성 검사 실패!");
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 return;
             }
-            log.error("토큰 유효성 검사 실해!");
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+
+            log.info("토큰 유효성 검사 완료!");
+            filterChain.doFilter(request, response);
         } catch (ExpiredJwtException | IllegalArgumentException e) {
             response.sendRedirect("/api/v1/auth/reissue");
         }
