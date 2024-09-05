@@ -165,5 +165,10 @@ public class JWTUtil {
         return JWTUtil.getUserEmailFromAccessToken(accessToken.substring(7).trim());
     }
 
+    public static Long parseUserIdFromToken (String accessToken){
+        return JWTUtil.getUserIdFromAccessToken(accessToken.substring(7).trim());
+    }
+
+
 
 }
