@@ -36,6 +36,7 @@ public class MyPageController {
         Long userId = JWTUtil.parseUserIdFromToken(accessToken);
 
         List<GiveawayListResponse> giverList = myPageService.findAllgiverList(pageable,userId);
+        // TODO : 추후 개발 예정
         List<GiveawayListResponse> receiverList = myPageService.findAllreceiverList(pageable);
 
         if(type.equals(MyPageType.GIVER.getType())){
