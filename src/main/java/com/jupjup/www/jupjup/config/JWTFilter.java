@@ -59,11 +59,11 @@ public class JWTFilter extends OncePerRequestFilter {
         try {
             String accessToken = authorization.substring(BEARER_PREFIX.length());
             if (!JWTUtil.validateAccessToken(accessToken)) {
-                log.info("토큰 유효성 검사 완료!");
+                log.info("토큰 유효성 검사 완료");
                 filterChain.doFilter(request, response);
                 return;
             }
-            log.error("토큰 유효성 검사 실해!");
+            log.error("토큰 유효성 검사 실패");
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         } catch (ExpiredJwtException | IllegalArgumentException e) {
             response.sendRedirect("/api/v1/auth/reissue");

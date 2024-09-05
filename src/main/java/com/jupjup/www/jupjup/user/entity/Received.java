@@ -16,8 +16,8 @@ import java.time.LocalDateTime;
 @Getter @Setter
 @Entity
 @EnableJpaAuditing
-@Table(name = "mypage_received_list")
-public class MypageReceivedList {
+@Table(name = "received_list")
+public class Received {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

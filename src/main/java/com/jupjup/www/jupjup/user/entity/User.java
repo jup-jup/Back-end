@@ -28,14 +28,11 @@ public class User {
     @Column(name = "provider_key", nullable = false)
     private String providerKey;
 
-    @Column(name = "name", nullable = false)
-    private String name;
+    @Column(name = "user_name", nullable = false)
+    private String userName;
 
     @Column(name = "user_email", nullable = false)
     private String userEmail;
-
-    @Column(name = "role", nullable = false)
-    private String role;
 
     @Column(name = "created_at", columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     @CreatedDate
@@ -52,10 +49,9 @@ public class User {
     private List<Chat> chats = new ArrayList<>();
 
     @Builder
-    public User(String providerKey, String username, String userEmail, String role) {
+    public User(String providerKey, String userName, String userEmail) {
         this.providerKey = providerKey;
-        this.name = username;
+        this.userName = userName;
         this.userEmail = userEmail;
-        this.role = role;
     }
 }

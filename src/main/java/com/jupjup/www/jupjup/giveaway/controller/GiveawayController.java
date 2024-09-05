@@ -17,6 +17,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -36,8 +38,8 @@ import java.util.List;
 @RequestMapping("/api/v1/giveaways")
 public class GiveawayController {
 
+    private static final Logger log = LoggerFactory.getLogger(GiveawayController.class);
     private final GiveawayService giveawayService;
-
     private static final String BEARER_PREFIX = "Bearer ";
 
     @Operation(summary = "add giveaway", description = "나눔 올리기 API")
@@ -49,6 +51,7 @@ public class GiveawayController {
     @PostMapping("")
     public ResponseEntity<?> addGiveaway(@RequestBody CreateGiveawayRequest request, @Valid @RequestHeader("Authorization") String header) {
         try {
+
             String token = header.substring(BEARER_PREFIX.length());
             Long userId = JWTUtil.getUserIdFromAccessToken(token);
             Giveaway giveaway = giveawayService.save(request, userId);

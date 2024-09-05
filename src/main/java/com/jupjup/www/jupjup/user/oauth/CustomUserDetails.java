@@ -21,16 +21,17 @@ public record CustomUserDetails(UserResponse userDTO) implements OAuth2User {
     // 권한 리턴 메소드
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.singletonList((GrantedAuthority) userDTO::getRole);
+        return null;
     }
 
     public Long getUserId() {
+        System.out.println(userDTO.getUserId());
         return userDTO.getUserId();
     }
 
     @Override
     public String getName() {
-        return userDTO.getUsername();
+        return userDTO.getUserName();
     }
 
     public String getUserEmail() {

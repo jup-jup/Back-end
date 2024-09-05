@@ -3,9 +3,9 @@
 //import com.jupjup.www.jupjup.chat.entity.QRoom;
 //import com.jupjup.www.jupjup.chat.entity.QUserChatRoom;
 //import com.jupjup.www.jupjup.chat.entity.Room;
+//import com.jupjup.www.jupjup.giveaway.repository.GiveawayRepository;
 //import com.jupjup.www.jupjup.user.entity.User;
 //import com.jupjup.www.jupjup.giveaway.entity.Giveaway;
-//import com.jupjup.www.jupjup.domain.repository.GiveawayRepository;
 //import com.jupjup.www.jupjup.user.repository.UserRepository;
 //import com.querydsl.jpa.impl.JPAQueryFactory;
 //import jakarta.transaction.Transactional;
@@ -50,16 +50,14 @@
 //        // 유저 저장
 //        User user1 = User.builder()
 //                .providerKey("providerKey")
-//                .username("user1")
+//                .userName("user1")
 //                .userEmail("userEmail")
-//                .role("role")
 //                .build();
 //
 //        User user2 = User.builder()
 //                .providerKey("providerKey")
-//                .username("user2")
+//                .userName("user2")
 //                .userEmail("userEmail")
-//                .role("role")
 //                .build();
 //
 //        userRepository.saveAll(List.of(user1, user2));

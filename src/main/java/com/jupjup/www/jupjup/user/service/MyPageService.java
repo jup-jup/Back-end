@@ -18,7 +18,15 @@ public class MyPageService {
     private final GiveawayRepository giveawayRepository;
 
 
-    public List<GiveawayListResponse> findAll(Pageable pageable) {
+    public List<GiveawayListResponse> findAllgiverList(Pageable pageable) {
+        Page<Giveaway> list = giveawayRepository.findAll(pageable);
+        return list.stream()
+                .map(GiveawayListResponse::toDTO)
+                .collect(Collectors.toList());
+    }
+
+
+    public List<GiveawayListResponse> findAllreceiverList(Pageable pageable) {
         Page<Giveaway> list = giveawayRepository.findAll(pageable);
         return list.stream()
                 .map(GiveawayListResponse::toDTO)

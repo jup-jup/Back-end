@@ -26,16 +26,14 @@ public class CustomOAuthSuccessHandler extends SimpleUrlAuthenticationSuccessHan
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
-        // OAuth2User
+
         CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
 
         Long userId = customUserDetails.getUserId();
+        log.info("userId = {}", userId);
         String userName = customUserDetails.getName();
         String userEmail = customUserDetails.getUserEmail();
         String providerId = customUserDetails.getProviderId();
-
-        Iterator<? extends GrantedAuthority> iterator =  authentication.getAuthorities().iterator();
-        GrantedAuthority auth = iterator.next();
 
         // JWT 발급
         String accessToken = JWTUtil.generateAccessToken(userId, userName, userEmail);
@@ -50,14 +48,8 @@ public class CustomOAuthSuccessHandler extends SimpleUrlAuthenticationSuccessHan
                 .expiration(JWTUtil.RefreshTokenExTimeCul(refreshToken))
                 .build());
 
-//        // JWTUtil 을 통해 쿠키 생성 및 설정
-//        Cookie refreshTokenCookie = JWTUtil.getCookieFromRefreshToken(refreshToken);
-//        Cookie accessTokenCookie = JWTUtil.getCookieFromAccessToken(accessToken);
-//        // 응답에 쿠키 추가
-//        response.addCookie(refreshTokenCookie);
-//        response.addCookie(accessTokenCookie);
-//        response.sendRedirect(redirectURL);
-
+        // TODO : 더 보안성을 높여 전달하는 방법은 없을까 ? 프론트가 SSL 설정해도 안되는데
+        // 쿼리스트링으로 액세스 리프레시 전달
         String redirectURL = BaseUrl.REACT.getUrl();
         String targetUrl = UriComponentsBuilder.fromUriString(redirectURL)
                 .queryParam("accessToken", accessToken)

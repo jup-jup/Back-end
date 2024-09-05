@@ -11,11 +11,8 @@ import java.util.List;
 public class CreateGiveawayRequest {
 
     private String title;
-
     private String description;
-
     private String location;
-
     @JsonProperty("image_ids")
     private List<Long> imageIds;
 

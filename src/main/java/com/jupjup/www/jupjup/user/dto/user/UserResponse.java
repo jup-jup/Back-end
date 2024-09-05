@@ -11,17 +11,12 @@ public class UserResponse {
     private String providerId;
     private String userEmail;
     private Long userId;
-    private String username;
-    private String password;
-    private String role;
-    private String picture;
+    private String userName;
 
-    public UserResponse(Long userId, String userEmail, String username, String password, String role) {
+    public UserResponse(Long userId, String userEmail, String userName) {
         this.userId = userId;
         this.userEmail = userEmail;
-        this.username = username;
-        this.password = password;
-        this.role = role;
+        this.userName = userName;
     }
 
 }

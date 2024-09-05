@@ -67,7 +67,6 @@ public class GiveawayService {
         if (!request.getImageIds().isEmpty()) {
             images = imageRepository.findAllById(request.getImageIds());
         }
-
         giveaway.update(request.getTitle(), request.getDescription(), request.getStatus(), images);
 
         return giveaway;
@@ -85,7 +84,6 @@ public class GiveawayService {
         if (!userId.equals(giveaway.getGiverId())) {
             throw new IllegalArgumentException("잘못된 유저 요청입니다.");
         }
-
         return giveaway;
     }
 

@@ -84,6 +84,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
      * @since : 2024. 8. 1.
      */
     private OAuth2User saveOrUpdateUser(OAuth2Response oAuth2Response) {
+
         String providerId = oAuth2Response.getProvider() + oAuth2Response.getProviderId();
         String userName = oAuth2Response.getName();
         String userEmail = deriveEmail(oAuth2Response);
@@ -107,29 +108,31 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     }
 
     private OAuth2User registerNewUser(String providerId, String userName, String userEmail) {
+
         User user = User.builder()
                 .providerKey(providerId)
                 .userEmail(userEmail)
-                .role("ROLE_USER")
-                .username(userName)
+                .userName(userName)
                 .build();
+
         userRepository.save(user);
+
         return new CustomUserDetails(UserResponse.builder()
+                .userId(user.getId())
                 .providerId(providerId)
-                .username(userName)
+                .userName(userName)
                 .userEmail(userEmail)
-                .role("ROLE_USER")
                 .build());
     }
 
     private OAuth2User updateExistingUser(User user, String userName, String userEmail, String providerId) {
         user.setUserEmail(userEmail);
-        user.setName(userName);
+        user.setUserName(userName);
         userRepository.save(user);
         return new CustomUserDetails(UserResponse.builder()
                 .userId(user.getId())
                 .providerId(providerId)
-                .username(userName)
+                .userName(userName)
                 .userEmail(userEmail)
                 .build());
     }
