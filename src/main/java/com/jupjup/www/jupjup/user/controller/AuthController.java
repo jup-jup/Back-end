@@ -34,6 +34,7 @@ public class AuthController {
     private final RefreshTokenRepository refreshTokenRepository;
     private static final List<String> SUPPORTED_PROVIDERS = Arrays.asList("google", "kakao", "naver");
 
+
     @Operation(summary = "소셜 로그인")
     @GetMapping("/login")
     public ResponseEntity<?> redirectToAuthorization(@RequestParam String provider) {

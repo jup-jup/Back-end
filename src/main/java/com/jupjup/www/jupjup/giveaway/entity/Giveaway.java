@@ -66,9 +66,11 @@ public class Giveaway {
     private String location;
 
     // TODO: 댓글 수 -> 관련 채팅 수인가?
-
+    @Column(name = "chat_count")
+    private Long chatCount;
     // TODO: 조회 수
-
+    @Column(name = "view_count")
+    private Long viewCount;
 
     @Builder
     public Giveaway(String title, String description, Long giverId, List<Image> images, String location) {
