@@ -1,8 +1,8 @@
 package com.jupjup.www.jupjup.chat.service;
 
-import com.jupjup.www.jupjup.chat.dto.chatRoom.CreateRoomRequest;
-import com.jupjup.www.jupjup.chat.dto.chatRoom.CreateRoomResponse;
-import com.jupjup.www.jupjup.chat.dto.chatRoom.RoomListResponse;
+import com.jupjup.www.jupjup.chat.dto.room.CreateRoomRequest;
+import com.jupjup.www.jupjup.chat.dto.room.CreateRoomResponse;
+import com.jupjup.www.jupjup.chat.dto.room.RoomListResponse;
 import com.jupjup.www.jupjup.chat.entity.Room;
 import com.jupjup.www.jupjup.chat.repository.RoomRepository;
 import jakarta.transaction.Transactional;
