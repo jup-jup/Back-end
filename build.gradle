@@ -61,6 +61,10 @@ dependencies {
     // MySQL 커넥터
     runtimeOnly 'com.mysql:mysql-connector-j'
 
+    // websocket
+    implementation 'org.springframework.boot:spring-boot-starter-websocket'
+
+
     // OpenAPI 문서화
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.1.0'
 

@@ -24,10 +24,14 @@ import java.util.Date;
 @RequiredArgsConstructor
 public class JWTUtil {
 
+    // TODO: @Value 를 통해서 환경변수 지정 후 @PostConstruct 를 통해 static 변수인 accessEncKey 를 정해주고 있는데,
+    //  테스트 코드 작성시에 accessSecretKey 에 대한 이슈가 살짝 있었음. 검색 결과 static 으로 잘 사용하거나 Bean 으로 등록이 필요하다고 함
+    //  이 부분도 static 메서드로 사용하니 개선하면 좋을듯함. (GPT 결과로는 static 변수로 key 를 사용하고자 한다면, 매개변수로 받으라고 함)
+    //  아니라면 정적 필드를 제거하고 직접 초기화를 하는 것도 다른 방법임.
     @Value("${jwt.secret}")
-    private String accessSecretKey;
+    private static String accessSecretKey;
     @Value("${jwt.refresh-secret}")
-    private String refreshSecretKey;
+    private static String refreshSecretKey;
     private static final long expirationTime = 24 * 60 * 60 * 1000; // 개발 환경 24시간
     //    public static final long expirationTime = 60000; // 1분
     public static final long refreshExpirationTime = 7 * 24 * 60 * 60 * 1000L; // 7일
@@ -101,13 +105,13 @@ public class JWTUtil {
     }
 
     private static boolean validateToken(String token, SecretKey key) {
-            return Jwts.parser()
-                    .verifyWith(key)
-                    .build()
-                    .parseSignedClaims(token)// JWT 토큰을 파싱하고 서명 검증을 수행하여, 해당 토큰의 Claims 객체를 반환
-                    .getPayload() // 사용자 정보 및 토큰의 만료 시간(exp 클레임)이 포함 됨
-                    .getExpiration() // 클레임에서 만료시간을 들고옴
-                    .before(new Date()); //만료 시간이 현재 시간보다 이전인지 확인하여 boolean return
+        return Jwts.parser()
+                .verifyWith(key)
+                .build()
+                .parseSignedClaims(token)// JWT 토큰을 파싱하고 서명 검증을 수행하여, 해당 토큰의 Claims 객체를 반환
+                .getPayload() // 사용자 정보 및 토큰의 만료 시간(exp 클레임)이 포함 됨
+                .getExpiration() // 클레임에서 만료시간을 들고옴
+                .after(new Date()); // 만료 시간이 현재 시간보다 이후인지 확인하여 boolean return
     }
 
 
@@ -154,7 +158,7 @@ public class JWTUtil {
         return toKen;
     }
 
-    public static String parseUsernameFromToken (String accessToken){
+    public static String parseUsernameFromToken(String accessToken) {
         return JWTUtil.getUserEmailFromAccessToken(accessToken.substring(7).trim());
     }
 

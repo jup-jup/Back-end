@@ -71,3 +71,13 @@ server:
       charset: UTF-8
       force: true
       force-response: true
+
+logging:
+  level:
+    org:
+      springframework:
+        messaging:
+          simp:
+            stomp: DEBUG
+        web:
+          socket: DEBUG
