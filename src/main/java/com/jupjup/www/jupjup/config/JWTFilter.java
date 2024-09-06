@@ -31,7 +31,8 @@ public class JWTFilter extends OncePerRequestFilter {
             "/reissue",
             "/api/v1/giveaways/list",
             "/api/v1/giveaways/detail/",
-            "/health"
+            "/health",
+            "/ws"
     );
 
     @Override
