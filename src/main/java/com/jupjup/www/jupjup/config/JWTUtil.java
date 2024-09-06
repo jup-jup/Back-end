@@ -29,9 +29,9 @@ public class JWTUtil {
     //  이 부분도 static 메서드로 사용하니 개선하면 좋을듯함. (GPT 결과로는 static 변수로 key 를 사용하고자 한다면, 매개변수로 받으라고 함)
     //  아니라면 정적 필드를 제거하고 직접 초기화를 하는 것도 다른 방법임.
     @Value("${jwt.secret}")
-    private static String accessSecretKey;
+    private  String accessSecretKey;
     @Value("${jwt.refresh-secret}")
-    private static String refreshSecretKey;
+    private  String refreshSecretKey;
     private static final long expirationTime = 24 * 60 * 60 * 1000; // 개발 환경 24시간
     //    public static final long expirationTime = 60000; // 1분
     public static final long refreshExpirationTime = 7 * 24 * 60 * 60 * 1000L; // 7일
@@ -111,7 +111,7 @@ public class JWTUtil {
                 .parseSignedClaims(token)// JWT 토큰을 파싱하고 서명 검증을 수행하여, 해당 토큰의 Claims 객체를 반환
                 .getPayload() // 사용자 정보 및 토큰의 만료 시간(exp 클레임)이 포함 됨
                 .getExpiration() // 클레임에서 만료시간을 들고옴
-                .after(new Date()); // 만료 시간이 현재 시간보다 이후인지 확인하여 boolean return
+                .after(new Date()); // 만료 시간이 지금보다 더 이후면 true, 만료 시간이 지나면 false 를 반환.
     }
 
 
