@@ -63,7 +63,7 @@ public class JWTFilter extends OncePerRequestFilter {
                 filterChain.doFilter(request, response);
                 return;
             }
-            log.error("토큰 유효성 검사 실해!");
+            log.error("토큰 유효성 검사 실패!");
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         } catch (ExpiredJwtException | IllegalArgumentException e) {
             response.sendRedirect("/api/v1/auth/reissue");

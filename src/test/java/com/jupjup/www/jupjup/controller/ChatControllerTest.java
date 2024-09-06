@@ -1,11 +1,15 @@
 //package com.jupjup.www.jupjup.controller;
 //
 <<<<<<< HEAD
+<<<<<<< HEAD
 //import com.jupjup.www.jupjup.chat.controller.ChatController;
 //import com.jupjup.www.jupjup.chat.dto.CreateChatRequest;
 =======
 //import com.jupjup.www.jupjup.chat.dto.chat.CreateChatRequest;
 >>>>>>> origin/main
+=======
+//import com.jupjup.www.jupjup.chat.dto.chat.CreateChatRequest;
+>>>>>>> origin/boram
 //import org.junit.jupiter.api.Test;
 //import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
