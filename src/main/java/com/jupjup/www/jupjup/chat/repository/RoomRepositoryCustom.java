@@ -9,7 +9,6 @@ public interface RoomRepositoryCustom {
 
     List<Room> findByUserIdAndGiveawayId(Long userId, Long giveawayId);
     List<Room> findJoinedRoomsByUserId(Long userId);
-
     Optional<Room> findByIdAndUserId(Long roomId, Long userId);
 
 }

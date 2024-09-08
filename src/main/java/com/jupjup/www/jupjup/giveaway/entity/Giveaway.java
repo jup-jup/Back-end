@@ -42,6 +42,9 @@ public class Giveaway {
     @OneToMany(mappedBy = "giveaway")
     private List<Room> chatRooms = new ArrayList<>();
 
+    private LocalDateTime receivedAt; // 받은 날짜
+    private String giverName; // 나눔한 닉네임
+
     @CreatedDate
     @Column(name = "created_at")
     private LocalDateTime createdAt;

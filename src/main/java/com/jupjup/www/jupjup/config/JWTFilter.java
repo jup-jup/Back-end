@@ -31,7 +31,8 @@ public class JWTFilter extends OncePerRequestFilter {
             "/reissue",
             "/api/v1/giveaways/list",
             "/api/v1/giveaways/detail/",
-            "/health"
+            "/health",
+            "/ws"
     );
 
     @Override
@@ -59,16 +60,16 @@ public class JWTFilter extends OncePerRequestFilter {
         // 4.토큰 유효성 검증
         try {
             String accessToken = authorization.substring(BEARER_PREFIX.length());
-            if (!JWTUtil.validateAccessToken(accessToken)) {
-                log.error("토큰 유효성 검사 실패!");
-                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            if (JWTUtil.validateAccessToken(accessToken)) {
+                log.info("토큰 유효성 검사 완료!");
+                filterChain.doFilter(request, response);
                 return;
             }
-
-            log.info("토큰 유효성 검사 완료!");
-            filterChain.doFilter(request, response);
+            log.error("토큰 유효성 검사 실패!");
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         } catch (ExpiredJwtException | IllegalArgumentException e) {
             response.sendRedirect("/api/v1/auth/reissue");
+
         }
 
     }

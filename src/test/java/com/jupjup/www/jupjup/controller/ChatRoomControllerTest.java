@@ -37,11 +37,11 @@
 //    @Test
 //    public void testCreateRoom() throws Exception {
 //        // CreateRoomRequest 객체를 JSON 형식으로 변환
-//        String createRoomRequestJson = "{ \"name\": \"Test Room\" }";
+//        String RequestJson = "{ \"name\": \"Test Room\" }";
 //
 //        mockMvc.perform(post("/chat-rooms/")
 //                        .contentType(MediaType.APPLICATION_JSON)
-//                        .content(createRoomRequestJson))
+//                        .content(RequestJson))
 //                .andExpect(status().isOk());
 //    }
 //}

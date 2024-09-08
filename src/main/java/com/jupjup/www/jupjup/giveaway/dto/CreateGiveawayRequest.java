@@ -16,4 +16,13 @@ public class CreateGiveawayRequest {
     @JsonProperty("image_ids")
     private List<Long> imageIds;
 
+    @Override
+    public String toString() {
+        return "CreateGiveawayRequest{" +
+                "title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", location='" + location + '\'' +
+                ", imageIds=" + imageIds +
+                '}';
+    }
 }

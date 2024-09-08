@@ -24,7 +24,6 @@ public class RoomService {
         if (!rooms.isEmpty()) { // 이미 채팅방 존재하면 해당 채팅방 정보로 리턴
             return CreateRoomResponse.toDTO(rooms.get(0));
         }
-
         Room room = Room.builder()
                 .giveawayId(request.getGiveawayId())
                 .build();

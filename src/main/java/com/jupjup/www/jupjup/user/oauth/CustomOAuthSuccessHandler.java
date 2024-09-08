@@ -49,7 +49,6 @@ public class CustomOAuthSuccessHandler extends SimpleUrlAuthenticationSuccessHan
                 .build());
 
         // TODO : 더 보안성을 높여 전달하는 방법은 없을까 ? 프론트가 SSL 설정해도 안되는데
-        // 쿼리스트링으로 액세스 리프레시 전달
         String redirectURL = BaseUrl.REACT.getUrl();
         String targetUrl = UriComponentsBuilder.fromUriString(redirectURL)
                 .queryParam("accessToken", accessToken)

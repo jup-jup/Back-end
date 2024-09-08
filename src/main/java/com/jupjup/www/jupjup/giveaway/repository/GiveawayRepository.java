@@ -20,9 +20,9 @@ public interface GiveawayRepository extends JpaRepository<Giveaway, Long> {
     Page<Giveaway> findAllGiveawaysWithUsers(Pageable pageable);
 
     // 특정 유저 나눔 리스트로 내려줌
-    @Query(value = "SELECT g FROM Giveaway g JOIN FETCH g.giver u WHERE u.id = :userId",
-          countQuery = "SELECT COUNT(g) FROM Giveaway g JOIN g.giver u WHERE u.id = :userId")
-    Page<Giveaway> findAllByGiverId(Pageable pageable, @Param("userId") Long userId);
+    @Query(value = "SELECT g FROM Giveaway g JOIN FETCH g.giver u WHERE u.id = :userId and g.status !=:status ",
+          countQuery = "SELECT COUNT(g) FROM Giveaway g JOIN g.giver u WHERE u.id = :userId and g.status !=:status")
+    Page<Giveaway> findAllByGiverId(Pageable pageable, @Param("userId") Long userId, @Param("status") GiveawayStatus status);
 
     // 특정 유저 받은내역 리스트로 내려줌
     @Query(value = "SELECT g FROM Giveaway g JOIN FETCH g.giver u WHERE u.id = :userId and g.status =:status",
