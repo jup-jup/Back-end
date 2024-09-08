@@ -1,6 +1,7 @@
 package com.jupjup.www.jupjup.user.controller;
 
 import com.jupjup.www.jupjup.config.JWTUtil;
+import com.jupjup.www.jupjup.config.Util;
 import com.jupjup.www.jupjup.giveaway.dto.GiveawayListResponse;
 import com.jupjup.www.jupjup.giveaway.entity.Giveaway;
 import com.jupjup.www.jupjup.user.enums.MyPageType;
@@ -29,25 +30,31 @@ public class MyPageController {
     /**
      * @description : type 별도로 받으며 중복 코드 제거 , 추후 유지보수를 위해 서비스단에서 메서드 분리
      */
-    @Operation(summary = "마이페이지 리스트 조회 (페이징 지원 & type = giver or Receiver)")
+    @Operation(summary = "마이페이지 리스트 모두 조회 (페이징 지원 & type = giver or Receiver)")
     @GetMapping("/{type}/list")
     public ResponseEntity<?> getList(
             @PageableDefault(size = 30, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable,
             @PathVariable String type, @RequestHeader("Authorization") String accessToken) {
 
         Long userId = JWTUtil.parseUserIdFromToken(accessToken);
-
-        List<GiveawayListResponse> giverList = myPageService.findAllGiverList(pageable,userId);
-        List<GiveawayListResponse> receiverList = myPageService.findAllReceiverList(pageable,userId);
-
-        if (type.equals(MyPageType.GIVER.getType())) {
-            return ResponseEntity.ok(giverList);
-        } else if (type.equals(MyPageType.RECEIVER.getType())) {
-            return ResponseEntity.ok().body("ok");
-        } else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
+        Object giverList = myPageService.findAllGiverList(pageable, userId);
+        Object receiverList = myPageService.findAllReceiverList(pageable, userId);
+        return Util.test(type, giverList, receiverList);
     }
-}
+
+        @Operation(summary = "마이페이지 리스트 디테일 (페이징 지원 & type = giver or Receiver)")
+        @GetMapping("/{type}/{id}/detail")
+        public ResponseEntity<?> getDetail (
+                @PageableDefault(size = 30, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable,
+                @PathVariable String type, @RequestHeader("Authorization") String accessToken, @PathVariable Long id){
+
+            Long userId = JWTUtil.parseUserIdFromToken(accessToken);
+
+            List<GiveawayListResponse> giver = myPageService.findAllGiverList(pageable, userId);
+            List<GiveawayListResponse> receiver = myPageService.findAllReceiverList(pageable, userId);
+            return Util.test(type, giver, receiver);
+        }
+
+    }
 
 

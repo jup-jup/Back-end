@@ -19,7 +19,7 @@ public interface GiveawayRepository extends JpaRepository<Giveaway, Long> {
             countQuery = "SELECT COUNT(g) FROM Giveaway g")
     Page<Giveaway> findAllGiveawaysWithUsers(Pageable pageable);
 
-    // 특정 유저 나눔 정보만 리스트로 내려줌
+    // 특정 유저 나눔 리스트로 내려줌
     @Query(value = "SELECT g FROM Giveaway g JOIN FETCH g.giver u WHERE u.id = :userId",
           countQuery = "SELECT COUNT(g) FROM Giveaway g JOIN g.giver u WHERE u.id = :userId")
     Page<Giveaway> findAllByGiverId(Pageable pageable, @Param("userId") Long userId);
