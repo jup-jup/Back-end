@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -25,15 +26,6 @@ public class Room {
     @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<UserChatRoom> userChatRooms = new ArrayList<>();
 
-    public void addUserChatRoom(Long userId) {
-        UserChatRoom userChatRoom = UserChatRoom.builder()
-                .userId(userId)
-                .room(this)
-                .build();
-
-        userChatRooms.add(userChatRoom);
-    }
-
     @OneToMany(mappedBy = "room")
     private List<Chat> chats = new ArrayList<>();
 
@@ -48,13 +40,17 @@ public class Room {
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
-    // TODO: last_chat_time 저장해야할듯
-//    @Column(name = "last_chat_time")
-//    @UpdateTimestamp
-//    private LocalDateTime lastChatTime;
-
     @Builder
     public Room(Long giveawayId) {
         this.giveawayId = giveawayId;
+    }
+
+    public void addUserChatRoom(Long userId) {
+        UserChatRoom userChatRoom = UserChatRoom.builder()
+                .userId(userId)
+                .room(this)
+                .build();
+
+        userChatRooms.add(userChatRoom);
     }
 }

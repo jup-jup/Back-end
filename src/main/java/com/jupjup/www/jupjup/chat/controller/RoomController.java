@@ -70,18 +70,4 @@ public class RoomController {
                 .body(list);
     }
 
-    @Operation(summary = "get rooms", description = "채팅방 정보 API. 참여 중인 채팅방 디테일을 가져옵니다.")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Success",
-                    content = @Content(schema = @Schema(implementation = RoomResponse.class))),
-            @ApiResponse(responseCode = "401", description = "잘못된 유저입니다.")
-    })
-    @GetMapping("/{id}")
-    public ResponseEntity<RoomResponse> getRoom(@PathVariable Long id) {
-
-        return ResponseEntity
-                .ok()
-                .build();
-    }
-
 }

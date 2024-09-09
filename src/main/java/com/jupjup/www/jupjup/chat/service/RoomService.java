@@ -50,8 +50,6 @@ public class RoomService {
             return List.of(RoomListResponse.builder().build());
         }
 
-        // TODO: room 별로 마지막 메시지 정보도 가져와서 정렬
-
         return joinedRooms.stream()
                 .map(RoomListResponse::toDTO)
                 .toList();
