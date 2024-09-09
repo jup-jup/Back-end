@@ -1,15 +1,14 @@
 package com.jupjup.www.jupjup.giveaway.service;
 
-import com.jupjup.www.jupjup.user.entity.User;
-import com.jupjup.www.jupjup.giveaway.entity.Giveaway;
-import com.jupjup.www.jupjup.giveaway.repository.GiveawayRepository;
-import com.jupjup.www.jupjup.user.repository.UserRepository;
-import com.jupjup.www.jupjup.image.entity.Image;
-import com.jupjup.www.jupjup.image.repository.ImageRepository;
 import com.jupjup.www.jupjup.giveaway.dto.CreateGiveawayRequest;
 import com.jupjup.www.jupjup.giveaway.dto.GiveawayDetailResponse;
 import com.jupjup.www.jupjup.giveaway.dto.GiveawayListResponse;
 import com.jupjup.www.jupjup.giveaway.dto.UpdateGiveawayRequest;
+import com.jupjup.www.jupjup.giveaway.entity.Giveaway;
+import com.jupjup.www.jupjup.giveaway.repository.GiveawayRepository;
+import com.jupjup.www.jupjup.image.entity.Image;
+import com.jupjup.www.jupjup.image.repository.ImageRepository;
+import com.jupjup.www.jupjup.user.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -49,15 +48,17 @@ public class GiveawayService {
                 .collect(Collectors.toList());
     }
 
-    public GiveawayDetailResponse findById(Long id) {
-        Giveaway giveaway = giveawayRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("잘못된 나눔 id"));
-
-        // TODO: 일단 예외처리는 했는데 탈퇴한 유저 같은 경우?
-        User giver = userRepository.findById(giveaway.getGiverId())
-                .orElseThrow(() -> new IllegalArgumentException("잘못된 유저 아이디"));
+    @Transactional
+    public GiveawayDetailResponse getDetail(Long id) {
+        Giveaway giveaway = findById(id);
+        giveaway.updateViewCnt();
 
         return GiveawayDetailResponse.toDTO(giveaway);
+    }
+
+    public Giveaway findById(Long id) {
+        return giveawayRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("잘못된 나눔 id"));
     }
 
     @Transactional

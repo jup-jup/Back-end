@@ -1,14 +1,15 @@
 package com.jupjup.www.jupjup.giveaway.entity;
 
-import com.jupjup.www.jupjup.user.entity.User;
 import com.jupjup.www.jupjup.chat.entity.Room;
 import com.jupjup.www.jupjup.giveaway.enums.GiveawayStatus;
 import com.jupjup.www.jupjup.image.entity.Image;
+import com.jupjup.www.jupjup.user.entity.User;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -69,11 +70,9 @@ public class Giveaway {
     @Column(name = "location")
     private String location;
 
-    // TODO: 댓글 수 -> 관련 채팅 수인가?
-
-    // TODO: 조회 수
+    @ColumnDefault("0")
     @Column(name = "view_count")
-    private Long viewCount;
+    private Long viewCount; // 조회수
 
     // 나눔 저장될 때마다 조회수 기본값 0으로 세팅
     @PrePersist
@@ -95,6 +94,10 @@ public class Giveaway {
         this.description = description;
         this.status = status;
         this.images = images;
+    }
+
+    public void updateViewCnt() {
+        this.viewCount++;
     }
 
 }

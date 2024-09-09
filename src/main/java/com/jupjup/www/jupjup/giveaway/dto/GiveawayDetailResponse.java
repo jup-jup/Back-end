@@ -40,9 +40,10 @@ public class GiveawayDetailResponse {
 
     private String location;
 
+    private Long viewCnt;
+
     // TODO: 여기부터는 후순위 작업 (추가 설계 필요)
-    private Integer chatCnt; // 코멘트 수?
-    private Integer viewCnt;
+    private Long chatCnt; // 코멘트 수?
 
     public static GiveawayDetailResponse toDTO(Giveaway giveaway) {
         return GiveawayDetailResponse.builder()
@@ -57,6 +58,7 @@ public class GiveawayDetailResponse {
                         .map(Image::getId)
                         .toList())
                 .location(giveaway.getLocation())
+                .viewCnt(giveaway.getViewCount())
                 .build();
     }
 

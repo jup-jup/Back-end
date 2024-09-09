@@ -31,10 +31,11 @@ public class GiveawayListResponse {
 
     private String location;
 
+    private Long viewCnt; // 조회수
+
     // TODO: 여기부터는 후순위 작업 (추가 설계 필요)
     // boram : chatCnt 이거 주석안하면 DTO 생성 시 null 값이 들어간 채 리스트가 내려질까요 ?/
 //    private Long chatCnt; // 코멘트 수?
-    private Long viewCnt; // 조회수
 
     public GiveawayListResponse(Long id) {
         this.giveawayId = id;
@@ -52,6 +53,7 @@ public class GiveawayListResponse {
                         .map(Image::getId)
                         .toList())
                 .location(giveaway.getLocation())
+                .viewCnt(giveaway.getViewCount())
                 .build();
     }
 
