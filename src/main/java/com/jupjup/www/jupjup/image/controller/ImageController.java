@@ -35,7 +35,6 @@ import java.util.List;
 public class ImageController {
 
     private final ImageService imageService;
-
     private static final String BEARER_PREFIX = "Bearer ";
 
     @Operation(summary = "upload image", description = "이미지 업로드 API")

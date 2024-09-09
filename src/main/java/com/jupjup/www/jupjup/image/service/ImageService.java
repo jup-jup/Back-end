@@ -8,6 +8,7 @@ import com.jupjup.www.jupjup.image.repository.ImageRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Profile;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
@@ -24,12 +25,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
+@Profile("s3")
 @Service
 public class ImageService {
 
     // lombok.RequiredArgsConstructor 는 Qualifier 인식 불가
     // 프로젝트 최상위에 lombok.config 생성 후 gradle cache 삭제
-    @Qualifier(value = "s3") // TODO: local, s3 application.yml 따라서 설정 바꾸는 방법 알아볼 것
+    @Qualifier("s3")
     private final ImageUploadService imageUploadService;
     private final ImageRepository imageRepository;
 

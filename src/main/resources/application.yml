@@ -50,6 +50,7 @@ spring:
             token-uri: https://kauth.kakao.com/oauth/token
             user-info-uri: https://kapi.kakao.com/v2/user/me
             user-name-attribute: id
+
   servlet:
     multipart:
       maxFileSize: 10MB
@@ -63,7 +64,7 @@ springdoc:
   swagger-ui:
     url: '/docs/api.yaml'
   paths-to-match:
-  - /api/v1/**
+    - /api/v1/**
 
 server:
   servlet:
@@ -79,8 +80,8 @@ logging:
         messaging:
           simp:
             stomp: DEBUG
-        web:
-          socket: DEBUG
+      web:
+        socket: DEBUG
 
 cloud:
   aws:
@@ -89,3 +90,11 @@ cloud:
       secretKey: "${AWS_SECRET_KEY}"  # 환경 변수 또는 직접 키를 입력
     region:
       static: "ap-northeast-2"  # 예: 서울 리전
+
+---
+spring:
+  profiles:
+    active: s3  # s3 프로파일 활성화
+
+upload:
+  service: s3
