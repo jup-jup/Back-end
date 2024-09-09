@@ -11,9 +11,4 @@ public class CreateRoomRequest {
     @JsonProperty("giveaway_id")
     private Long giveawayId;
 
-    @JsonProperty("giver_id")
-    private Long giverId; // 나눔 유저 아이디
-
-
-
 }

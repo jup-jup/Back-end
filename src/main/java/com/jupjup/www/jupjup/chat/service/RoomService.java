@@ -5,6 +5,8 @@ import com.jupjup.www.jupjup.chat.dto.room.CreateRoomResponse;
 import com.jupjup.www.jupjup.chat.dto.room.RoomListResponse;
 import com.jupjup.www.jupjup.chat.entity.Room;
 import com.jupjup.www.jupjup.chat.repository.RoomRepository;
+import com.jupjup.www.jupjup.giveaway.entity.Giveaway;
+import com.jupjup.www.jupjup.giveaway.repository.GiveawayRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,6 +18,7 @@ import java.util.List;
 public class RoomService {
 
     private final RoomRepository roomRepository;
+    private final GiveawayRepository giveawayRepository;
 
     @Transactional
     public CreateRoomResponse create(CreateRoomRequest request, Long userId) {
@@ -24,12 +27,16 @@ public class RoomService {
         if (!rooms.isEmpty()) { // 이미 채팅방 존재하면 해당 채팅방 정보로 리턴
             return CreateRoomResponse.toDTO(rooms.get(0));
         }
+
+        Giveaway giveaway = giveawayRepository.findById(request.getGiveawayId())
+                .orElseThrow(() -> new IllegalArgumentException("잘못된 나눔 id"));
+
         Room room = Room.builder()
                 .giveawayId(request.getGiveawayId())
                 .build();
 
         room.addUserChatRoom(userId);
-        room.addUserChatRoom(request.getGiverId());
+        room.addUserChatRoom(giveaway.getGiverId());
 
         roomRepository.save(room);
 
