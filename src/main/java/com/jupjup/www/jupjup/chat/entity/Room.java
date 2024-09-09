@@ -22,7 +22,6 @@ public class Room {
     @Column(name = "id", updatable = false)
     private Long id;
 
-    // TODO: N+1 문제 관련해서 고민해볼것
     @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<UserChatRoom> userChatRooms = new ArrayList<>();
 

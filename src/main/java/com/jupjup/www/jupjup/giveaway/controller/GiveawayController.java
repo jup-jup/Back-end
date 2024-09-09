@@ -96,7 +96,7 @@ public class GiveawayController {
     public ResponseEntity<?> getGiveaway(@PathVariable Long id) {
 
         try {
-            GiveawayDetailResponse detail = giveawayService.findById(id);
+            GiveawayDetailResponse detail = giveawayService.getDetail(id);
             return ResponseEntity
                     .ok()
                     .body(detail);

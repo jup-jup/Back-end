@@ -22,8 +22,7 @@ public class CreateRoomResponse {
 
     public static CreateRoomResponse toDTO(Room room) {
         List<Long> userIds = room.getUserChatRooms().stream()
-                .map(UserChatRoom::getUser)
-                .map(User::getId)
+                .map(UserChatRoom::getUserId)
                 .toList();
 
         return CreateRoomResponse.builder()
