@@ -1,6 +1,7 @@
 package com.jupjup.www.jupjup.user.controller;
 
 import com.jupjup.www.jupjup.config.JWTUtil;
+import com.jupjup.www.jupjup.giveaway.dto.GiveawayDetailResponse;
 import com.jupjup.www.jupjup.giveaway.dto.GiveawayListResponse;
 import com.jupjup.www.jupjup.user.enums.MyPageType;
 import com.jupjup.www.jupjup.user.service.MyPageService;
@@ -46,7 +47,7 @@ public class MyPageController {
         @Operation(summary = "마이페이지 디테일")
         @GetMapping("/{id}/detail")
         public ResponseEntity<?> detail (@PathVariable Long id){
-            GiveawayListResponse giverList = myPageService.getDetail(id);
+            GiveawayDetailResponse giverList = myPageService.getDetail(id);
             return ResponseEntity.ok(giverList);
         }
 

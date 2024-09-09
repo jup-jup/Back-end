@@ -1,5 +1,6 @@
 package com.jupjup.www.jupjup.user.service;
 
+import com.jupjup.www.jupjup.giveaway.dto.GiveawayDetailResponse;
 import com.jupjup.www.jupjup.giveaway.dto.GiveawayListResponse;
 import com.jupjup.www.jupjup.giveaway.entity.Giveaway;
 import com.jupjup.www.jupjup.giveaway.enums.GiveawayStatus;
@@ -37,11 +38,11 @@ public class MyPageService {
                 .collect(Collectors.toList());
     }
 
-    public GiveawayListResponse getDetail(Long id) {
+    public GiveawayDetailResponse getDetail(Long id) {
         Giveaway giveaway = giveawayRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("상세항목을 찾을 수 없어요! "));
 
-        return GiveawayListResponse.toDTO(giveaway);
+        return GiveawayDetailResponse.toDTO(giveaway);
     }
 
 }
