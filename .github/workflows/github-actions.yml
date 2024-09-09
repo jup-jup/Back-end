@@ -40,8 +40,8 @@ jobs:
           context: .
           push: true
           tags: |
-            back-end-app:latest
-            back-end-app:${{ github.sha }}
+            boram0415/back-end-app:latest
+            boram0415/back-end-app:${{ github.sha }}
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache,mode=max
 
