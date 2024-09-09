@@ -1,5 +1,8 @@
 name: CI/CD Pipeline
 
+#  •	push 이벤트는 main 브랜치에 푸시가 될 때 CI/CD 파이프라인을 트리거
+#  •	pull_request 이벤트는 main 브랜치에 대한 풀 리퀘스트가 있을 때 트리거
+#  •	schedule 은 매 5일마다 파이프라인이 자동으로 실행되도록 설정.
 on:
   push:
     branches:
@@ -8,8 +11,11 @@ on:
     branches:
       - main
   schedule:
-    - cron: '0 0 */5 * *'  # 5일마다 실행
+    - cron: '0 0 */5 * *'
 
+
+#  •	리포지토리 코드를 체크아웃하고 Docker 이미지를 빌드한 다음, Docker Hub에 푸시.
+#  •	캐시를 사용하여 빌드 속도를 최적화하고, 캐시를 관리하는 부분이 포함되어 있어.
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -53,7 +59,8 @@ jobs:
           else
             echo "Warning: Cache not found. Skipping cache move."
           fi
-
+#  •	EC2 서버로 SSH 접속 후 Docker Compose 명령어를 사용하여 새로운 이미지를 배포.
+#  •	docker-compose pull을 사용하여 새 이미지를 가져오고, docker-compose up -d로 컨테이너를 백그라운드에서 실행.
   deploy:
     runs-on: ubuntu-latest
     needs: build
@@ -66,24 +73,8 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             sudo su -c "cd /root/Back-end && docker-compose pull && docker-compose --env-file .env up -d"
-            
-            # 헬스 체크
-            MAX_RETRIES=5
-            RETRY_INTERVAL=10
-            for i in $(seq 1 $MAX_RETRIES); do
-              if curl -f http://localhost:8080/health; then 
-                echo 'Application is healthy'
-                exit 0
-              fi
-              echo "Health check failed. Retrying in $RETRY_INTERVAL seconds..."
-              sleep $RETRY_INTERVAL
-            done
-            
-            # 롤백
-            echo "Health check failed after $MAX_RETRIES attempts. Rolling back..."
-            sudo su -c "docker-compose down && docker-compose pull back-end-app:$(docker inspect --format='{{index .Config.Labels \"org.opencontainers.image.revision\"}}' back-end-app:latest) && docker-compose --env-file .env up -d"
-            exit 1
 
+#  배포 후 서버에서 사용하지 않는 Docker 컨테이너, 볼륨, 이미지, 네트워크를 정리하여 서버의 리소스를 관리.
   cleanup:
     runs-on: ubuntu-latest
     needs: deploy
