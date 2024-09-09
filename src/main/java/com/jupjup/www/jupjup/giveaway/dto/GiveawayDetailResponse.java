@@ -40,10 +40,9 @@ public class GiveawayDetailResponse {
 
     private String location;
 
-    private Long viewCnt;
+    private Long viewCnt; // 조회수
 
-    // TODO: 여기부터는 후순위 작업 (추가 설계 필요)
-    private Long chatCnt; // 코멘트 수?
+    private int chatCnt; // 채팅방 수
 
     public static GiveawayDetailResponse toDTO(Giveaway giveaway) {
         return GiveawayDetailResponse.builder()
@@ -59,6 +58,7 @@ public class GiveawayDetailResponse {
                         .toList())
                 .location(giveaway.getLocation())
                 .viewCnt(giveaway.getViewCount())
+                .chatCnt(giveaway.getChatRooms().size())
                 .build();
     }
 

@@ -41,8 +41,8 @@ public class GiveawayService {
     }
 
     public List<GiveawayListResponse> findAll(Pageable pageable) {
-        // 유저 정보 함께 리턴
-        Page<Giveaway> list = giveawayRepository.findAllGiveawaysWithUsers(pageable);
+        // 유저 정보, 채팅방 수 함께 리턴
+        Page<Giveaway> list = giveawayRepository.findAllGiveawaysWithUsersAndRooms(pageable);
         return list.stream()
                 .map(GiveawayListResponse::toDTO)
                 .collect(Collectors.toList());
