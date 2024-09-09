@@ -29,7 +29,7 @@ public class RoomService {
                 .build();
 
         room.addUserChatRoom(userId);
-        room.addUserChatRoom(request.getGiveawayId());
+        room.addUserChatRoom(request.getGiverId());
 
         roomRepository.save(room);
 
