@@ -38,6 +38,8 @@ public class JWTFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
 
+        log.info("request URI = {}", request.getRequestURI());
+
         // 1.토큰 유효성 체크 불필요한 요청일 경우
         for (String i : list) {
             if (request.getRequestURI().contains(i)) {

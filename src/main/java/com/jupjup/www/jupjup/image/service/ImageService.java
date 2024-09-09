@@ -29,7 +29,7 @@ public class ImageService {
 
     // lombok.RequiredArgsConstructor 는 Qualifier 인식 불가
     // 프로젝트 최상위에 lombok.config 생성 후 gradle cache 삭제
-    @Qualifier(value = "local") // TODO: local, s3 application.yml 따라서 설정 바꾸는 방법 알아볼 것
+    @Qualifier(value = "s3") // TODO: local, s3 application.yml 따라서 설정 바꾸는 방법 알아볼 것
     private final ImageUploadService imageUploadService;
     private final ImageRepository imageRepository;
 
@@ -38,7 +38,6 @@ public class ImageService {
         List<Image> images = new ArrayList<>();
         for (MultipartFile file : files) {
             // TODO: 일반 파일인지 이미지인지 확인하는 로직이 필요할까..? 아니면 모든 "파일" 형식에 대한걸로 개발해야할까..?
-
             String fileName = file.getOriginalFilename();
             String uploadPath = imageUploadService.upload(file, userId);
 

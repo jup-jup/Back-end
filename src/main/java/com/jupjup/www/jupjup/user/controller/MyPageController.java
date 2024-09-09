@@ -29,6 +29,7 @@ public class MyPageController {
     public ResponseEntity<?> list(
             @PageableDefault(size = 30, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable,
             @PathVariable String type, @RequestHeader("Authorization") String accessToken) {
+
         Long userId = JWTUtil.parseUserIdFromToken(accessToken);
         List<GiveawayListResponse> giverList = myPageService.findAllGiverList(pageable, userId);
         List<GiveawayListResponse> receiverList = myPageService.findAllReceiverList(pageable, userId);

@@ -47,10 +47,10 @@ public class ImageController {
             @ApiResponse(responseCode = "500", description = "파일 업로드 에러")
     })
     @PostMapping("")
-    public ResponseEntity<?> upload(@RequestBody List<MultipartFile> files, @Valid @RequestHeader("Authorization") String header) {
+    public ResponseEntity<?> upload(@RequestParam("files") List<MultipartFile> files, @Valid @RequestHeader("Authorization") String accessToken) {
         // TODO: authorization header 에서 userId 뽑아오는 방법이 이게 최선일까..
-        String token = header.substring(BEARER_PREFIX.length());
-        Long userId = JWTUtil.getUserIdFromAccessToken(token);
+        // boram : JWTUtil 에 별도로 빼서 중복코드 없애봤어요 !
+        Long userId = JWTUtil.parseUserIdFromToken(accessToken);
 
         try {
             List<UploadImageResponse> images = imageService.save(files, userId);
