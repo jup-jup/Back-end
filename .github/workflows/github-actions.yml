@@ -43,7 +43,7 @@ jobs:
             back-end-app:latest
             back-end-app:${{ github.sha }}
           cache-from: type=local,src=/tmp/.buildx-cache
-          cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+          cache-to: type=local,dest=/tmp/.buildx-cache,mode=max
 
       - name: Move cache
         run: |
@@ -58,7 +58,7 @@ jobs:
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.EC2_HOST }}
-          username: ubuntu  # 'ubuntu' 사용자로 로그인
+          username: ubuntu
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             sudo su -c "cd /root/Back-end && docker-compose pull && docker-compose --env-file .env up -d"
@@ -67,7 +67,7 @@ jobs:
             MAX_RETRIES=5
             RETRY_INTERVAL=10
             for i in $(seq 1 $MAX_RETRIES); do
-              if curl -f http://localhost:8080/health; then
+              if curl -f http://localhost:8080/health; then 
                 echo 'Application is healthy'
                 exit 0
               fi
@@ -77,7 +77,7 @@ jobs:
             
             # 롤백
             echo "Health check failed after $MAX_RETRIES attempts. Rolling back..."
-            sudo su -c "docker-compose down && docker-compose pull back-end-app:$(docker inspect --format='{{index .Config.Labels "org.opencontainers.image.revision"}}' back-end-app:latest) && docker-compose --env-file .env up -d"
+            sudo su -c "docker-compose down && docker-compose pull back-end-app:$(docker inspect --format='{{index .Config.Labels \"org.opencontainers.image.revision\"}}' back-end-app:latest) && docker-compose --env-file .env up -d"
             exit 1
 
   cleanup:
@@ -91,13 +91,8 @@ jobs:
           username: ubuntu  # 'ubuntu' 사용자로 로그인
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            # 중지된 컨테이너 제거
             sudo docker container prune -f
-            # 사용하지 않는 볼륨 제거
             sudo docker volume prune -f
-            # 오래된 이미지 제거
             sudo docker image prune -af --filter "until=120h"
-            # 사용하지 않는 네트워크 제거
             sudo docker network prune -f
-            # Docker 시스템 전체 정리 (빌드 캐시 포함)
             sudo docker system prune -af
