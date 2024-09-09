@@ -1,6 +1,5 @@
 //package com.jupjup.www.jupjup.chat.service;
 //
-//import com.jupjup.www.jupjup.chat.dto.room.CreateRoomResponse;
 //import com.jupjup.www.jupjup.chat.entity.Room;
 //import com.jupjup.www.jupjup.chat.repository.RoomRepository;
 //import com.jupjup.www.jupjup.giveaway.entity.Giveaway;
@@ -28,6 +27,7 @@
 //    @Autowired
 //    private final GiveawayRepository giveawayRepository;
 //
+//    @Autowired
 //    public RoomServiceTest(RoomRepository roomRepository, UserRepository userRepository, GiveawayRepository giveawayRepository) {
 //        this.roomRepository = roomRepository;
 //        this.userRepository = userRepository;

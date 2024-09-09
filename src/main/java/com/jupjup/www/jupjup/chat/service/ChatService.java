@@ -4,6 +4,7 @@ import com.jupjup.www.jupjup.chat.dto.chat.ChatDTO;
 import com.jupjup.www.jupjup.chat.entity.Chat;
 import com.jupjup.www.jupjup.chat.repository.ChatRepository;
 import com.jupjup.www.jupjup.chat.repository.RoomRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -18,8 +19,6 @@ public class ChatService {
     private final RoomRepository roomRepository;
 
     public Chat add(Long roomId, String content, Long userId) {
-        // TODO: 해당 채팅방 마지막 메시지 업데이트
-
         Chat chat = Chat.builder()
                 .roomId(roomId)
                 .userId(userId)

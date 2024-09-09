@@ -1,5 +1,6 @@
 package com.jupjup.www.jupjup.chat.repository.impl;
 
+import com.jupjup.www.jupjup.chat.entity.QChat;
 import com.jupjup.www.jupjup.chat.entity.QRoom;
 import com.jupjup.www.jupjup.chat.entity.QUserChatRoom;
 import com.jupjup.www.jupjup.chat.entity.Room;
@@ -38,11 +39,13 @@ public class RoomRepositoryCustomImpl implements RoomRepositoryCustom {
     public List<Room> findJoinedRoomsByUserId(Long userId) {
         QRoom qRoom = QRoom.room;
         QUserChatRoom qUserChatRoom = QUserChatRoom.userChatRoom;
+        QChat qChat = QChat.chat;
 
         return queryFactory
                 .select(qRoom)
                 .from(qRoom)
                 .join(qRoom.userChatRooms, qUserChatRoom)
+                .leftJoin(qRoom.chats, qChat).fetchJoin()
                 .where(qUserChatRoom.userId.eq(userId))
                 .fetch();
     }
