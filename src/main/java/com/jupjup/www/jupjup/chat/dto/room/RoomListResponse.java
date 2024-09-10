@@ -5,6 +5,8 @@ import com.jupjup.www.jupjup.chat.dto.chat.ChatDTO;
 import com.jupjup.www.jupjup.chat.entity.Chat;
 import com.jupjup.www.jupjup.chat.entity.Room;
 import com.jupjup.www.jupjup.chat.entity.UserChatRoom;
+import com.jupjup.www.jupjup.user.dto.user.UserDTO;
+import com.jupjup.www.jupjup.user.entity.User;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -21,8 +23,8 @@ public class RoomListResponse {
     @JsonProperty("id")
     private Long id; // room_id
 
-    @JsonProperty("joined_user_ids")
-    private List<Long> joinedUserIds; // 참여 중인 user_id. TODO: User 정보가 필요하게 될 수도 있음
+    @JsonProperty("joined_users")
+    private List<UserDTO> joinedUsers; // 참여중인 유저 정보
 
     @JsonProperty("giveaway_id")
     private Long giveawayId; // 관련 나눔 품목 id
@@ -31,8 +33,9 @@ public class RoomListResponse {
     private ChatDTO lastChat; // 마지막 메시지
 
     public static RoomListResponse toDTO(Room room) {
-        List<Long> joinedUserIds = room.getUserChatRooms().stream()
-                .map(UserChatRoom::getUserId)
+        List<UserDTO> joinedUsers = room.getUserChatRooms().stream()
+                .map(UserChatRoom::getUser)
+                .map(UserDTO::of)
                 .toList();
 
         Chat lastChat = Chat.builder().build();
@@ -44,7 +47,7 @@ public class RoomListResponse {
 
         return RoomListResponse.builder()
                 .id(room.getId())
-                .joinedUserIds(joinedUserIds)
+                .joinedUsers(joinedUsers)
                 .giveawayId(room.getGiveawayId())
                 .lastChat(ChatDTO.of(lastChat))
                 .build();

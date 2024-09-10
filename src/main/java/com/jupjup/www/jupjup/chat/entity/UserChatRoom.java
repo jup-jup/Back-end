@@ -35,10 +35,6 @@ public class UserChatRoom {
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
-    // TODO: last read chat id 저장 필요
-//    @Column(name = "last_read_chat_id")
-//    private Long lastReadChatId;
-
     @Builder
     public UserChatRoom(Long userId, Room room) {
         this.userId = userId;
