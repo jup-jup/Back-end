@@ -23,7 +23,6 @@ import java.util.stream.Collectors;
 public class GiveawayService {
 
     private final GiveawayRepository giveawayRepository;
-    private final UserRepository userRepository;
     private final ImageRepository imageRepository;
 
     public Giveaway save(CreateGiveawayRequest request, Long userId) {
