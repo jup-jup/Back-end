@@ -53,4 +53,9 @@ public class Image {
         this.fileName = fileName;
         this.userId = userId;
     }
+
+    public void mappingImage(Giveaway giveaway) {
+        this.giveaway = giveaway;
+    }
+
 }

@@ -9,6 +9,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.ColumnDefault;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -64,7 +65,8 @@ public class Giveaway {
     // cascade
     // orphanRemoval: 부모와 자식간의 연관관계를 제거하면 자식 엔티티가 고아가 되어 DB 에서 삭제됨
     @OneToMany(mappedBy = "giveaway", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Image> images;
+    @BatchSize(size = 10)
+    private List<Image> images = new ArrayList<>();
 
     @Column(name = "location")
     private String location;
@@ -86,6 +88,10 @@ public class Giveaway {
         this.giverId = giverId;
         this.images = images;
         this.location = location;
+
+        for (Image image : images) {
+            updateImage(image);
+        }
     }
 
     public void update(String title, String description, GiveawayStatus status, List<Image> images) {
@@ -93,6 +99,14 @@ public class Giveaway {
         this.description = description;
         this.status = status;
         this.images = images;
+
+        for (Image image : images) {
+            updateImage(image);
+        }
+    }
+
+    public void updateImage(Image image) {
+        image.mappingImage(this);
     }
 
     public void updateViewCnt() {

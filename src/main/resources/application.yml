@@ -56,6 +56,9 @@ spring:
       maxFileSize: 10MB
       maxRequestSize: 50MB
 
+  jackson:
+    property-naming-strategy: SNAKE_CASE
+
 jwt:
   secret: ${JWT_SECRET}
   refresh-secret: ${JWT_REFRESH_SECRET}

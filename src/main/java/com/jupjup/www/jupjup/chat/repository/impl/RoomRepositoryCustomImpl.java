@@ -5,6 +5,7 @@ import com.jupjup.www.jupjup.chat.entity.QRoom;
 import com.jupjup.www.jupjup.chat.entity.QUserChatRoom;
 import com.jupjup.www.jupjup.chat.entity.Room;
 import com.jupjup.www.jupjup.chat.repository.RoomRepositoryCustom;
+import com.jupjup.www.jupjup.user.entity.QUser;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -40,11 +41,13 @@ public class RoomRepositoryCustomImpl implements RoomRepositoryCustom {
         QRoom qRoom = QRoom.room;
         QUserChatRoom qUserChatRoom = QUserChatRoom.userChatRoom;
         QChat qChat = QChat.chat;
+        QUser qUser = QUser.user;
 
         return queryFactory
                 .select(qRoom)
                 .from(qRoom)
                 .join(qRoom.userChatRooms, qUserChatRoom)
+                .join(qUserChatRoom.user, qUser)
                 .leftJoin(qRoom.chats, qChat).fetchJoin()
                 .where(qUserChatRoom.userId.eq(userId))
                 .fetch();
