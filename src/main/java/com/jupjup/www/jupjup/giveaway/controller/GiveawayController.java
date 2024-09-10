@@ -3,7 +3,6 @@ package com.jupjup.www.jupjup.giveaway.controller;
 import com.jupjup.www.jupjup.config.JWTUtil;
 import com.jupjup.www.jupjup.giveaway.dto.*;
 import com.jupjup.www.jupjup.giveaway.entity.Giveaway;
-import com.jupjup.www.jupjup.giveaway.enums.GiveawayStatus;
 import com.jupjup.www.jupjup.giveaway.service.GiveawayService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.headers.Header;
@@ -14,7 +13,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -132,7 +130,7 @@ public class GiveawayController {
         }
     }
 
-    @Operation(summary = "update giveaway", description = "나눔 상태 업데이트를 위한 API")
+    @Operation(summary = "update giveaway status", description = "나눔 상태 업데이트를 위한 API")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "No Content"),
             @ApiResponse(responseCode = "400", description = "잘못된 나눔 id / 잘못된 상태 변경 요청입니다.")
