@@ -44,9 +44,6 @@ public class Giveaway {
     @OneToMany(mappedBy = "giveaway")
     private List<Room> chatRooms = new ArrayList<>();
 
-    private LocalDateTime receivedAt; // 받은 날짜
-    private String giverName; // 나눔한 닉네임
-
     @CreatedDate
     @Column(name = "created_at")
     private LocalDateTime createdAt;
@@ -61,6 +58,16 @@ public class Giveaway {
 
     @Column(name = "giver_id")
     private Long giverId;
+
+    @JoinColumn(name = "receiver_id", insertable = false, updatable = false)
+    @ManyToOne(targetEntity = User.class, fetch = FetchType.LAZY)
+    private User receiver;
+
+    @Column(name = "receiver_id")
+    private Long receiverId;
+
+    @Column(name = "received_at")
+    private LocalDateTime receivedAt;
 
     // cascade
     // orphanRemoval: 부모와 자식간의 연관관계를 제거하면 자식 엔티티가 고아가 되어 DB 에서 삭제됨
@@ -94,15 +101,51 @@ public class Giveaway {
         }
     }
 
-    public void update(String title, String description, GiveawayStatus status, List<Image> images) {
+    public void update(String title, String description, List<Image> images) {
         this.title = title;
         this.description = description;
-        this.status = status;
         this.images = images;
 
         for (Image image : images) {
             updateImage(image);
         }
+    }
+
+    public void updateStatus(GiveawayStatus status, Long receiverId) {
+        if (receiverId.equals(this.getGiverId())) {
+            return;
+        }
+
+        switch (status) {
+            case PENDING -> {
+                this.receiverId = null;
+            }
+            case RESERVED -> {
+                this.receiverId = receiverId;
+            }
+            case COMPLETED -> {
+                this.receiverId = receiverId;
+                this.receivedAt = LocalDateTime.now();
+            }
+        }
+
+        this.status = status;
+
+    }
+
+    public boolean validateUpdateStatus(GiveawayStatus status, Long userId) {
+        if (status.equals(GiveawayStatus.COMPLETED) && this.status.equals(GiveawayStatus.PENDING)) {
+            return false;
+        }
+
+        // 나눔 유저는 모든 상태 변경 가능
+        if (userId.equals(this.getGiverId())) {
+            return true;
+        }
+
+        // 대기, 예약 상태는 나눔 유저만 가능
+        // 완료 상태라면, 나눔 유저나 예약자인 경우 업데이트 가능
+        return status.equals(GiveawayStatus.COMPLETED) && userId.equals(this.getReceiverId());
     }
 
     public void updateImage(Image image) {
