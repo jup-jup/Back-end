@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 @Setter
 public class GetImageResponse {
 
+    private Long id;
     private String path;
     private String fileName;
     private Long userId;
@@ -19,6 +20,7 @@ public class GetImageResponse {
 
     public static GetImageResponse toDTO(Image image) {
         return GetImageResponse.builder()
+                .id(image.getId())
                 .path(image.getPath())
                 .fileName(image.getFileName())
                 .userId(image.getUserId())
