@@ -43,11 +43,18 @@ public class RoomController {
         String token = header.substring(BEARER_PREFIX.length());
         Long userId = JWTUtil.getUserIdFromAccessToken(token);
 
-        CreateRoomResponse roomDTO = roomService.create(request, userId);
+        try {
+            CreateRoomResponse roomDTO = roomService.create(request, userId);
 
-        return ResponseEntity
-                .ok()
-                .body(roomDTO);
+            return ResponseEntity
+                    .ok()
+                    .body(roomDTO);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(e.getMessage());
+        }
+
     }
 
     @Operation(summary = "get rooms", description = "채팅방 목록 API. 해당 유저의 채팅 목록 전체를 가져옵니다.")
