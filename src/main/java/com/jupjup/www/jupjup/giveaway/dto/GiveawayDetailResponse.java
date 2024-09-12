@@ -2,6 +2,7 @@ package com.jupjup.www.jupjup.giveaway.dto;
 
 import com.jupjup.www.jupjup.giveaway.entity.Giveaway;
 import com.jupjup.www.jupjup.giveaway.enums.GiveawayStatus;
+import com.jupjup.www.jupjup.image.dto.GetImageResponse;
 import com.jupjup.www.jupjup.image.entity.Image;
 import com.jupjup.www.jupjup.user.dto.user.UserDTO;
 import lombok.Builder;
@@ -31,7 +32,7 @@ public class GiveawayDetailResponse {
 
     private LocalDateTime createdAt; // 등록 날짜
 
-    private List<Long> imageIds; // 이미지 아이디 리스트
+    private List<GetImageResponse> images;
 
     private String location;
 
@@ -47,8 +48,8 @@ public class GiveawayDetailResponse {
                 .status(giveaway.getStatus())
                 .giver(UserDTO.of(giveaway.getGiver()))
                 .createdAt(giveaway.getCreatedAt())
-                .imageIds(giveaway.getImages().stream()
-                        .map(Image::getId)
+                .images(giveaway.getImages().stream()
+                        .map(GetImageResponse::toDTO)
                         .toList())
                 .location(giveaway.getLocation())
                 .viewCnt(giveaway.getViewCount())
