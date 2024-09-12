@@ -2,7 +2,9 @@ package com.jupjup.www.jupjup.giveaway.dto;
 
 import com.jupjup.www.jupjup.giveaway.entity.Giveaway;
 import com.jupjup.www.jupjup.giveaway.enums.GiveawayStatus;
+import com.jupjup.www.jupjup.image.dto.GetImageResponse;
 import com.jupjup.www.jupjup.image.entity.Image;
+import com.jupjup.www.jupjup.user.dto.user.UserDTO;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -26,17 +28,11 @@ public class GiveawayDetailResponse {
 
     private GiveawayStatus status; // 상태
 
-    private Long giverId; // 글쓴이 id
-
-    private String giverName; // 글쓴이 이름
-
-    private String giverProfile; // TODO: 프로필이 무엇인지?
-
-    private boolean isWishlist; // 찜 목록 (관심 목록)
+    private UserDTO giver;
 
     private LocalDateTime createdAt; // 등록 날짜
 
-    private List<Long> imageIds; // 이미지 아이디 리스트
+    private List<GetImageResponse> images;
 
     private String location;
 
@@ -50,11 +46,10 @@ public class GiveawayDetailResponse {
                 .title(giveaway.getTitle())
                 .description(giveaway.getDescription())
                 .status(giveaway.getStatus())
-                .giverId(giveaway.getGiverId())
-//                .giverProfile()
+                .giver(UserDTO.of(giveaway.getGiver()))
                 .createdAt(giveaway.getCreatedAt())
-                .imageIds(giveaway.getImages().stream()
-                        .map(Image::getId)
+                .images(giveaway.getImages().stream()
+                        .map(GetImageResponse::toDTO)
                         .toList())
                 .location(giveaway.getLocation())
                 .viewCnt(giveaway.getViewCount())
