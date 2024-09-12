@@ -51,7 +51,7 @@ public class RoomService {
     public List<RoomListResponse> list(Long userId) {
         List<Room> joinedRooms = roomRepository.findJoinedRoomsByUserId(userId);
         if (joinedRooms.isEmpty()) {
-            return List.of(RoomListResponse.builder().build());
+            return null;
         }
 
         return joinedRooms.stream()
