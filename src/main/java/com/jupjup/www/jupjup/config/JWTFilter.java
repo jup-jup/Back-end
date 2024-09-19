@@ -28,11 +28,12 @@ public class JWTFilter extends OncePerRequestFilter {
             "/api/v1/user",
             "/swagger",
             "/api-docs",
+            "/health",
+            "/ws",
             "/reissue",
             "/api/v1/giveaways/list",
-            "/api/v1/giveaways/detail/",
-            "/health",
-            "/ws"
+            "/api/v1/giveaways/detail",
+            "/api/v1/giveaways/search"
     );
 
     @Override
