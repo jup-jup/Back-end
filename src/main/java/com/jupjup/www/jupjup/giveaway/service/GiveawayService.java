@@ -2,7 +2,6 @@ package com.jupjup.www.jupjup.giveaway.service;
 
 import com.jupjup.www.jupjup.giveaway.dto.*;
 import com.jupjup.www.jupjup.giveaway.entity.Giveaway;
-import com.jupjup.www.jupjup.giveaway.enums.GiveawayStatus;
 import com.jupjup.www.jupjup.giveaway.repository.GiveawayRepository;
 import com.jupjup.www.jupjup.image.entity.Image;
 import com.jupjup.www.jupjup.image.repository.ImageRepository;
@@ -111,6 +110,14 @@ public class GiveawayService {
             throw new IllegalArgumentException("잘못된 유저 요청입니다.");
         }
         return giveaway;
+    }
+
+    public List<GiveawayListResponse> searchAllByKeyword(String keyword, Pageable pageable) {
+        // 유저 정보, 채팅방 수 함께 리턴
+        Page<Giveaway> list = giveawayRepository.findAllByKeywordWithUsersAndRooms(keyword + "*", pageable);
+        return list.stream()
+                .map(GiveawayListResponse::toDTO)
+                .collect(Collectors.toList());
     }
 
 }

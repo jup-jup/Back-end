@@ -52,6 +52,9 @@ services:
       - mysql_data:/var/lib/mysql
     networks:
       - app-network
+    command:
+      - "mysqld"
+      - "--innodb_ft_min_token_size=2"
 
 volumes:
   mysql_data:

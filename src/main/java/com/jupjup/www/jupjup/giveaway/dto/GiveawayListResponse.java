@@ -22,6 +22,8 @@ public class GiveawayListResponse {
 
     private String title; // 제목
 
+    private String description;
+
     private String userName;
 
     private GiveawayStatus status; // 상태
@@ -46,6 +48,7 @@ public class GiveawayListResponse {
                 .viewCnt(giveaway.getViewCount())
                 .giveawayId(giveaway.getId())
                 .title(giveaway.getTitle())
+                .description(giveaway.getDescription())
                 .status(giveaway.getStatus())
                 .createdAt(giveaway.getCreatedAt())
                 .images(giveaway.getImages().stream()

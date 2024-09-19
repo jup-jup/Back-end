@@ -178,4 +178,16 @@ public class GiveawayController {
         }
     }
 
+    @GetMapping("/search")
+    public ResponseEntity<?> searchGiveaway(
+            @RequestParam String keyword,
+            @PageableDefault(sort = "created_at", direction = Sort.Direction.DESC) Pageable pageable
+    ) {
+        List<GiveawayListResponse> list = giveawayService.searchAllByKeyword(keyword, pageable);
+
+        return ResponseEntity
+                .ok()
+                .body(list);
+    }
+
 }
