@@ -19,6 +19,11 @@ public enum ErrorCode {
     // auth
     INVALID_TOKEN_SECRET_KEY(HttpStatus.UNAUTHORIZED, "AUTH_401", "The provided keyValue is not a valid SecretKey."),
     UNSUPPORTED_RESOURCE_PROVIDER(HttpStatus.BAD_REQUEST, "AUTH_402", "Unsupported registration provider"),
+    INVALID_ACCESS_TOKEN(HttpStatus.UNAUTHORIZED, "AUTH_403", "Invalid access token"),
+    INVALID_REFRESH_TOKEN(HttpStatus.UNAUTHORIZED, "AUTH_404", "Invalid refresh token"),
+    EXPIRED_ACCESS_TOKEN(HttpStatus.UNAUTHORIZED, "AUTH_405", "Access token is expired"),
+    EXPIRED_REFRESH_TOKEN(HttpStatus.UNAUTHORIZED, "AUTH_406", "Refresh token is expired"),
+    UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "AUTH_407", "Unauthorized"),
 
     // 5xx
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "GEN_500", "Internal Server Error"),

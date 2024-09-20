@@ -1,5 +1,7 @@
 package com.jupjup.www.jupjup.chat.config;
 
+import com.jupjup.www.jupjup.common.exception.CustomException;
+import com.jupjup.www.jupjup.common.exception.ErrorCode;
 import com.jupjup.www.jupjup.config.JWTUtil;
 import io.jsonwebtoken.ExpiredJwtException;
 import lombok.RequiredArgsConstructor;
@@ -30,21 +32,16 @@ public class StompInterceptor implements ChannelInterceptor {
         if (StompCommand.CONNECT.equals(accessor.getCommand())) {
             String authorization = accessor.getFirstNativeHeader("Authorization");
             if (authorization == null || authorization.isEmpty()) {
-                // TODO: exception 발생
-                log.error("인증 정보가 없습니다.");
-                return null;
+                throw new CustomException(ErrorCode.UNAUTHORIZED);
             }
 
             try {
                 String token = authorization.substring(BEARER_PREFIX.length());
                 if (!JWTUtil.validateAccessToken(token)) {
-                    // TODO: exception 발생
-                    log.error("invalid access token");
-                    return null;
+                    throw new CustomException(ErrorCode.INVALID_ACCESS_TOKEN);
                 }
             } catch (ExpiredJwtException e) {
-                log.error("expired access token");
-                return null;
+                throw new CustomException(ErrorCode.EXPIRED_ACCESS_TOKEN);
             }
         }
 
