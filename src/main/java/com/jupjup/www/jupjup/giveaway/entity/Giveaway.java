@@ -104,11 +104,21 @@ public class Giveaway {
     public void update(String title, String description, List<Image> images) {
         this.title = title;
         this.description = description;
-        this.images = images;
 
+        // 제거된 이미지 연관관계 제거
+        List<Image> removedImages = this.images.stream()
+                .filter(v -> !images.contains(v))
+                .toList();
+        for (Image removedImage : removedImages) {
+            removedImage.removeGiveawayMapping();
+        }
+
+        // 이미지 업데이트
+        this.images = images;
         for (Image image : images) {
             updateImage(image);
         }
+
     }
 
     public void updateStatus(GiveawayStatus status, Long receiverId) {

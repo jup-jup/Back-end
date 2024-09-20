@@ -58,4 +58,8 @@ public class Image {
         this.giveaway = giveaway;
     }
 
+    public void removeGiveawayMapping() {
+        this.giveaway = null;
+    }
+
 }
