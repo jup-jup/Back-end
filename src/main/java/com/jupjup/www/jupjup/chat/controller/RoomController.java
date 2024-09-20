@@ -3,7 +3,6 @@ package com.jupjup.www.jupjup.chat.controller;
 import com.jupjup.www.jupjup.chat.dto.room.CreateRoomRequest;
 import com.jupjup.www.jupjup.chat.dto.room.CreateRoomResponse;
 import com.jupjup.www.jupjup.chat.dto.room.RoomListResponse;
-import com.jupjup.www.jupjup.chat.dto.room.RoomResponse;
 import com.jupjup.www.jupjup.chat.service.RoomService;
 import com.jupjup.www.jupjup.config.JWTUtil;
 import io.swagger.v3.oas.annotations.Operation;
@@ -15,7 +14,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

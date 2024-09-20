@@ -57,7 +57,7 @@ public class GiveawayService {
     }
 
     @Transactional
-    public Giveaway update(Long id, UpdateGiveawayRequest request, Long userId) {
+    public void update(Long id, UpdateGiveawayRequest request, Long userId) {
         Giveaway giveaway = authorizeGiveawayUser(id, userId);
 
         List<Image> images = List.of();
@@ -65,8 +65,6 @@ public class GiveawayService {
             images = imageRepository.findAllById(request.getImageIds());
         }
         giveaway.update(request.getTitle(), request.getDescription(), images);
-
-        return giveaway;
     }
 
     /*
