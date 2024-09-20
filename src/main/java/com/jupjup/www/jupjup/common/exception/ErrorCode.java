@@ -16,6 +16,10 @@ public enum ErrorCode {
     INVALID_REQUEST(HttpStatus.BAD_REQUEST, "GEN_402", "Invalid Request"),
     NO_PERMISSION(HttpStatus.BAD_REQUEST, "GEN_403", "No Permission"),
 
+    // auth
+    INVALID_TOKEN_SECRET_KEY(HttpStatus.UNAUTHORIZED, "AUTH_401", "The provided keyValue is not a valid SecretKey."),
+    UNSUPPORTED_RESOURCE_PROVIDER(HttpStatus.BAD_REQUEST, "AUTH_402", "Unsupported registration provider"),
+
     // 5xx
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "GEN_501", "Internal Server Error"),
 

@@ -1,5 +1,7 @@
 package com.jupjup.www.jupjup.config;
 
+import com.jupjup.www.jupjup.common.exception.CustomException;
+import com.jupjup.www.jupjup.common.exception.ErrorCode;
 import com.jupjup.www.jupjup.user.repository.RefreshTokenRepository;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
@@ -96,7 +98,7 @@ public class JWTUtil {
                         .getPayload()
                         .get(value, String.class);
             }
-            throw new IllegalArgumentException("The provided keyValue is not a valid SecretKey.");
+            throw new CustomException(ErrorCode.INVALID_TOKEN_SECRET_KEY);
         } catch (ExpiredJwtException e) {
             // 토큰이 만료된 경우 처리
             log.info("토큰 만료 {}", e.getMessage());
