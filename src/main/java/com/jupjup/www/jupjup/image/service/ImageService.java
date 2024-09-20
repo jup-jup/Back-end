@@ -1,5 +1,7 @@
 package com.jupjup.www.jupjup.image.service;
 
+import com.jupjup.www.jupjup.common.exception.CustomException;
+import com.jupjup.www.jupjup.common.exception.ErrorCode;
 import com.jupjup.www.jupjup.image.dto.DisplayImageDTO;
 import com.jupjup.www.jupjup.image.dto.GetImageResponse;
 import com.jupjup.www.jupjup.image.dto.UploadImageResponse;
@@ -61,7 +63,7 @@ public class ImageService {
 
     public GetImageResponse find(Long id) {
         Image image = imageRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 id 입니다."));
+                .orElseThrow(() -> new CustomException(ErrorCode.INVALID_REQUEST));
 
         return GetImageResponse.toDTO(image);
     }
