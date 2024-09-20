@@ -3,7 +3,6 @@ package com.jupjup.www.jupjup.chat.controller;
 import com.jupjup.www.jupjup.chat.dto.room.CreateRoomRequest;
 import com.jupjup.www.jupjup.chat.dto.room.CreateRoomResponse;
 import com.jupjup.www.jupjup.chat.dto.room.RoomListResponse;
-import com.jupjup.www.jupjup.chat.dto.room.RoomResponse;
 import com.jupjup.www.jupjup.chat.service.RoomService;
 import com.jupjup.www.jupjup.config.JWTUtil;
 import io.swagger.v3.oas.annotations.Operation;
@@ -15,7 +14,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -38,43 +36,27 @@ public class RoomController {
                             schema = @Schema(implementation = CreateRoomResponse.class)))
     })
     @PostMapping("")
-    public ResponseEntity<?> createRoom(@RequestBody CreateRoomRequest request, @Valid @RequestHeader("Authorization") String header) {
+    public CreateRoomResponse createRoom(@RequestBody CreateRoomRequest request, @Valid @RequestHeader("Authorization") String header) {
         // TODO: authorization header 에서 userId 뽑아오는 방법이 이게 최선일까..
         String token = header.substring(BEARER_PREFIX.length());
         Long userId = JWTUtil.getUserIdFromAccessToken(token);
 
-        try {
-            CreateRoomResponse roomDTO = roomService.create(request, userId);
-
-            return ResponseEntity
-                    .ok()
-                    .body(roomDTO);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(e.getMessage());
-        }
-
+        return roomService.create(request, userId);
     }
 
     @Operation(summary = "get rooms", description = "채팅방 목록 API. 해당 유저의 채팅 목록 전체를 가져옵니다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Success",
                     content = @Content(mediaType = "application/json",
-                            array = @ArraySchema(schema = @Schema(implementation = RoomListResponse.class)))),
-            @ApiResponse(responseCode = "401", description = "잘못된 유저입니다.")
+                            array = @ArraySchema(schema = @Schema(implementation = RoomListResponse.class))))
     })
     @GetMapping("")
-    public ResponseEntity<?> getRooms(@Valid @RequestHeader("Authorization") String header) {
+    public List<RoomListResponse> getRooms(@Valid @RequestHeader("Authorization") String header) {
         // TODO: authorization header 에서 userId 뽑아오는 방법이 이게 최선일까..
         String token = header.substring(BEARER_PREFIX.length());
         Long userId = JWTUtil.getUserIdFromAccessToken(token);
 
-        List<RoomListResponse> list = roomService.list(userId);
-
-        return ResponseEntity
-                .ok()
-                .body(list);
+        return roomService.list(userId);
     }
 
 }

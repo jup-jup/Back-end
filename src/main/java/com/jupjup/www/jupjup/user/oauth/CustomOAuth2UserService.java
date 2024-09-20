@@ -1,5 +1,7 @@
 package com.jupjup.www.jupjup.user.oauth;
 
+import com.jupjup.www.jupjup.common.exception.CustomException;
+import com.jupjup.www.jupjup.common.exception.ErrorCode;
 import com.jupjup.www.jupjup.user.entity.User;
 import com.jupjup.www.jupjup.user.dto.user.UserResponse;
 import com.jupjup.www.jupjup.common.enums.OauthRegistrationId;
@@ -45,7 +47,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             OAuth2Response oAuth2Response = getOAuth2Response(oAuth2User, registrationId);
             return saveOrUpdateUser(oAuth2Response);
         } catch (IllegalArgumentException e) {
-            throw new RuntimeException("Unsupported registration id: " + registrationId);
+            throw new CustomException(ErrorCode.UNSUPPORTED_RESOURCE_PROVIDER);
         }
 
     }
@@ -73,7 +75,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             log.info("카카오 로그인");
             return new KakaoResponse(oAuth2User.getAttributes());
         } else {
-            throw new IllegalArgumentException("지원되지 않는 리소스 제공자 입니다. registration id: " + registrationId);
+            throw new CustomException(ErrorCode.UNSUPPORTED_RESOURCE_PROVIDER);
         }
     }
 

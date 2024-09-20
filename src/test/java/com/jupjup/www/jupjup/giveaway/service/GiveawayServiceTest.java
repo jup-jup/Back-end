@@ -48,7 +48,7 @@
 //
 //        // when
 //        Giveaway detail = giveawayRepository.findById(id)
-//                .orElseThrow(() -> new IllegalArgumentException("잘못된 나눔 id"));
+//                .orElseThrow(() -> new IllegalArgumentException("잘못된 나눔 id 입니다."));
 //        detail.updateViewCnt();
 //
 //        // then

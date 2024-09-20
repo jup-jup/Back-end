@@ -17,7 +17,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -62,27 +61,15 @@ public class ChatController {
             @ApiResponse(responseCode = "401", description = "잘못된 유저입니다. / 해당 채팅방의 유저가 아닙니다.")
     })
     @GetMapping("")
-    public ResponseEntity<?> getChatList(
+    public List<ChatDTO> getChatList(
             @PathVariable Long roomId,
             @PageableDefault(sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable,
             @Valid @RequestHeader("Authorization") String header
-    ) {
-        try {
-            // TODO: authorization header 에서 userId 뽑아오는 방법이 이게 최선일까..
-            String token = header.substring(BEARER_PREFIX.length());
-            Long userId = JWTUtil.getUserIdFromAccessToken(token);
+    ) {// TODO: authorization header 에서 userId 뽑아오는 방법이 이게 최선일까..
+        String token = header.substring(BEARER_PREFIX.length());
+        Long userId = JWTUtil.getUserIdFromAccessToken(token);
 
-            List<ChatDTO> list = chatService.chatList(pageable, roomId, userId);
-
-            return ResponseEntity
-                    .ok()
-                    .body(list);
-
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(e.getMessage());
-        }
+        return chatService.chatList(pageable, roomId, userId);
     }
 
 }

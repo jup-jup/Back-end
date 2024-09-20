@@ -5,6 +5,8 @@ import com.jupjup.www.jupjup.chat.dto.room.CreateRoomResponse;
 import com.jupjup.www.jupjup.chat.dto.room.RoomListResponse;
 import com.jupjup.www.jupjup.chat.entity.Room;
 import com.jupjup.www.jupjup.chat.repository.RoomRepository;
+import com.jupjup.www.jupjup.common.exception.CustomException;
+import com.jupjup.www.jupjup.common.exception.ErrorCode;
 import com.jupjup.www.jupjup.giveaway.entity.Giveaway;
 import com.jupjup.www.jupjup.giveaway.repository.GiveawayRepository;
 import jakarta.transaction.Transactional;
@@ -29,10 +31,10 @@ public class RoomService {
         }
 
         Giveaway giveaway = giveawayRepository.findById(request.getGiveawayId())
-                .orElseThrow(() -> new IllegalArgumentException("잘못된 나눔 id"));
+                .orElseThrow(() -> new CustomException(ErrorCode.INVALID_REQUEST));
 
         if (giveaway.getGiverId().equals(userId)) {
-            throw new IllegalArgumentException("본인의 나눔 글입니다.");
+            throw new CustomException(ErrorCode.INVALID_REQUEST);
         }
 
         Room room = Room.builder()

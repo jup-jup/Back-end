@@ -2,6 +2,8 @@ package com.jupjup.www.jupjup.image.service.impl;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.jupjup.www.jupjup.common.exception.CustomException;
+import com.jupjup.www.jupjup.common.exception.ErrorCode;
 import com.jupjup.www.jupjup.image.service.ImageUploadService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -36,7 +38,7 @@ public class S3ImageUploadServiceImpl implements ImageUploadService {
             amazonS3.putObject(BUCKET_NAME, filePath, inputStream, metadata);
             log.info("파일 업로드 완료!");
         } catch (IOException e) {
-            throw new IOException("파일 업로드 중 오류 발생", e);
+            throw new CustomException(ErrorCode.FILE_UPLOAD_ERROR);
         }
 
         return filePath;  // 업로드된 파일의 경로 반환

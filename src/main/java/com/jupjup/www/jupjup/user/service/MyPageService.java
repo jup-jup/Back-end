@@ -1,5 +1,7 @@
 package com.jupjup.www.jupjup.user.service;
 
+import com.jupjup.www.jupjup.common.exception.CustomException;
+import com.jupjup.www.jupjup.common.exception.ErrorCode;
 import com.jupjup.www.jupjup.giveaway.dto.GiveawayDetailResponse;
 import com.jupjup.www.jupjup.giveaway.dto.GiveawayListResponse;
 import com.jupjup.www.jupjup.giveaway.entity.Giveaway;
@@ -36,7 +38,7 @@ public class MyPageService {
 
     public GiveawayDetailResponse getDetail(Long id) {
         Giveaway giveaway = giveawayRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("상세항목을 찾을 수 없어요! "));
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_EXIST));
 
         return GiveawayDetailResponse.of(giveaway);
     }

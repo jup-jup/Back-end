@@ -20,7 +20,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,33 +35,22 @@ import java.util.List;
 
 public class GiveawayController {
 
-    private static final Logger log = LoggerFactory.getLogger(GiveawayController.class);
     private final GiveawayService giveawayService;
     private static final String BEARER_PREFIX = "Bearer ";
 
     @Operation(summary = "add giveaway", description = "나눔 올리기 API")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "나눔 정상 생성 완료",
-                    headers = @Header(name = HttpHeaders.LOCATION, description = "나눔 세부정보 url")),
-            @ApiResponse(responseCode = "401", description = "등록되지 않은 유저입니다.")
+            @ApiResponse(responseCode = "201", description = "나눔 정상 생성 완료", headers = @Header(name = HttpHeaders.LOCATION, description = "나눔 세부정보 url"))
     })
-
     @PostMapping("")
     public ResponseEntity<?> addGiveaway(@RequestBody CreateGiveawayRequest request, @Valid @RequestHeader("Authorization") String header) {
-        try {
+        String token = header.substring(BEARER_PREFIX.length());
+        Long userId = JWTUtil.getUserIdFromAccessToken(token);
+        Giveaway giveaway = giveawayService.save(request, userId);
 
-            String token = header.substring(BEARER_PREFIX.length());
-            Long userId = JWTUtil.getUserIdFromAccessToken(token);
-            Giveaway giveaway = giveawayService.save(request, userId);
-
-            return ResponseEntity
-                    .created(URI.create(String.format("/api/v1/giveaways/%d", giveaway.getId())))
-                    .build();
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity
-                    .status(HttpStatus.UNAUTHORIZED)
-                    .body(e.getMessage());
-        }
+        return ResponseEntity
+                .created(URI.create(String.format("/api/v1/giveaways/%d", giveaway.getId())))
+                .build();
     }
 
     @Operation(summary = "get giveaway list", description = "나눔 리스트를 위한 API")
@@ -74,66 +62,46 @@ public class GiveawayController {
             )
     })
     @GetMapping("/list")
-    public ResponseEntity<List<GiveawayListResponse>> getList(
+    public List<GiveawayListResponse> getList(
             @PageableDefault(size = 30, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable
     ) {
-        List<GiveawayListResponse> list = giveawayService.findAll(pageable);
-        return ResponseEntity
-                .ok()
-                .body(list);
+        return giveawayService.findAll(pageable);
     }
 
     @Operation(summary = "get giveaway detail", description = "나눔 세부정보를 위한 API")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Success",
                     content = {@Content(schema = @Schema(implementation = GiveawayDetailResponse.class))}),
-            @ApiResponse(responseCode = "404", description = "잘못된 나눔 id")
+            @ApiResponse(responseCode = "404", description = "잘못된 나눔 id 입니다.")
     })
     @GetMapping("/detail/{id}")
-    public ResponseEntity<?> getGiveaway(@PathVariable Long id) {
-
-        try {
-            GiveawayDetailResponse detail = giveawayService.getDetail(id);
-            return ResponseEntity
-                    .ok()
-                    .body(detail);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST)
-                    .body(e.getMessage());
-        }
+    public GiveawayDetailResponse getGiveaway(@PathVariable Long id) {
+        return giveawayService.getDetail(id);
     }
 
     @Operation(summary = "update giveaway", description = "나눔 수정을 위한 API")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "No Content"),
-            @ApiResponse(responseCode = "404", description = "잘못된 나눔 id")
+            @ApiResponse(responseCode = "404", description = "잘못된 나눔 id 입니다.")
     })
     @PatchMapping("/{id}")
     public ResponseEntity<?> updateGiveaway(@PathVariable Long id
             , @RequestBody UpdateGiveawayRequest request
             , @Valid @RequestHeader("Authorization") String header) {
+        String token = header.substring(BEARER_PREFIX.length());
+        Long userId = JWTUtil.getUserIdFromAccessToken(token);
 
-        try {
-            String token = header.substring(BEARER_PREFIX.length());
-            Long userId = JWTUtil.getUserIdFromAccessToken(token);
+        giveawayService.update(id, request, userId);
 
-            Giveaway giveaway = giveawayService.update(id, request, userId);
-
-            return ResponseEntity
-                    .noContent()
-                    .build();
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(e.getMessage());
-        }
+        return ResponseEntity
+                .noContent()
+                .build();
     }
 
     @Operation(summary = "update giveaway status", description = "나눔 상태 업데이트를 위한 API")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "No Content"),
-            @ApiResponse(responseCode = "400", description = "잘못된 나눔 id / 잘못된 상태 변경 요청입니다.")
+            @ApiResponse(responseCode = "400", description = "잘못된 나눔 id 입니다. / 잘못된 상태 변경 요청입니다.")
     })
     @PatchMapping("/{id}/status")
     public ResponseEntity<?> updateGiveawayStatus(
@@ -141,53 +109,38 @@ public class GiveawayController {
             @RequestBody UpdateGiveawayStatusRequest request,
             @Valid @RequestHeader("Authorization") String header
     ) {
-        try {
-            String token = header.substring(BEARER_PREFIX.length());
-            Long userId = JWTUtil.getUserIdFromAccessToken(token);
-            giveawayService.updateStatus(id, request, userId);
+        String token = header.substring(BEARER_PREFIX.length());
+        Long userId = JWTUtil.getUserIdFromAccessToken(token);
 
-            return ResponseEntity
-                    .noContent()
-                    .build();
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(e.getMessage());
-        }
+        giveawayService.updateStatus(id, request, userId);
+
+        return ResponseEntity
+                .noContent()
+                .build();
     }
 
     @Operation(summary = "delete giveaway", description = "나눔 삭제를 위한 API")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "No Content"),
-            @ApiResponse(responseCode = "404", description = "잘못된 나눔 id")
+            @ApiResponse(responseCode = "404", description = "잘못된 나눔 id 입니다.")
     })
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteGiveaway(@PathVariable Long id, @Valid @RequestHeader("Authorization") String header) {
-        try {
-            String token = header.substring(BEARER_PREFIX.length());
-            Long userId = JWTUtil.getUserIdFromAccessToken(token);
-            giveawayService.delete(id, userId);
+        String token = header.substring(BEARER_PREFIX.length());
+        Long userId = JWTUtil.getUserIdFromAccessToken(token);
+        giveawayService.delete(id, userId);
 
-            return ResponseEntity
-                    .noContent()
-                    .build();
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(e.getMessage());
-        }
+        return ResponseEntity
+                .noContent()
+                .build();
     }
 
     @GetMapping("/search")
-    public ResponseEntity<?> searchGiveaway(
+    public List<GiveawayListResponse> searchGiveaway(
             @RequestParam String keyword,
             @PageableDefault(sort = "created_at", direction = Sort.Direction.DESC) Pageable pageable
     ) {
-        List<GiveawayListResponse> list = giveawayService.searchAllByKeyword(keyword, pageable);
-
-        return ResponseEntity
-                .ok()
-                .body(list);
+        return giveawayService.searchAllByKeyword(keyword, pageable);
     }
 
 }

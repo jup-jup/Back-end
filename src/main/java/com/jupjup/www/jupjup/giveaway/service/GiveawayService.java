@@ -1,5 +1,7 @@
 package com.jupjup.www.jupjup.giveaway.service;
 
+import com.jupjup.www.jupjup.common.exception.CustomException;
+import com.jupjup.www.jupjup.common.exception.ErrorCode;
 import com.jupjup.www.jupjup.giveaway.dto.*;
 import com.jupjup.www.jupjup.giveaway.entity.Giveaway;
 import com.jupjup.www.jupjup.giveaway.repository.GiveawayRepository;
@@ -53,11 +55,11 @@ public class GiveawayService {
 
     public Giveaway findById(Long id) {
         return giveawayRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("잘못된 나눔 id"));
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_EXIST));
     }
 
     @Transactional
-    public Giveaway update(Long id, UpdateGiveawayRequest request, Long userId) {
+    public void update(Long id, UpdateGiveawayRequest request, Long userId) {
         Giveaway giveaway = authorizeGiveawayUser(id, userId);
 
         List<Image> images = List.of();
@@ -65,8 +67,6 @@ public class GiveawayService {
             images = imageRepository.findAllById(request.getImageIds());
         }
         giveaway.update(request.getTitle(), request.getDescription(), images);
-
-        return giveaway;
     }
 
     /*
@@ -83,14 +83,14 @@ public class GiveawayService {
      */
     public void updateStatus(Long id, UpdateGiveawayStatusRequest request, Long userId) {
         Giveaway giveaway = giveawayRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("잘못된 나눔 id"));
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_EXIST));
 
         if (request.getStatus().equals(giveaway.getStatus())) {
             return;
         }
 
         if (!giveaway.validateUpdateStatus(request.getStatus(), userId)) {
-            throw new IllegalArgumentException("잘못된 상태 변경 요청입니다.");
+            throw new CustomException(ErrorCode.INVALID_REQUEST);
         }
 
         giveaway.updateStatus(request.getStatus(), request.getReceiverId());
@@ -104,10 +104,10 @@ public class GiveawayService {
 
     public Giveaway authorizeGiveawayUser(Long id, Long userId) {
         Giveaway giveaway = giveawayRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("잘못된 나눔 id"));
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_EXIST));
 
         if (!userId.equals(giveaway.getGiverId())) {
-            throw new IllegalArgumentException("잘못된 유저 요청입니다.");
+            throw new CustomException(ErrorCode.INVALID_REQUEST);
         }
         return giveaway;
     }
