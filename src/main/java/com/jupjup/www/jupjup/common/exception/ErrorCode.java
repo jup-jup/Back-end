@@ -21,7 +21,7 @@ public enum ErrorCode {
     UNSUPPORTED_RESOURCE_PROVIDER(HttpStatus.BAD_REQUEST, "AUTH_402", "Unsupported registration provider"),
 
     // 5xx
-    INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "GEN_501", "Internal Server Error"),
+    INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "GEN_500", "Internal Server Error"),
 
     // 파일
     FILE_UPLOAD_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "FILE_501", "An error occurred during file upload."),

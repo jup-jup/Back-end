@@ -38,7 +38,7 @@ public class S3ImageUploadServiceImpl implements ImageUploadService {
             amazonS3.putObject(BUCKET_NAME, filePath, inputStream, metadata);
             log.info("파일 업로드 완료!");
         } catch (IOException e) {
-            throw new CustomException(ErrorCode.FILE_UPLOAD_ERROR);
+            throw new CustomException(ErrorCode.FILE_UPLOAD_ERROR, e);
         }
 
         return filePath;  // 업로드된 파일의 경로 반환

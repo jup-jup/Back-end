@@ -22,11 +22,11 @@ public class ErrorResponse {
         }
 
         if (this.code == null) {
-            this.code = "GEN_501";
+            this.code = ErrorCode.INTERNAL_SERVER_ERROR.getCode();
         }
 
         if (this.message == null) {
-            this.message = "Internal Server Error";
+            this.message = ErrorCode.INTERNAL_SERVER_ERROR.getMessage();;
         }
     }
 

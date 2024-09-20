@@ -47,7 +47,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             OAuth2Response oAuth2Response = getOAuth2Response(oAuth2User, registrationId);
             return saveOrUpdateUser(oAuth2Response);
         } catch (IllegalArgumentException e) {
-            throw new CustomException(ErrorCode.UNSUPPORTED_RESOURCE_PROVIDER);
+            throw new CustomException(ErrorCode.UNSUPPORTED_RESOURCE_PROVIDER, e);
         }
 
     }
