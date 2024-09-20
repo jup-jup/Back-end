@@ -3,7 +3,6 @@ package com.jupjup.www.jupjup.giveaway.dto;
 import com.jupjup.www.jupjup.giveaway.entity.Giveaway;
 import com.jupjup.www.jupjup.giveaway.enums.GiveawayStatus;
 import com.jupjup.www.jupjup.image.dto.GetImageResponse;
-import com.jupjup.www.jupjup.image.entity.Image;
 import com.jupjup.www.jupjup.user.dto.user.UserDTO;
 import lombok.Builder;
 import lombok.Getter;
@@ -40,9 +39,9 @@ public class GiveawayDetailResponse {
 
     private int chatCnt; // 채팅방 수
 
-    public static GiveawayDetailResponse toDTO(Giveaway giveaway) {
+    public static GiveawayDetailResponse of(Giveaway giveaway) {
         return GiveawayDetailResponse.builder()
-                .giveawayId(giveaway.getGiverId())
+                .giveawayId(giveaway.getId())
                 .title(giveaway.getTitle())
                 .description(giveaway.getDescription())
                 .status(giveaway.getStatus())

@@ -5,17 +5,13 @@ import com.jupjup.www.jupjup.giveaway.dto.GiveawayListResponse;
 import com.jupjup.www.jupjup.giveaway.entity.Giveaway;
 import com.jupjup.www.jupjup.giveaway.enums.GiveawayStatus;
 import com.jupjup.www.jupjup.giveaway.repository.GiveawayRepository;
-import com.jupjup.www.jupjup.user.enums.MyPageType;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -42,7 +38,7 @@ public class MyPageService {
         Giveaway giveaway = giveawayRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("상세항목을 찾을 수 없어요! "));
 
-        return GiveawayDetailResponse.toDTO(giveaway);
+        return GiveawayDetailResponse.of(giveaway);
     }
 
 }

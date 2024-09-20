@@ -48,7 +48,7 @@ public class GiveawayService {
         Giveaway giveaway = findById(id);
         giveaway.updateViewCnt();
 
-        return GiveawayDetailResponse.toDTO(giveaway);
+        return GiveawayDetailResponse.of(giveaway);
     }
 
     public Giveaway findById(Long id) {
