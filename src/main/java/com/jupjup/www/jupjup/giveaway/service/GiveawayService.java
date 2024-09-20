@@ -53,7 +53,7 @@ public class GiveawayService {
 
     public Giveaway findById(Long id) {
         return giveawayRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("잘못된 나눔 id"));
+                .orElseThrow(() -> new IllegalArgumentException("잘못된 나눔 id 입니다."));
     }
 
     @Transactional
@@ -83,7 +83,7 @@ public class GiveawayService {
      */
     public void updateStatus(Long id, UpdateGiveawayStatusRequest request, Long userId) {
         Giveaway giveaway = giveawayRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("잘못된 나눔 id"));
+                .orElseThrow(() -> new IllegalArgumentException("잘못된 나눔 id 입니다."));
 
         if (request.getStatus().equals(giveaway.getStatus())) {
             return;
@@ -104,7 +104,7 @@ public class GiveawayService {
 
     public Giveaway authorizeGiveawayUser(Long id, Long userId) {
         Giveaway giveaway = giveawayRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("잘못된 나눔 id"));
+                .orElseThrow(() -> new IllegalArgumentException("잘못된 나눔 id 입니다."));
 
         if (!userId.equals(giveaway.getGiverId())) {
             throw new IllegalArgumentException("잘못된 유저 요청입니다.");

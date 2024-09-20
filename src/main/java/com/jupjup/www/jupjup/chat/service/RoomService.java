@@ -29,7 +29,7 @@ public class RoomService {
         }
 
         Giveaway giveaway = giveawayRepository.findById(request.getGiveawayId())
-                .orElseThrow(() -> new IllegalArgumentException("잘못된 나눔 id"));
+                .orElseThrow(() -> new IllegalArgumentException("잘못된 나눔 id 입니다."));
 
         if (giveaway.getGiverId().equals(userId)) {
             throw new IllegalArgumentException("본인의 나눔 글입니다.");
