@@ -33,7 +33,8 @@ public class JWTFilter extends OncePerRequestFilter {
             "/reissue",
             "/api/v1/giveaways/list",
             "/api/v1/giveaways/detail",
-            "/api/v1/giveaways/search"
+            "/api/v1/giveaways/search",
+            "/api/v1/auth"
     );
 
     @Override
@@ -71,6 +72,7 @@ public class JWTFilter extends OncePerRequestFilter {
             log.error("토큰 유효성 검사 실패!");
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         } catch (ExpiredJwtException | IllegalArgumentException e) {
+            log.info("액세스토큰 만료로 리프레시 토큰 발급합니다.");
             response.sendRedirect("/api/v1/auth/reissue");
 
         }

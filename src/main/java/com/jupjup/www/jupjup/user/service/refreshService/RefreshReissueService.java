@@ -25,8 +25,12 @@ public class RefreshReissueService {
     public boolean refreshTokenReissue(String refreshToken, String userEmail, HttpServletResponse resp) throws IOException {
 
         List<RefreshToken> entity = refreshRepository.findByUserEmailAndRefreshToken(userEmail, refreshToken);
+
         try {
-            if(entity.isEmpty()) return false;
+            if(entity.isEmpty()) {
+                log.info("refreshToken empty !! ");
+                return false;
+            }
             if (JWTUtil.validateRefreshToken(refreshToken)) {
 
             }

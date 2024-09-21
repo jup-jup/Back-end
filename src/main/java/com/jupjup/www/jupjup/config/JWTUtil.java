@@ -34,8 +34,8 @@ public class JWTUtil {
     private  String accessSecretKey;
     @Value("${jwt.refresh-secret}")
     private  String refreshSecretKey;
-    private static final long expirationTime = 24 * 60 * 60 * 1000; // 개발 환경 24시간
-    //    public static final long expirationTime = 60000; // 1분
+//    private static final long expirationTime = 24 * 60 * 60 * 1000; // 개발 환경 24시간
+        public static final long expirationTime = 10000; // 30초
     public static final long refreshExpirationTime = 7 * 24 * 60 * 60 * 1000L; // 7일
     public static final int COOKIE = 30 * 24 * 60 * 60; // 30일
 

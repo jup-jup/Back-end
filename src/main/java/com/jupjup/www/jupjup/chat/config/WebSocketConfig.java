@@ -22,6 +22,7 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 
     https://dev-gorany.tistory.com/235
  */
+
 @RequiredArgsConstructor
 @Configuration
 @EnableWebSocketMessageBroker
