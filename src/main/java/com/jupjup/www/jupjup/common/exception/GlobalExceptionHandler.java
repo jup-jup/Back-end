@@ -36,9 +36,12 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(value = ExpiredJwtException.class)
-    public void handleExpiredJwtException(ExpiredJwtException e, HttpServletResponse response) throws IOException {
-        log.info("ExpiredJwtException 예외 = > 리프레시 토큰으로 액세스 토큰 재발급");
-        response.sendRedirect("/api/v1/auth/reissue");
+    public ResponseEntity<ErrorResponse> handleExpiredJwtException(ExpiredJwtException e, HttpServletResponse response) throws IOException {
+        ErrorCode errorCode = ErrorCode.EXPIRED_ACCESS_TOKEN;
+        ErrorResponse errorResponse = ErrorResponse.of(errorCode.getStatus(), errorCode.getCode(), e.getMessage());
+        return ResponseEntity
+                .status(errorResponse.getStatus())
+                .body(errorResponse);
     }
 
 }

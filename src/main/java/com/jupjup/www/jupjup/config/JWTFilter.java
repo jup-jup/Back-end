@@ -1,5 +1,7 @@
 package com.jupjup.www.jupjup.config;
 
+import com.jupjup.www.jupjup.common.exception.CustomException;
+import com.jupjup.www.jupjup.common.exception.ErrorCode;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -57,8 +59,7 @@ public class JWTFilter extends OncePerRequestFilter {
         // 3.액세스 토큰 null 체크
         if (authorization == null || !authorization.startsWith(BEARER_PREFIX)) {
             log.error("토큰이 비어 있거나, 형식이 올바르지 않습니다. ");
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            return;
+            throw new CustomException(ErrorCode.INVALID_ACCESS_TOKEN);
         }
 
         // 4.토큰 유효성 검증
@@ -69,12 +70,9 @@ public class JWTFilter extends OncePerRequestFilter {
                 filterChain.doFilter(request, response);
                 return;
             }
-            log.error("토큰 유효성 검사 실패!");
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            throw new CustomException(ErrorCode.EXPIRED_ACCESS_TOKEN);
         } catch (ExpiredJwtException | IllegalArgumentException e) {
-            log.info("액세스토큰 만료로 리프레시 토큰 발급합니다.");
-            response.sendRedirect("/api/v1/auth/reissue");
-
+            throw new CustomException(ErrorCode.INVALID_ACCESS_TOKEN);
         }
 
     }

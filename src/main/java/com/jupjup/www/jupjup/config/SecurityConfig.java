@@ -25,7 +25,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @Configuration
-@EnableWebSecurity
+@EnableWebSecurity(debug = true)
 @RequiredArgsConstructor
 @Slf4j
 public class SecurityConfig {
@@ -63,6 +63,9 @@ public class SecurityConfig {
         // JWTFilter 추가 - UsernamePasswordAuthenticationFilter 이전에 배치
         http.addFilterBefore(new JWTFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
 
+        // JWT ExceptionHandler
+        http.addFilterBefore(new ExceptionHandlerFilter(), JWTFilter.class);
+
         // 세션 관리 - STATELESS 설정
         http.sessionManagement(session -> session
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
@@ -86,7 +89,7 @@ public class SecurityConfig {
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(List.of("http://localhost:3000", "https://jupjup.shop"));  // 명시적인 도메인 설정
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS","PATCH"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "Origin", "Accept"));
         configuration.setAllowCredentials(true);  // 크리덴셜 허용 (쿠키, 인증 헤더 등)
         configuration.setMaxAge(3600L);
