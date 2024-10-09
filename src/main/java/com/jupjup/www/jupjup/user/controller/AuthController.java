@@ -12,16 +12,17 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.net.URI;
 import java.util.Arrays;
 import java.util.List;
 
 
 /**
- * @fileName      : AuthController.java
- * @author        : boramkim
- * @since         : 2024. 8. 1.
- * @description    : jwt 토큰 api
+ * @author : boramkim
+ * @fileName : AuthController.java
+ * @description : jwt 토큰 api
+ * @since : 2024. 8. 1.
  */
 @RestController
 @RequiredArgsConstructor
@@ -58,21 +59,13 @@ public class AuthController {
 
     @Operation(summary = "리프레시 토큰 재발급 시 요청 api")
     @GetMapping("/reissue")
-    public ResponseEntity<String> reissue(@CookieValue("refreshToken") String refreshToken,HttpServletResponse resp) {
+    public ResponseEntity<String> reissue(@CookieValue("refreshToken") String refreshToken, HttpServletResponse resp) throws IOException {
 
         log.info("refreshToken = {} ", refreshToken);
         log.info("userEmail = {} ", JWTUtil.getUserEmailFromRefreshToken(refreshToken));
 
-        try {
-            if (refreshReissueService.refreshTokenReissue(refreshToken, JWTUtil.getUserEmailFromRefreshToken(refreshToken),resp)) {
-                return ResponseEntity.ok("액세스 토큰 재발급 완료");
-            } else {
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("토큰 유효기간 만료 재 로그인 하세요.");
-            }
-        } catch (Exception e) {
-            log.error("토큰 재발급 중 오류", e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("일시적인 서버 장애");
-        }
+        refreshReissueService.refreshTokenReissue(refreshToken, resp);
+        return ResponseEntity.ok("액세스 토큰 재발급 완료");
     }
 
 }

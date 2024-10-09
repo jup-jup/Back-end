@@ -1,6 +1,8 @@
 package com.jupjup.www.jupjup.user.service.refreshService;
 
 
+import com.jupjup.www.jupjup.common.exception.CustomException;
+import com.jupjup.www.jupjup.common.exception.ErrorCode;
 import com.jupjup.www.jupjup.config.security.JWTUtil;
 import com.jupjup.www.jupjup.user.entity.RefreshToken;
 import com.jupjup.www.jupjup.user.repository.RefreshTokenRepository;
@@ -8,7 +10,6 @@ import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -22,20 +23,21 @@ public class RefreshReissueService {
     private final RefreshTokenRepository refreshRepository;
 
 
-    public boolean refreshTokenReissue(String refreshToken, String userEmail, HttpServletResponse resp) throws IOException {
+    public void refreshTokenReissue(String refreshToken, HttpServletResponse resp) throws IOException {
 
+        String userEmail = JWTUtil.getUserEmailFromRefreshToken(refreshToken);
         List<RefreshToken> entity = refreshRepository.findByUserEmailAndRefreshToken(userEmail, refreshToken);
 
         try {
-            if(entity.isEmpty()) {
+            if (entity.isEmpty()) {
                 log.info("refreshToken empty !! ");
-                return false;
+                throw new CustomException(ErrorCode.INVALID_REFRESH_TOKEN);
             }
             if (JWTUtil.validateRefreshToken(refreshToken)) {
 
             }
         } catch (ExpiredJwtException e) {
-            resp.sendError(HttpStatus.FORBIDDEN.value());
+            throw new CustomException(ErrorCode.EXPIRED_REFRESH_TOKEN);
         }
 
         Long userId = JWTUtil.getUserIdFromRefreshToken(refreshToken);
@@ -61,8 +63,6 @@ public class RefreshReissueService {
         log.info("New refresh token has been added");
         resp.addHeader("Authorization", "Bearer " + newAccessToken);
         resp.addCookie(JWTUtil.getCookieFromRefreshToken(newRefreshToken));
-
-        return true;
     }
 
 }
