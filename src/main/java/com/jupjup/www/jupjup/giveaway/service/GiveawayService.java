@@ -81,6 +81,7 @@ public class GiveawayService {
         예약 상태에서만 변경 가능
         예약 상태에서 예약자로 등록된 상태여야 함
      */
+    @Transactional
     public void updateStatus(Long id, UpdateGiveawayStatusRequest request, Long userId) {
         Giveaway giveaway = giveawayRepository.findById(id)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_EXIST));

@@ -96,8 +96,10 @@ public class Giveaway {
         this.images = images;
         this.location = location;
 
-        for (Image image : images) {
-            updateImage(image);
+        if (images != null) {
+            for (Image image : images) {
+                updateImage(image);
+            }
         }
     }
 
@@ -140,7 +142,6 @@ public class Giveaway {
         }
 
         this.status = status;
-
     }
 
     public boolean validateUpdateStatus(GiveawayStatus status, Long userId) {
