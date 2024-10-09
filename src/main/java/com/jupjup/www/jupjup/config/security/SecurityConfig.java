@@ -1,4 +1,4 @@
-package com.jupjup.www.jupjup.config;
+package com.jupjup.www.jupjup.config.security;
 
 import com.jupjup.www.jupjup.user.oauth.CustomOAuth2UserService;
 import com.jupjup.www.jupjup.user.oauth.CustomOAuthSuccessHandler;
@@ -25,7 +25,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @Configuration
-@EnableWebSecurity(debug = true)
+@EnableWebSecurity
 @RequiredArgsConstructor
 @Slf4j
 public class SecurityConfig {

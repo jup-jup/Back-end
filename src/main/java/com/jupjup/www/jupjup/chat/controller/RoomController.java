@@ -4,7 +4,7 @@ import com.jupjup.www.jupjup.chat.dto.room.CreateRoomRequest;
 import com.jupjup.www.jupjup.chat.dto.room.CreateRoomResponse;
 import com.jupjup.www.jupjup.chat.dto.room.RoomListResponse;
 import com.jupjup.www.jupjup.chat.service.RoomService;
-import com.jupjup.www.jupjup.config.JWTUtil;
+import com.jupjup.www.jupjup.config.security.JWTUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;

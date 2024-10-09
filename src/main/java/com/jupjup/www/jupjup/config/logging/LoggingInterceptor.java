@@ -1,4 +1,4 @@
-package com.jupjup.www.jupjup.config;
+package com.jupjup.www.jupjup.config.logging;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

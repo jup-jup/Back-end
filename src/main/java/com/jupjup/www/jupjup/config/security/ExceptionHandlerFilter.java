@@ -1,4 +1,4 @@
-package com.jupjup.www.jupjup.config;
+package com.jupjup.www.jupjup.config.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jupjup.www.jupjup.common.exception.CustomException;

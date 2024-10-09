@@ -2,7 +2,7 @@
 //
 //import com.jupjup.www.jupjup.JupJupApplication;
 //import com.jupjup.www.jupjup.chat.entity.Chat;
-//import com.jupjup.www.jupjup.config.JWTUtil;
+//import com.jupjup.www.jupjup.config.security.JWTUtil;
 //import jakarta.transaction.Transactional;
 //import org.junit.jupiter.api.AfterEach;
 //import org.junit.jupiter.api.BeforeEach;

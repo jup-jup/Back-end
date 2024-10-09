@@ -1,6 +1,6 @@
 package com.jupjup.www.jupjup.giveaway.controller;
 
-import com.jupjup.www.jupjup.config.JWTUtil;
+import com.jupjup.www.jupjup.config.security.JWTUtil;
 import com.jupjup.www.jupjup.giveaway.dto.*;
 import com.jupjup.www.jupjup.giveaway.entity.Giveaway;
 import com.jupjup.www.jupjup.giveaway.service.GiveawayService;
@@ -14,8 +14,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;

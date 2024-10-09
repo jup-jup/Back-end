@@ -1,6 +1,6 @@
 package com.jupjup.www.jupjup.user.controller;
 
-import com.jupjup.www.jupjup.config.JWTUtil;
+import com.jupjup.www.jupjup.config.security.JWTUtil;
 import com.jupjup.www.jupjup.giveaway.dto.GiveawayDetailResponse;
 import com.jupjup.www.jupjup.giveaway.dto.GiveawayListResponse;
 import com.jupjup.www.jupjup.user.enums.MyPageType;

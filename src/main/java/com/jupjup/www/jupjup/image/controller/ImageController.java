@@ -1,6 +1,6 @@
 package com.jupjup.www.jupjup.image.controller;
 
-import com.jupjup.www.jupjup.config.JWTUtil;
+import com.jupjup.www.jupjup.config.security.JWTUtil;
 import com.jupjup.www.jupjup.image.dto.DisplayImageDTO;
 import com.jupjup.www.jupjup.image.dto.GetImageResponse;
 import com.jupjup.www.jupjup.image.dto.UploadImageResponse;

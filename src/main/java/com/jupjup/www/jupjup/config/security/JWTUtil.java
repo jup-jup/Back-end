@@ -1,4 +1,4 @@
-package com.jupjup.www.jupjup.config;
+package com.jupjup.www.jupjup.config.security;
 
 import com.jupjup.www.jupjup.common.exception.CustomException;
 import com.jupjup.www.jupjup.common.exception.ErrorCode;

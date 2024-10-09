@@ -2,7 +2,7 @@ package com.jupjup.www.jupjup.chat.config;
 
 import com.jupjup.www.jupjup.common.exception.CustomException;
 import com.jupjup.www.jupjup.common.exception.ErrorCode;
-import com.jupjup.www.jupjup.config.JWTUtil;
+import com.jupjup.www.jupjup.config.security.JWTUtil;
 import io.jsonwebtoken.ExpiredJwtException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

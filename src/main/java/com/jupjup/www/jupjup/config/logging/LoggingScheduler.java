@@ -1,4 +1,4 @@
-package com.jupjup.www.jupjup.config;
+package com.jupjup.www.jupjup.config.logging;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;

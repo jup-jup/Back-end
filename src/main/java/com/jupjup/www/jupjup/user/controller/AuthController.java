@@ -1,6 +1,6 @@
 package com.jupjup.www.jupjup.user.controller;
 
-import com.jupjup.www.jupjup.config.JWTUtil;
+import com.jupjup.www.jupjup.config.security.JWTUtil;
 import com.jupjup.www.jupjup.user.repository.RefreshTokenRepository;
 import com.jupjup.www.jupjup.user.service.refreshService.RefreshReissueService;
 import io.swagger.v3.oas.annotations.Operation;
