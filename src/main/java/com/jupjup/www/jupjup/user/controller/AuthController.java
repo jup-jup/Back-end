@@ -58,7 +58,7 @@ public class AuthController {
 
 
     @Operation(summary = "리프레시 토큰 재발급 시 요청 api")
-    @GetMapping("/reissue")
+    @PostMapping("/reissue")
     public ResponseEntity<String> reissue(@CookieValue("refreshToken") String refreshToken, HttpServletResponse resp) throws IOException {
 
         log.info("refreshToken = {} ", refreshToken);
