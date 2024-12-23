@@ -9,7 +9,7 @@ import lombok.RequiredArgsConstructor;
 public enum BaseUrl {
 
 //    REACT("react", "https://jupjup.shop/");
-    REACT("react", "http://localhost:3000/");
+    REACT("react", "http://localhost:3001/");
 
     private final String location;
     private final String url;
