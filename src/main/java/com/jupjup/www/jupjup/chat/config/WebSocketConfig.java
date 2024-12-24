@@ -34,7 +34,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         // WebSocket 커넥션 경로
         registry.addEndpoint("/ws")
-                .setAllowedOriginPatterns("http://localhost:3000", "https://jupjup.shop")
+                .setAllowedOriginPatterns("http://localhost:3000", "https://jupjup.shop","https://localhost:3001")
                 .withSockJS();
     }
 
