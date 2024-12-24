@@ -88,7 +88,7 @@ public class SecurityConfig {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:3000", "https://jupjup.shop"));  // 명시적인 도메인 설정
+        configuration.setAllowedOrigins(List.of("http://localhost:3001", "https://jupjup.shop"));  // 명시적인 도메인 설정
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "Origin", "Accept"));
         configuration.setAllowCredentials(true);  // 크리덴셜 허용 (쿠키, 인증 헤더 등)
